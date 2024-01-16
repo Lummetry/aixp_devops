@@ -1,0 +1,15 @@
+[Unit]
+Description=LLM API Engine (GPU)
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+ExecStartPre=-/usr/bin/docker stop -t 20 llm_api_gpu
+ExecStartPre=-/usr/bin/docker pull aidamian/llm_api
+ExecStart=/usr/bin/docker run --rm --gpus all -p {{ llm_api_port }}:{{ llm_api_port }} -e PORT={{ llm_api_port }} --name llm_api_gpu -v llm_api_vol:/offense_api/_models_cache aidamian/llm_api
+ExecStop=/usr/bin/docker stop -t 20 llm_api_gpu
+
+[Install]
+WantedBy=multi-user.target

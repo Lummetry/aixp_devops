@@ -1,0 +1,153 @@
+---
+
+# Uninstall existing Docker and containerd installations if containerd is detected
+# - name: Remove existing containerd packages
+#   apt:
+#     name:
+#       - containerd.io
+#     state: absent
+
+# Task 1: Update the apt package cache
+# This task updates the local package cache for apt (a package manager used by Debian and Ubuntu).
+# The cache is considered valid if it was updated within the last hour (3600 seconds).
+- name: Update apt cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+# Task 2: Install prerequisites for Docker
+# This task installs packages that are necessary for Docker installation and operation.
+# These include tools for secure communication, certificate handling, and software repository management.
+- name: Install required packages
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  loop:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - gnupg-agent
+  - software-properties-common
+
+# Task 3: Add Docker's GPG key
+# This task retrieves the GPG key used to sign Docker packages and stores it locally.
+# This is a security measure to ensure the integrity and authenticity of Docker packages.
+- name: Docker | Install repo key
+  ansible.builtin.get_url:
+    url: "https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"
+    dest: /etc/apt/keyrings/docker.asc
+
+# Task 4: Add the Docker repository
+# This task adds the Docker repository to the system's software sources.
+# This repository contains Docker packages specific to the system's Linux distribution and release.
+- name: Docker | Add repo
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
+    state: present
+
+# Task 5: Update apt cache after adding Docker repository
+# Similar to Task 1, this updates the apt package cache again, now including the newly added Docker repository.
+- name: Update apt cache after adding Docker repository
+  apt:
+    update_cache: yes
+
+# Task 6: Install Docker packages
+# This task installs Docker and its dependencies.
+- name: Install Docker
+  apt:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+    state: present
+
+# Task 7: Enable and start Docker service
+# This ensures that the Docker service is enabled (to start on boot) and is currently running.
+- name: Enable and start Docker service
+  ansible.builtin.systemd:
+    name: docker
+    enabled: yes
+    state: started
+
+# Additional Test: Check Docker Installation
+# This is a verification task to ensure Docker is installed and the command is executable.
+- name: Verify Docker Installation
+  command: docker --version
+  register: docker_version
+  changed_when: false
+  failed_when: docker_version.rc != 0
+
+- name: Display Docker version
+  debug:
+    msg: "{{ docker_version.stdout }}"
+
+# Additional Test: Check Docker Service Status
+# This task checks if the Docker service is active and running.
+- name: Check Docker Service Status
+  command: systemctl is-active docker
+  register: docker_service_status
+  changed_when: false
+  failed_when: "'inactive' in docker_service_status.stdout"
+
+- name: Check if config.toml exists and has desired settings
+  shell: |
+    if [ -f /etc/containerd/config.toml ]; then
+      grep -q 'SystemdCgroup = true' /etc/containerd/config.toml &&
+      grep -q 'enabled_plugins = ["cri"]' /etc/containerd/config.toml
+    else
+      exit 1
+    fi
+  register: containerd_config_check
+  ignore_errors: yes
+
+- name: Generate default containerd configuration
+  command: containerd config default > /etc/containerd/config.toml
+  when: containerd_config_check.rc != 0
+
+- name: Set SystemdCgroup to true
+  lineinfile:
+    path: /etc/containerd/config.toml
+    regexp: '^(SystemdCgroup\s*=\s*).*$'
+    line: 'SystemdCgroup = true'
+  when: containerd_config_check.rc != 0
+
+- name: Enable CRI plugin
+  lineinfile:
+    path: /etc/containerd/config.toml
+    regexp: '^\s*disabled_plugins\s*='
+    line: 'enabled_plugins = ["cri"]'
+  when: containerd_config_check.rc != 0
+
+- name: Restart containerd service
+  service:
+    name: containerd
+    state: restarted
+  when: containerd_config_check.rc != 0
+
+- name: Get the relevant section of the containerd config file
+  shell: grep -C 2 'cri' /etc/containerd/config.toml
+  register: cri_config_section1
+
+- name: Display the containerd "cri"-related configuration section 
+  debug:
+    msg: "{{ cri_config_section1.stdout_lines }}"
+
+
+# Task 10: Verify containerd Installation
+- name: Verify containerd Installation
+  command: containerd --version
+  register: containerd_version
+  changed_when: false
+  failed_when: containerd_version.rc != 0
+
+- name: Display containerd version
+  debug:
+    msg: "{{ containerd_version.stdout }}"
+
+# Task 11: Check containerd Service Status
+- name: Check containerd Service Status
+  command: systemctl is-active containerd
+  register: containerd_service_status
+  changed_when: false
+  failed_when: "'inactive' in containerd_service_status.stdout"

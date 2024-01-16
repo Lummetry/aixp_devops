@@ -1,0 +1,100 @@
+---
+
+# Task 1: Update the apt package cache
+# Updates the local package cache for apt. This cache is considered valid if updated within the last hour (3600 seconds).
+- name: Update apt cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+# Task 2: Add NVIDIA repo GPG key
+# Retrieves and adds the GPG key for the NVIDIA Docker repository. This key verifies the authenticity of the repository.
+- name: Add NVIDIA repo gpg key
+  apt_key:
+    url: "https://nvidia.github.io/nvidia-docker/gpgkey"
+    state: present
+
+# Task 3: Add NVIDIA apt repository
+# Adds the NVIDIA Docker repository to the system's software sources list.
+- name: Add NVIDIA apt repo
+  get_url:
+    url: "https://nvidia.github.io/nvidia-docker/ubuntu20.04/nvidia-docker.list"
+    dest: "/etc/apt/sources.list.d/nvidia-docker.list"
+    mode: 0644
+
+# Task 4: Update apt cache after adding NVIDIA Docker repository
+# Updates the apt package cache again, including the newly added NVIDIA repository.
+- name: Update apt cache after adding NVIDIA Docker repository
+  apt:
+    update_cache: yes
+
+# Task 5: Install NVIDIA Container Toolkit
+# Installs the NVIDIA Container Toolkit, which allows Docker containers to utilize NVIDIA GPUs.
+- name: Install NVIDIA Container Toolkit
+  apt:
+    name: nvidia-container-toolkit
+    state: present
+
+# Task 6: Restart Docker service to apply NVIDIA changes
+# Restarts the Docker service to ensure the NVIDIA Container Toolkit is properly integrated.
+- name: Restart Docker service to apply NVIDIA changes
+  ansible.builtin.systemd:
+    name: docker
+    state: restarted
+
+# Task 7: Run a temporary Docker container with NVIDIA GPU support
+# Launches a temporary Docker container to test NVIDIA GPU support using the `nvidia-smi` command.
+- name: Run a temporary Docker container with NVIDIA GPU support
+  docker_container:
+    name: nvidia-smi-test
+    image: nvidia/cuda:11.6.1-base-ubuntu20.04
+    command: "nvidia-smi --query-gpu=gpu_name,memory.total,driver_version,pci.device_id --format=csv"
+    state: started
+    detach: false
+    cleanup: yes
+    device_requests:
+      - device_ids: 0
+        driver: nvidia
+        capabilities: 
+          - gpu
+          - compute
+          - utility
+  register: nvidia_smi_container_output
+
+# Display nvidia-smi output
+- name: Display container nvidia-smi output
+  debug:
+    msg: "{{ nvidia_smi_container_output.container.Output }}"
+
+# # The following tasks are usefull only if simple nvidia-smi is run without --query-gpu option
+# - name: Extract Driver version
+#   set_fact:
+#     driver_version: "{{ nvidia_smi_output.stdout | regex_search('Driver Version:\\s*(\\S+)', '\\1') | first }}"
+#   # Extracts the NVIDIA driver version from the nvidia-smi output.
+
+# - name: Extract GPU name
+#   set_fact:
+#     gpu_name: "{{ nvidia_smi_output.stdout_lines[8] | regex_search('\\|\\s*([^\\|]+)\\s*\\|', '\\1') | first | trim }}"
+#   # Extracts the GPU name from the nvidia-smi output.
+
+# - name: Output GPU Name and Driver Version
+#   debug:
+#     msg: "GPU: {{ gpu_name }}, NVIDIA Driver Version: {{ driver_version }}"
+#   # Outputs the GPU name and driver version for confirmation.
+
+
+# Additional Task: Check NVIDIA Toolkit Installation
+# This is a verification task to ensure the NVIDIA Container Toolkit is installed.
+- name: Verify NVIDIA Toolkit Installation
+  command: nvidia-container-cli --version
+  register: nvidia_toolkit_version
+  changed_when: false
+  failed_when: nvidia_toolkit_version.rc != 0
+
+# Additional Task: Check NVIDIA Docker Service Status
+# This task checks if the Docker service is active and running after NVIDIA integration.
+- name: Check NVIDIA Docker Service Status
+  command: systemctl is-active docker
+  register: docker_service_status_after_nvidia
+  changed_when: false
+  failed_when: "'inactive' in docker_service_status_after_nvidia.stdout"

@@ -1,0 +1,57 @@
+---
+# Task to run the Docker container with GPU support
+- name: Run Docker container with GPU support
+  docker_container:
+    name: offense_api_gpu  # Name of the Docker container
+    image: aidamian/llm_api  # Image to use for the container
+    state: started  # Ensure the container is running
+    restart_policy: "no"  # Do not automatically restart the container
+    ports:
+      - "5050:5050"  # Map port 5050 from the container to the host
+    volumes:
+      - llm_api_vol:/offense_api/_models_cache  # Bind mount a volume
+    device_requests:
+      - device_ids: 0
+        driver: nvidia
+        capabilities: 
+          - gpu
+          - compute
+          - utility
+
+# Task to wait for the container to be ready
+- name: Wait for container to be ready
+  wait_for:
+    port: 5050  # Wait for port 5050 to be ready
+    delay: 20  # Delay before the check starts
+    timeout: 60  # Maximum time to wait
+
+# Task to check if the API is working
+- name: Check if API is working
+  uri:
+    url: http://localhost:5050/predict/  # API endpoint to test
+    method: POST  # HTTP method to use
+    body: '{"text": "Tu esti cam f.r.a.i.e.r"}'  # Request body in JSON format
+    body_format: json  # Specify the format of the body
+    return_content: yes  # Return the content of the response
+    status_code: 200  # Expected status code
+    headers:
+      Content-Type: "application/json"  # Set request header
+  register: api_response  # Store the response in a variable
+
+- name: Display API response
+  debug:
+    msg: "{{ api_response.json }}"
+
+# Task to assert that CUDA is being used
+- name: Assert that CUDA is used
+  assert:
+    that:
+      - "'cuda' in api_response.json['metadata']['device']"  # Check if 'cuda' is in the response
+    fail_msg: "CUDA is not being used"  # Message to display if assertion fails
+    success_msg: "CUDA is being used"  # Message to display if assertion succeeds
+
+# Task to stop and remove the Docker container
+- name: Stop and remove the Docker container
+  docker_container:
+    name: offense_api_gpu  # Name of the Docker container
+    state: absent  # Ensure the container is stopped and removed

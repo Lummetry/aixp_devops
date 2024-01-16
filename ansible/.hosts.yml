@@ -1,0 +1,28 @@
+all:
+  vars:
+    ansible_ssh_private_key_file: "./key.pem"
+    ansible_user: ""
+    ansible_host: ""  
+    ansible_ssh_common_args: "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+
+  children:
+    gpu_workers:
+      hosts:
+        neuralserver:
+          ansible_ssh_port: ""
+        neuralserver02:
+          ansible_ssh_port: ""
+        neuralserver03:
+          ansible_ssh_port: ""
+        neuralserver04:
+          ansible_ssh_port: ""    
+    kube_masters:
+      hosts:
+        neuralserver05:
+          ansible_ssh_port: ""
+    # non_gpu_workers:
+    #   hosts:
+    #     w1:
+    #       ansible_ssh_port: "22006"
+
+

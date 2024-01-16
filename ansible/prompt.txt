@@ -1,0 +1,259 @@
+I have the following base Ansible playbook including roles and config :
+
+The main playbook `full_deploy.yml`:
+
+```
+---
+- name: Deploy full
+  hosts: all
+  become: true
+  gather_facts: true
+  roles:
+    - stage1-gpu
+    - stage2-docker
+    - stage3-nvidia
+```
+
+the first role `stage1-gpu/tasks/main.yml` that installs the GPU drivers:
+
+```
+---
+- name: Check if nvidia-smi is available and working
+  command: nvidia-smi
+  ignore_errors: yes
+  register: nvidia_smi_check1
+
+# only remove if nvidia-smi is not available
+- name: Cleanup existing NVIDIA drivers
+  shell: "apt autoremove nvidia* --purge -y"
+  when: nvidia_smi_check1.rc != 0 
+  ignore_errors: yes
+
+- name: Reboot the system
+  when: nvidia_smi_check1.rc != 0 
+  reboot:
+
+- name: Wait for system to come back online after reboot
+  when: nvidia_smi_check1.rc != 0 
+  wait_for_connection:
+    delay: 30
+    timeout: 300
+
+- name: Update package lists
+  when: nvidia_smi_check1.rc != 0 
+  apt:
+    update_cache: yes
+    upgrade: yes
+
+- name: Install NTP
+  apt:
+    name: ntp
+    state: present
+
+- name: List GPGPU drivers
+  when: nvidia_smi_check1.rc != 0 
+  command: ubuntu-drivers list --gpgpu
+  register: gpu_drivers_list
+
+- name: Output GPGPU drivers list
+  when: nvidia_smi_check1.rc != 0 
+  debug:
+    msg: "{{ gpu_drivers_list.stdout }}"
+
+- name: Install NVIDIA driver
+  when: nvidia_smi_check1.rc != 0 
+  apt:
+    name:
+      - nvidia-driver-535
+      # - nvidia-dkms-535
+    state: present
+    update_cache: yes
+  register: nvidia_driver_installation
+
+- name: Output NVIDIA driver installation result
+  when: nvidia_smi_check1.rc != 0 
+  debug:
+    var: nvidia_driver_installation
+
+- name: Reboot the system
+  when: nvidia_smi_check1.rc != 0 
+  reboot:
+
+- name: Wait for system to come back online after reboot
+  when: nvidia_smi_check1.rc != 0 
+  wait_for_connection:
+    delay: 30
+    timeout: 300
+
+- name: Check NVIDIA-SMI
+  command: nvidia-smi
+  register: nvidia_smi_output
+  failed_when: nvidia_smi_output.rc != 0
+
+- name: Extract Driver version
+  set_fact:
+    driver_version: "{{ nvidia_smi_output.stdout | regex_search('Driver Version:\\s*(\\S+)', '\\1') | first }}"
+
+- name: Extract GPU name
+  set_fact:
+    gpu_name: "{{ nvidia_smi_output.stdout_lines[8] | regex_search('\\|\\s*([^\\|]+)\\s*\\|', '\\1') | first | trim }}"
+
+# - name: Output NVIDIA-SMI result
+#   debug:
+#     var: nvidia_smi_output.stdout
+
+- name: Output GPU Name and Driver Version
+  debug:
+    msg: "GPU: {{ gpu_name }}, NVIDIA Driver Version: {{ driver_version }}"
+
+- name: Install nvtop
+  apt:
+    name: nvtop
+    state: present
+    update_cache: yes
+```
+
+the second role that installs docker `stage2-docker/tasks/main.yml`:
+```
+---
+
+# check if docker is installed and if not, install it
+# sudo find /etc/apt/sources.list.d/ -type f -name "*docker*" -exec rm {} \;
+
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Install required packages
+  apt:
+    name: "{{item}}"
+    state: present
+    update_cache: yes
+  loop:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - gnupg-agent
+  - software-properties-common
+
+- name: Docker | Install repo key
+  ansible.builtin.get_url:
+    url: "https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"
+    dest: /etc/apt/keyrings/docker.asc
+
+- name: Docker | Add repo
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
+    state: present
+
+- name: Update apt cache after adding Docker repository
+  apt:
+    update_cache: yes
+
+- name: Install Docker
+  apt:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+    state: present
+
+- name: Enable and start Docker service
+  ansible.builtin.systemd:
+    name: docker
+    enabled: yes
+    state: started
+```
+
+and the third role that installs nvidia-docker `stage3-nvidia/tasks/main.yml`:
+```
+---
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Add NVIDIA repo gpg key
+  apt_key:
+    url: "https://nvidia.github.io/nvidia-docker/gpgkey"
+    state: present
+
+- name: Add NVIDIA apt repo
+  get_url:
+    url: "https://nvidia.github.io/nvidia-docker/ubuntu20.04/nvidia-docker.list"
+    dest: "/etc/apt/sources.list.d/nvidia-docker.list"
+    mode: 0644
+
+- name: Update apt cache after adding NVIDIA Docker repository
+  apt:
+    update_cache: yes
+
+- name: Install NVIDIA Container Toolkit
+  apt:
+    name: nvidia-container-toolkit
+    state: present
+
+- name: Restart Docker service to apply NVIDIA changes
+  ansible.builtin.systemd:
+    name: docker
+    state: restarted
+
+- name: Run a temporary Docker container with NVIDIA GPU support
+  community.docker.docker_container:
+    name: nvidia-smi-test
+    image: nvidia/cuda:latest
+    command: nvidia-smi
+    devices:
+      - /dev/nvidiactl
+      - /dev/nvidia-uvm
+      - /dev/nvidia-uvm-tools
+      - /dev/nvidia-modeset
+    volumes:
+      - /usr/bin/nvidia-smi:/usr/bin/nvidia-smi:ro
+    state: started
+    detach: false
+    cleanup: yes
+  register: nvidia_smi_output
+
+- name: Display nvidia-smi output
+  debug:
+    msg: "{{ nvidia_smi_output }}"
+```
+
+The scripts are working fine, but I would like to improve them by adding some checks and conditions and avoid redudant tasks being run.
+Also I need a final role that would test the docker/GPU installation and output the results by running 
+```bash
+docker run --name offense_api_cpu --rm --gpus=all -p 5050:5050 -v llm_api_vol:/offense_api/_models_cache aidamian/llm_api
+```
+and then running a curl command to check the API is working fine such as:
+```
+curl --location 'localhost:5050/predict/' \
+--header 'Content-Type: application/json' \
+--data '{
+  "text": "Tu esti cam f.r.a.i.e.r"
+}'
+```
+that should return a JSON response with the predicted label and some additional information:
+```json
+{
+    "prediction": "Abuz (limbaj ofensiv direct, nivel ridicat de ofensivitate)",
+    "metadata": {
+        "version": "0.1.1",
+        "worker": "fe75ddba",
+        "model": "readerbench/ro-offense",
+        "device": "cuda",
+        "packages": [
+            "fastapi                   0.108.0",
+            "tokenizers                0.15.0",
+            "torch                     2.1.2",
+            "transformers              4.36.2"
+        ],
+        "elapsed_time": 0.0646,
+        "average_time": 0.0944
+    }
+}
+```
+The check must ensure that the key `metadata.device` is `cuda` and not `cpu`.
