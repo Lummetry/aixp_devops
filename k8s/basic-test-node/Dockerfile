@@ -1,6 +1,7 @@
 FROM node:9.4.0-alpine
-COPY app.js .
-COPY package.json .
+WORKDIR /test_app
+ADD src/app.js .
+ADD src/package.json .
 RUN npm install &&\
     apk update &&\
     apk upgrade
