@@ -1,26 +1,53 @@
 ---
-- name: Check if llm_api.service exists
+- name: Check if aixp.service exists
   ansible.builtin.stat:
-    path: /etc/systemd/system/llm_api.service
-  register: llm_api_service
+    path: "/etc/systemd/system/aixp.service"
+  register: aixp_service
 
 - name: Gather service facts
   ansible.builtin.service_facts:
 
-- name: Copy llm_api.service file
+- name: Copy aixp.service file
   ansible.builtin.template:
-    src: llm_api.service.j2
-    dest: /etc/systemd/system/llm_api.service
+    src: "{{deployed_app}}.service.j2"
+    dest: /etc/systemd/system/aixp.service
     mode: '0644'
-  when: not llm_api_service.stat.exists
+  when: not aixp_service.stat.exists
   notify: reload systemd
 
-- name: Enable and start llm_api.service
+# task for creating aixp_target_folder for volume assignment
+- name: Check if aixp_target_folder exists
+  ansible.builtin.stat:
+    path: "{{ aixp_target_folder }}"
+  register: aixp_target_folder_check
+
+- name: Create aixp_target_folder
+  ansible.builtin.file:
+    path: "{{ aixp_target_folder }}"
+    state: directory
+    mode: '0755'
+  when: not aixp_target_folder_check.stat.exists
+
+# task for adding in aixp_target_folder the .env file from the localhost files
+# fails if the .env file is not provided in the files folder of the role
+- name: Check if .env file exists
+  ansible.builtin.stat:
+    path: "{{ aixp_target_folder }}/.env"
+  register: env_file_check
+
+- name: Copy .env file
+  ansible.builtin.copy:
+    src: .env
+    dest: "{{ aixp_target_folder }}"
+    mode: '0644'
+  when: not env_file_check.stat.exists
+
+- name: Enable and start aixp.service
   ansible.builtin.systemd:
-    name: llm_api.service
+    name: aixp.service
     enabled: yes
     state: started
-  when: not llm_api_service.stat.exists or not ('llm_api.service' in services and services['llm_api.service'].status == 'active')
+  when: not aixp_service.stat.exists or not ('aixp.service' in services and services['aixp.service'].status == 'active')
 
 
 # Task to wait for the container to be ready
@@ -29,6 +56,7 @@
     port: "{{ llm_api_port }}"  # Wait for port 5050 to be ready
     delay: 20  # Delay before the check starts
     timeout: 60  # Maximum time to wait
+  when: use_demo_llm_api  # Run this task only if the demo API is used
 
 # Task to check if the API is working
 - name: Check if API is working
@@ -42,6 +70,7 @@
     headers:
       Content-Type: "application/json"  # Set request header
   register: api_response  # Store the response in a variable
+  when: use_demo_llm_api  # Run this task only if the demo API is used
 
 - name: Display API response
   debug:
@@ -54,3 +83,4 @@
       - "'cuda' in api_response.json['metadata']['device']"  # Check if 'cuda' is in the response
     fail_msg: "CUDA is not being used"  # Message to display if assertion fails
     success_msg: "CUDA is being used"  # Message to display if assertion succeeds
+  when: use_demo_llm_api  # Run this task only if the demo API is used

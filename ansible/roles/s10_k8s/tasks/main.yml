@@ -85,7 +85,7 @@
   failed_when: "'error execution phase preflight' in kubeadm_init_result.stderr"
   ignore_errors: yes
   when: 
-    - inventory_hostname in groups['kube_masters']
+    - inventory_hostname == groups['kube_masters'][0]
     - not k8s_initialized.stat.exists
 
 - name: Show stdout of kubeadm init
@@ -117,7 +117,7 @@
   become: yes
   become_user: "{{ ansible_user }}"
   when: 
-    - inventory_hostname in groups['kube_masters']
+    - inventory_hostname == groups['kube_masters'][0]
     - not k8s_initialized.stat.exists
 
 - name: Copy admin.conf to ansible_user's kube config
@@ -130,7 +130,7 @@
     mode: 0644
   become: yes
   when: 
-    - inventory_hostname in groups['kube_masters']
+    - inventory_hostname == groups['kube_masters'][0]
     - not k8s_initialized.stat.exists
 
 
@@ -187,11 +187,13 @@
   delegate_to: "{{ groups['kube_masters'][0] }}"
   ignore_errors: yes
 
+
 - name: Display join status if node is already part of the cluster
   debug:
     msg: "Node {{ inventory_hostname }} already joined to the cluster. Proof: {{ node_joined.stdout }}"
   when: node_joined.stdout != ''
   delegate_to: localhost
+
 
 - name: Join worker nodes to Kubernetes cluster
   command: "{{ kubernetes_join_command }}"
@@ -199,6 +201,7 @@
     - not node_joined.stdout
     - (inventory_hostname in groups['gpu_workers'] or inventory_hostname in groups['non_gpu_workers'])
   ignore_errors: yes
+
 
 # Checking the status of all nodes in the cluster. This ensures that all nodes are connected and ready.
 - name: Get node status

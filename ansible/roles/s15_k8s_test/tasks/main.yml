@@ -29,8 +29,8 @@
                 limits:
                   nvidia.com/gpu: 1  # Requesting one GPU per replica
               env:
-                - name: MY_VARIABLE
-                  value: "value"
+                - name: PORT
+                  value: "5060"
 
 
 - name: Wait for the Deployment to be ready
@@ -83,7 +83,6 @@
     port: 30060
     delay: 10
     timeout: 60
-  delegate_to: localhost
 
 - name: Send a request to the API
   uri:
