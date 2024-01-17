@@ -80,7 +80,7 @@
 # Initialize Kubernetes Cluster (Only on Master Node)
 # Important: Run this task manually only on the master node
 - name: Initialize Kubernetes cluster with kubeadm
-  command: kubeadm init
+  command: kubeadm init --pod-network-cidr=10.0.0.0/16
   register: kubeadm_init_result
   failed_when: "'error execution phase preflight' in kubeadm_init_result.stderr"
   ignore_errors: yes
@@ -235,6 +235,7 @@
   delegate_to: "{{ groups['kube_masters'][0] }}"
 
 # Install the Kubernetes metrics server to enable monitoring of cluster metrics.
+# --kubelet-insecure-tls=true is required for the metrics server to work with self-signed certificates.
 - name: Install Kubernetes metrics server
   shell: kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
   become_user: "{{ ansible_user }}"
