@@ -5,13 +5,22 @@ all:
     ansible_host: ""  
     ansible_ssh_common_args: "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 
+    deployed_app: "llm_api"
+    aixp_target_folder: "/var/cache/{{ deployed_app }}"
+    aixp_ee_version: "latest"
+
+
   children:
     gpu_workers:
       hosts:
         neuralserver:
           ansible_ssh_port: ""
+          aixp_node_name: "neuralserver01"
+
         neuralserver02:
           ansible_ssh_port: ""
+          aixp_node_name: "neuralserver02"
+
         neuralserver03:
           ansible_ssh_port: ""
         neuralserver04:

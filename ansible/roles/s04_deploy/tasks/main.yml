@@ -1,7 +1,7 @@
 ---
-- name: Check if aixp.service exists
+- name: Check if service exists
   ansible.builtin.stat:
-    path: "/etc/systemd/system/aixp.service"
+    path: "/etc/systemd/system/{{ deployed_app }}.service"
   register: aixp_service
 
 - name: Gather service facts
@@ -9,8 +9,8 @@
 
 - name: Copy aixp.service file
   ansible.builtin.template:
-    src: "{{deployed_app}}.service.j2"
-    dest: /etc/systemd/system/aixp.service
+    src: "{{ deployed_app }}.service.j2"
+    dest: /etc/systemd/system/{{ deployed_app }}.service
     mode: '0644'
   when: not aixp_service.stat.exists
   notify: reload systemd
@@ -42,12 +42,12 @@
     mode: '0644'
   when: not env_file_check.stat.exists
 
-- name: Enable and start aixp.service
+- name: Enable and start service
   ansible.builtin.systemd:
-    name: aixp.service
+    name: {{ deployed_app }}.service
     enabled: yes
     state: started
-  when: not aixp_service.stat.exists or not ('aixp.service' in services and services['aixp.service'].status == 'active')
+  when: not aixp_service.stat.exists or not ('{{ deployed_app }}.service' in services and services['{{ deployed_app }}.service'].status == 'active')
 
 
 # Task to wait for the container to be ready

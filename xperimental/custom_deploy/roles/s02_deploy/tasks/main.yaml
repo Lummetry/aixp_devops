@@ -1,0 +1,38 @@
+---
+- name: Create work folder with subfolder test_deploy
+  file:
+    path: /home/{{ ansible_user }}/work/test_deploy
+    state: directory
+    mode: 0755
+  become: yes
+  become_user: "{{ ansible_user }}"
+  when: inventory_hostname in groups['workers']
+
+
+- name: Generate a file based on template in the work folder
+  template:
+    src: "{{ aixp_deployed_template }}.j2"
+    dest: /home/{{ ansible_user }}/work/test_deploy/{{ aixp_target_name }}
+  become: yes
+  become_user: "{{ ansible_user }}"
+  when: inventory_hostname in groups['workers']
+
+- name: Get the content of the file
+  shell: cat /home/{{ ansible_user }}/work/test_deploy/{{ aixp_target_name }}
+  become: yes
+  become_user: "{{ ansible_user }}"
+  when: inventory_hostname in groups['workers']
+  register: cat_result
+
+- name: Show the content of the file
+  debug:
+    var: cat_result.stdout_lines
+  when: inventory_hostname in groups['workers']
+
+- name: copy .env
+  copy:
+    src: .env
+    dest: /home/{{ ansible_user }}/work/test_deploy/.env
+  become: yes
+  become_user: "{{ ansible_user }}"
+  when: inventory_hostname in groups['workers']

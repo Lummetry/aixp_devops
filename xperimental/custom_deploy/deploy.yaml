@@ -1,0 +1,8 @@
+---
+- name: Deploy test
+  hosts: all
+  become: true
+  gather_facts: true
+  roles:
+    - s01_prereq
+    - s02_deploy

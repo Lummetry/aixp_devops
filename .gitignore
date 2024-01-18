@@ -1,5 +1,7 @@
-ansible/hosts.yml
+
 
 *.pem
 
 .env
+xperimental/custom_deploy/hosts.yaml
+ansible/hosts.yml
