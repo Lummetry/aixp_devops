@@ -3,11 +3,5 @@
 ## 0.0.1 - 2024-01-22
 - Initial release of the role.
 
-## 0.1.0 - 2024-01-22
-- Basis fixes
-
-## 0.1.1 - 2024-01-22
-- Ready to use
-
-## 0.1.2 - 2024-01-22
-- Fix
+## 0.1.3 - 2024-01-22
+- Added target envs: dev, pre, prod

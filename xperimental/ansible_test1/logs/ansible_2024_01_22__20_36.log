@@ -1,0 +1,13 @@
+
+PLAY [Deploy test] *************************************************************
+
+TASK [Gathering Facts] *********************************************************
+[0;32mok: [my-instance-1-bis][0m
+[0;32mok: [my-instance-1][0m
+
+TASK [Include a role from a collection] ****************************************
+
+PLAY RECAP *********************************************************************
+[0;32mmy-instance-1[0m              : [0;32mok=1   [0m changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+[0;32mmy-instance-1-bis[0m          : [0;32mok=1   [0m changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+

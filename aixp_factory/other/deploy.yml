@@ -4,8 +4,8 @@
   become: true
   gather_facts: true
   roles:
-    - aixp00_prereq
-    - aixp01_gpu
-    - aixp02_docker
-    - aixp03_nvidia
-    - aixp04_deploy
+    - andreiionutdamian.aixp_factory.aixp00_prereq
+    # - andreiionutdamian.aixp_factory.aixp01_gpu
+    # - andreiionutdamian.aixp_factory.aixp02_docker
+    # - andreiionutdamian.aixp_factory.aixp03_nvidia
+    # - andreiionutdamian.aixp_factory.aixp04_deploy

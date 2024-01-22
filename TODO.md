@@ -1,8 +1,9 @@
 # Main TODO List
 
 
-- [x] Kick off the project with ansible roles
-- [ ] Debug roles for k8s installation
-- [ ] Add template for e2 deploy in the `s04_deploy` role
-- [ ] Finalize k8s deployment
-- [ ] Add long-term plan
+- must have target environment dev, pre, prod
+- must configure /var/cache/aixp_ee
+  - add .env
+  - edit config_startuo.json.j2
+  - add config_startup.json (must have ./_local_cache/config_app.txt)
+  - add config_app.txt

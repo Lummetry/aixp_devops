@@ -1,0 +1,23 @@
+
+PLAY [Deploy test] *************************************************************
+
+TASK [Gathering Facts] *********************************************************
+[0;32mok: [my-instance-1-bis][0m
+[0;32mok: [my-instance-1][0m
+
+TASK [andreiionutdamian.aixp_factory.aixp00_prereq : Initial log display] ******
+[0;32mok: [my-instance-1] => {[0m
+[0;32m    "msg": "Running prereq tasks on my-instance-1"[0m
+[0;32m}[0m
+[0;32mok: [my-instance-1-bis] => {[0m
+[0;32m    "msg": "Running prereq tasks on my-instance-1-bis"[0m
+[0;32m}[0m
+
+TASK [andreiionutdamian.aixp_factory.aixp00_prereq : Get version of a specific collection] ***
+[0;31mfatal: [my-instance-1 -> localhost]: FAILED! => {"changed": false, "cmd": "ansible-galaxy collection list andreiionutdamian.aixp_factory", "msg": "[Errno 2] No such file or directory: b'ansible-galaxy'", "rc": 2, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+[0;31mfatal: [my-instance-1-bis -> localhost]: FAILED! => {"changed": false, "cmd": "ansible-galaxy collection list andreiionutdamian.aixp_factory", "msg": "[Errno 2] No such file or directory: b'ansible-galaxy'", "rc": 2, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+PLAY RECAP *********************************************************************
+[0;31mmy-instance-1[0m              : [0;32mok=2   [0m changed=0    unreachable=0    [0;31mfailed=1   [0m skipped=0    rescued=0    ignored=0   
+[0;31mmy-instance-1-bis[0m          : [0;32mok=2   [0m changed=0    unreachable=0    [0;31mfailed=1   [0m skipped=0    rescued=0    ignored=0   
+
