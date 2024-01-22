@@ -46,21 +46,21 @@
     - python3-pip
   when: inventory_hostname in groups['gpu_workers']
 
-- name: Check if {{ aixp_target_folder_check }} exists
+- name: "Check if {{ aixp_base_folder }} exists"
   ansible.builtin.stat:
-    path: "{{ aixp_target_folder }}"
-  register: aixp_target_folder_check
+    path: "{{ aixp_base_folder }}"
+  register: aixp_base_folder_check
 
-- name: Create {{ aixp_target_folder_check }}
+- name: "Create {{ aixp_base_folder }}"
   ansible.builtin.file:
-    path: "{{ aixp_target_folder }}"
+    path: "{{ aixp_base_folder }}"
     state: directory
     mode: '0755'
-  when: not aixp_target_folder_check.stat.exists  
+  when: not aixp_base_folder_check.stat.exists  
 
-- name: Add a simple README.md in the {{ aixp_target_folder_check }}
+- name: "Add a simple README.md in the {{ aixp_base_folder_check }}"
   ansible.builtin.copy:
-    content: "# This folder is used to store the {{ deployed_app }} application."
-    dest: "{{ aixp_target_folder }}/README.md"
-  when: not aixp_target_folder_check.stat.exists
+    content: "# This folder is used to store the {{ aixp_app }} base config application."
+    dest: "{{ aixp_base_folder_check }}/README.md"
+  when: not aixp_base_folder_check.stat.exists
   
