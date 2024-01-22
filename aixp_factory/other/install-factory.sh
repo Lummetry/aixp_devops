@@ -127,12 +127,13 @@ fi
 # Create empty key.pem file if it does not exist
 if [ ! -f "./key.pem" ]; then
     log_with_color "Creating empy key.pem file"
-    touch key.pem
+    touch key.pem    
     log_with_color "Please write a SK in the key.pem file" yellow
 else
-    log_with_color "key.pem already exists. Not creating."
+    log_with_color "key.pem already exists. Not creating." green
 fi
 
+chmod 600 key.pem
 
 # Copy the playbook deploy.yml from the collection `other` folder to current directory if it does not exist
 if [ ! -f "./deploy.yml" ]; then
