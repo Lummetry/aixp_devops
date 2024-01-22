@@ -21,6 +21,7 @@
   shell: ansible-galaxy collection list 'andreiionutdamian.aixp_factory'
   register: collection_version
   delegate_to: localhost
+  become: false
   when: inventory_hostname == groups['gpu_workers'][0]
 
 - name: Show collection version

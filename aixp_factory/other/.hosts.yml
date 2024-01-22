@@ -10,7 +10,7 @@ all:
     aixp_app: "aixp_ee"
     # select the target environment "staging" "preprod" "prod"
     aixp_app_target: "staging" 
-    aixp_debug_deploy: false
+    aixp_debug_deploy: true
 
     # enter below the values for the target environment .env
     aixp_EE_MINIO_ENDPOINT: "<minio_endpoint>"

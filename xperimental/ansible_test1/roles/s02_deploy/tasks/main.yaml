@@ -1,38 +1,55 @@
 ---
-- name: Create work folder with subfolder test_deploy
-  file:
-    path: /home/{{ ansible_user }}/work/test_deploy
-    state: directory
-    mode: 0755
-  become: yes
-  become_user: "{{ ansible_user }}"
-  when: inventory_hostname in groups['workers']
+
+- name: Get version of a specific collection
+  shell: ansible-galaxy collection list 'andreiionutdamian.aixp_factory'
+  register: collection_version
+  delegate_to: localhost
+  become: false
+  when: inventory_hostname == groups['gpu_workers'][0]
 
 
-- name: Generate a file based on template in the work folder
-  template:
-    src: "{{ aixp_deployed_template }}.j2"
-    dest: /home/{{ ansible_user }}/work/test_deploy/{{ aixp_target_name }}
-  become: yes
-  become_user: "{{ ansible_user }}"
-  when: inventory_hostname in groups['workers']
-
-- name: Get the content of the file
-  shell: cat /home/{{ ansible_user }}/work/test_deploy/{{ aixp_target_name }}
-  become: yes
-  become_user: "{{ ansible_user }}"
-  when: inventory_hostname in groups['workers']
-  register: cat_result
-
-- name: Show the content of the file
+- name: Show collection version
   debug:
-    var: cat_result.stdout_lines
-  when: inventory_hostname in groups['workers']
+    msg: "{{ collection_version.stdout_lines }}"
+  delegate_to: localhost 
+  when: inventory_hostname == groups['gpu_workers'][0]
 
-- name: copy .env
-  copy:
-    src: .env
-    dest: /home/{{ ansible_user }}/work/test_deploy/.env
-  become: yes
-  become_user: "{{ ansible_user }}"
-  when: inventory_hostname in groups['workers']
+
+# - name: Create work folder with subfolder test_deploy
+#   file:
+#     path: /home/{{ ansible_user }}/work/test_deploy
+#     state: directory
+#     mode: 0755
+#   become: yes
+#   become_user: "{{ ansible_user }}"
+#   when: inventory_hostname in groups['gpu_workers']
+
+
+# - name: Generate a file based on template in the work folder
+#   template:
+#     src: "{{ aixp_deployed_template }}.j2"
+#     dest: /home/{{ ansible_user }}/work/test_deploy/{{ aixp_target_name }}
+#   become: yes
+#   become_user: "{{ ansible_user }}"
+#   when: inventory_hostname in groups['gpu_workers']
+
+# - name: Get the content of the file
+#   shell: cat /home/{{ ansible_user }}/work/test_deploy/{{ aixp_target_name }}
+#   become: yes
+#   become_user: "{{ ansible_user }}"
+#   when: inventory_hostname in groups['gpu_workers']
+#   register: cat_result
+
+# - name: Show the content of the file
+#   debug:
+#     var: cat_result.stdout_lines
+#   when: inventory_hostname in groups['gpu_workers']
+
+# - name: copy .env
+#   copy:
+#     src: .env
+#     dest: /home/{{ ansible_user }}/work/test_deploy/.env
+#   become: yes
+#   become_user: "{{ ansible_user }}"
+#   when: inventory_hostname in groups['gpu_workers']
+
