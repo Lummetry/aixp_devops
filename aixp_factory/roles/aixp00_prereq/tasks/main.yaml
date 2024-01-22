@@ -4,7 +4,9 @@
     msg: "Running prereq tasks on {{ inventory_hostname }}"
 
 - name: Get local running info
-  command: hostname; pwd
+  shell: |
+    hostname
+    pwd
   register: local_info
   delegate_to: localhost
   when: inventory_hostname == groups['gpu_workers'][0]
@@ -16,7 +18,7 @@
   when: inventory_hostname == groups['gpu_workers'][0]
 
 - name: Get version of a specific collection
-  command: ansible-galaxy collection list 'andreiionutdamian.aixp_factory'
+  shell: ansible-galaxy collection list 'andreiionutdamian.aixp_factory'
   register: collection_version
   delegate_to: localhost
   when: inventory_hostname == groups['gpu_workers'][0]

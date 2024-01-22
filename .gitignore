@@ -2,6 +2,8 @@
 
 *.pem
 
+*.log
+
 .env
 hosts*.yaml
 hosts*.yml

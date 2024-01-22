@@ -49,6 +49,11 @@ install_ansible() {
   sudo apt-get install ansible
 }
 
+# Create a directory for the factory
+mkdir -p factory
+cd factory
+
+
 # Check if Python is installed
 if ! command -v python3 &> /dev/null
 then

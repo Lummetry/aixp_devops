@@ -1,54 +1,102 @@
 ---
 - name: Check if service exists
   ansible.builtin.stat:
-    path: "/etc/systemd/system/{{ deployed_app }}.service"
+    path: "/etc/systemd/system/{{ aixp_app }}.service"
   register: aixp_service
+  when: not aixp_debug_deploy | bool
 
 - name: Gather service facts
   ansible.builtin.service_facts:
 
-- name: Copy aixp.service file
-  ansible.builtin.template:
-    src: "{{ deployed_app }}.service.j2"
-    dest: /etc/systemd/system/{{ deployed_app }}.service
-    mode: '0644'
-  when: not aixp_service.stat.exists
-  notify: reload systemd
-
-# task for creating aixp_target_folder for volume assignment
-- name: Check if aixp_target_folder exists
+# task for creating aixp_local_cache_folder for volume assignment
+- name: Check if aixp_local_cache_folder exists
   ansible.builtin.stat:
-    path: "{{ aixp_target_folder }}"
-  register: aixp_target_folder_check
+    path: "{{ aixp_local_cache_folder }}"
+  register: aixp_local_cache_folder_check
+  when: aixp_app in ["aixp_ee"]
 
-- name: Create aixp_target_folder
+- name: Create aixp_local_cache_folder
   ansible.builtin.file:
-    path: "{{ aixp_target_folder }}"
+    path: "{{ aixp_local_cache_folder }}"
     state: directory
     mode: '0755'
-  when: not aixp_target_folder_check.stat.exists
+  when: 
+    - not aixp_local_cache_folder_check.stat.exists
+    - aixp_app in ["aixp_ee"]
 
 # task for adding in aixp_target_folder the .env file from the localhost files
 # fails if the .env file is not provided in the files folder of the role
 - name: Check if .env file exists
   ansible.builtin.stat:
-    path: "{{ aixp_target_folder }}/.env"
+    path: "{{ aixp_base_folder }}/.env"
   register: env_file_check
+  when: aixp_app in ["aixp_ee"]
 
 - name: Copy .env file
   ansible.builtin.copy:
     src: .env
-    dest: "{{ aixp_target_folder }}"
+    dest: "{{ aixp_base_folder }}"
     mode: '0644'
-  when: not env_file_check.stat.exists
+  when: 
+    - not env_file_check.stat.exists
+    - aixp_app in ["aixp_ee"]
+
+- name: Check if config_startup.json exists in aixp_local_cache_folder
+  ansible.builtin.stat:
+    path: "{{ aixp_local_cache_folder }}/config_startup.json"
+  register: config_startup_check
+  when: aixp_app in ["aixp_ee"]
+
+- name: Copy config_startup.json
+  ansible.builtin.template:
+    src: config_startup.json.j2
+    dest: "{{ aixp_local_cache_folder }}/config_startup.json"
+    mode: '0644'
+  when: 
+    - not config_startup_check.stat.exists
+    - aixp_app in ["aixp_ee"]
+
+- name: Check if config_app.txt exists in aixp_local_cache_folder
+  ansible.builtin.stat:
+    path: "{{ aixp_local_cache_folder }}/config_app.txt"
+  register: config_app_check
+  when: aixp_app in ["aixp_ee"]
+
+- name: Copy config_app.txt
+  ansible.builtin.template:
+    src: config_app.txt.j2
+    dest: "{{ aixp_local_cache_folder }}/config_app.txt"
+    mode: '0644'
+  when: 
+    - not config_app_check.stat.exists
+    - aixp_app in ["aixp_ee"]
+
+- name: Copy aixp.service file
+  ansible.builtin.template:
+    src: "{{ aixp_app }}.service.j2"
+    dest: /etc/systemd/system/{{ aixp_app }}.service
+    mode: '0644'
+  notify: reload systemd
+  when: 
+    - not aixp_service.stat.exists
+    - not aixp_debug_deploy | bool
+
+- name: Mock-copy aixp.service file in base folder
+  ansible.builtin.template:
+    src: "{{ aixp_app }}.service.j2"
+    dest: "{{ aixp_base_folder }}/{{ aixp_app }}.service"
+    mode: '0644'
+  when: aixp_debug_deploy | bool
+
 
 - name: Enable and start service
   ansible.builtin.systemd:
-    name: {{ deployed_app }}.service
+    name: {{ aixp_app }}.service
     enabled: yes
     state: started
-  when: not aixp_service.stat.exists or not ('{{ deployed_app }}.service' in services and services['{{ deployed_app }}.service'].status == 'active')
-
+  when: 
+    - not aixp_service.stat.exists or not ('{{ aixp_app }}.service' in services and services['{{ aixp_app }}.service'].status == 'active')
+    - not aixp_debug_deploy | bool
 
 # Task to wait for the container to be ready
 - name: Wait for container to be ready
@@ -56,7 +104,9 @@
     port: "{{ llm_api_port }}"  # Wait for port 5050 to be ready
     delay: 20  # Delay before the check starts
     timeout: 60  # Maximum time to wait
-  when: use_demo_llm_api  # Run this task only if the demo API is used
+  when: 
+    - aixp_app in ["llm_api"]
+    - not aixp_debug_deploy | bool
 
 # Task to check if the API is working
 - name: Check if API is working
@@ -70,11 +120,16 @@
     headers:
       Content-Type: "application/json"  # Set request header
   register: api_response  # Store the response in a variable
-  when: use_demo_llm_api  # Run this task only if the demo API is used
+  when: 
+    - aixp_app in ["llm_api"]
+    - not aixp_debug_deploy | bool
 
 - name: Display API response
   debug:
     msg: "{{ api_response.json }}"
+  when: 
+    - aixp_app in ["llm_api"]
+    - not aixp_debug_deploy | bool
 
 # Task to assert that CUDA is being used
 - name: Assert that CUDA is used
@@ -83,4 +138,6 @@
       - "'cuda' in api_response.json['metadata']['device']"  # Check if 'cuda' is in the response
     fail_msg: "CUDA is not being used"  # Message to display if assertion fails
     success_msg: "CUDA is being used"  # Message to display if assertion succeeds
-  when: use_demo_llm_api  # Run this task only if the demo API is used
+  when: 
+    - aixp_app in ["llm_api"]
+    - not aixp_debug_deploy | bool

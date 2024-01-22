@@ -5,10 +5,34 @@ all:
     # ansible_ssh_pass: ""
     ansible_ssh_common_args: "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 
+    # select the app to deploy "aixp_ee", "llm_api" or other apps
     axip_app: "aixp_ee"
-    aixp_app_target: "staging" # "staging" "preprod" "prod"
-    aixp_target_folder: "/var/cache/{{ axip_app }}"
+    # select the target environment "staging" "preprod" "prod"
+    aixp_app_target: "staging" 
+    aixp_debug_deploy: false
+
+    # enter below the values for the target environment .env
+    axip_EE_MINIO_ENDPOINT: ""
+    axip_EE_MINIO_ACCESS_KEY: ""
+    axip_EE_MINIO_SECRET_KEY: ""
+    axip_EE_MINIO_SECURE: ""
+    axip_EE_MQTT: ""
+    axip_EE_GITVER: ""
+    axip_EE_OPENAI: ""
+    axip_EE_HF_TOKEN: ""
+
+    # enter below the values for the MQTT broker
+    aixp_MQTT_HOST: ""
+    aixp_MQTT_USER: "coreaixp"
+
+    # the default formatter
+    aixp_formatter: "cavi2"
+
+    aixp_base_folder: "/var/cache/{{ axip_app }}"
+    aixp_local_cache_folder: "{{ aixp_base_folder }}/_local_cache"
     aixp_app_version: "{{ 'latest' if aixp_app_target in ['preprod', 'prod'] else 'develop' }}"
+
+    aixp_app_port: "5050"
 
 
   children:

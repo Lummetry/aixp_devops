@@ -1,0 +1,51 @@
+{
+    "COMMUNICATION": {
+        "INSTANCES": {
+            "COMMANDCONTROL": {
+                "RECV_FROM": "CTRL_CHANNEL",
+                "SEND_TO": "CONFIG_CHANNEL"
+            },
+            "DEFAULT": {
+                "RECV_FROM": "CONFIG_CHANNEL",
+                "SEND_TO": "PAYLOADS_CHANNEL"
+            },
+            "HEARTBEATS": {
+                "RECV_FROM": "CONFIG_CHANNEL",
+                "SEND_TO": "CTRL_CHANNEL"
+            },
+            "NOTIFICATIONS": {
+                "SEND_TO": "NOTIF_CHANNEL"
+            }
+        },
+        "PARAMS": {
+            "CONFIG_CHANNEL": {
+                "TOPIC": "lummetry/{}/config"
+            },
+            "CTRL_CHANNEL": {
+                "TOPIC": "lummetry/ctrl"
+            },
+            "HOST": "{{ aixp_MQTT_HOST }}",
+            "NOTIF_CHANNEL": {
+                "TOPIC": "lummetry/notif"
+            },
+            "PASS": "$EE_MQTT",
+            "PAYLOADS_CHANNEL": {
+                "TOPIC": "lummetry/payloads"
+            },
+            "PORT": 1883,
+            "QOS": 0,
+            "USER": "{{ aixp_MQTT_USER }}"
+        },
+        "TYPE": "mqtt"
+    },
+    "FILE_UPLOAD": {
+        "CONFIG_UPLOADER": {
+            "ACCESS_KEY": "$EE_MINIO_ACCESS_KEY",
+            "BUCKET_NAME": "dev-solis",
+            "ENDPOINT": "$EE_MINIO_ENDPOINT",
+            "SECRET_KEY": "$EE_MINIO_SECRET_KEY",
+            "SECURE": "$EE_MINIO_SECURE"
+        },
+        "TYPE": "minio"
+    }
+}
