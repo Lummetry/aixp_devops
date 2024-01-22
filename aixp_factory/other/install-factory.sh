@@ -49,6 +49,8 @@ install_ansible() {
   sudo apt-get install ansible
 }
 
+log_with_color "Starting setup v.0.1.0 ..." green
+
 # Create a directory for the factory
 mkdir -p factory
 cd factory
@@ -80,7 +82,7 @@ fi
 
 # Install Ansible Collection
 log_with_color "Installing Ansible Collection: andreiionutdamian.aixp_factory" light
-ansible-galaxy collection install andreiionutdamian.aixp_factory --force
+ansible-galaxy collection install andreiionutdamian.aixp_factory --force --no-cache --clear-response-cache
 
 # Check if the collection is successfully installed 
 if [ $? -eq 0 ]; then
