@@ -11,3 +11,5 @@ hosts*.yml
 *.tar.gz
 
 aixp_factory/andreiionutdamian-aixp_factory*.tar.gz
+
+xperimental/e2-install-test1/factory
