@@ -8,4 +8,4 @@
     # - andreiionutdamian.aixp_factory.aixp01_gpu
     # - andreiionutdamian.aixp_factory.aixp02_docker
     # - andreiionutdamian.aixp_factory.aixp03_nvidia
-    # - andreiionutdamian.aixp_factory.aixp04_deploy
+    - andreiionutdamian.aixp_factory.aixp04_deploy

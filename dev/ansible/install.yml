@@ -4,9 +4,9 @@
 #   become: true
 #   gather_facts: true
 #   roles:
-#     - s01_gpu
-#     - s02_docker
-#     - s03_nvidia
+#     - andreiionutdamian.aixp_factory.aixp01_gpu
+#     - andreiionutdamian.aixp_factory.aixp02_docker
+#     - andreiionutdamian.aixp_factory.aixp03_nvidia
 #     - s09_dkr_gpu_test
 
 # - name: Deploy service on GPU Worker #1
@@ -16,21 +16,21 @@
 #   vars:
 #     llm_api_port: 5080
 #   roles:
-#     - s04_deploy
+#     - andreiionutdamian.aixp_factory.aixp04_deploy
 
 # - name: Deploy on NON-GPU Workers
 #   hosts: non_gpu_workers
 #   become: true
 #   gather_facts: true
 #   roles:
-#     - s02_docker
+#     - andreiionutdamian.aixp_factory.aixp02_docker
 
 # - name: Deploy docker on Kubernetes master
 #   hosts: kube_masters
 #   become: true
 #   gather_facts: true
 #   roles:
-#     - s02_docker
+#     - andreiionutdamian.aixp_factory.aixp02_docker
 
 - name: Deploy Kubernetes using unified role
   hosts: all

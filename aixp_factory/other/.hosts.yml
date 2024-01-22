@@ -1,34 +1,35 @@
 all:
   vars:
-    ansible_ssh_private_key_file: "./key.pem"
     ansible_user: ""
+    # use either ansible_ssh_private_key_file or ansible_ssh_pass
+    ansible_ssh_private_key_file: "./key.pem"
     # ansible_ssh_pass: ""
     ansible_ssh_common_args: "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 
     # select the app to deploy "aixp_ee", "llm_api" or other apps
-    axip_app: "aixp_ee"
+    aixp_app: "aixp_ee"
     # select the target environment "staging" "preprod" "prod"
     aixp_app_target: "staging" 
     aixp_debug_deploy: false
 
     # enter below the values for the target environment .env
-    axip_EE_MINIO_ENDPOINT: ""
-    axip_EE_MINIO_ACCESS_KEY: ""
-    axip_EE_MINIO_SECRET_KEY: ""
-    axip_EE_MINIO_SECURE: ""
-    axip_EE_MQTT: ""
-    axip_EE_GITVER: ""
-    axip_EE_OPENAI: ""
-    axip_EE_HF_TOKEN: ""
+    aixp_EE_MINIO_ENDPOINT: "<minio_endpoint>"
+    aixp_EE_MINIO_ACCESS_KEY: "<minio_access_key>"
+    aixp_EE_MINIO_SECRET_KEY: "<minio_secret_key>"
+    aixp_EE_MINIO_SECURE: "true"
+    aixp_EE_MQTT: "<mqtt_broker_password>"
+    aixp_EE_GITVER: "<git_version_access_token>"
+    aixp_EE_OPENAI: "<openai_api_key>"
+    aixp_EE_HF_TOKEN: "<huggingface_api_token>"
 
     # enter below the values for the MQTT broker
-    aixp_MQTT_HOST: ""
+    aixp_MQTT_HOST: "<mqtt_broker_address>"
     aixp_MQTT_USER: "coreaixp"
 
     # the default formatter
     aixp_formatter: "cavi2"
 
-    aixp_base_folder: "/var/cache/{{ axip_app }}"
+    aixp_base_folder: "/var/cache/{{ aixp_app }}"
     aixp_local_cache_folder: "{{ aixp_base_folder }}/_local_cache"
     aixp_app_version: "{{ 'latest' if aixp_app_target in ['preprod', 'prod'] else 'develop' }}"
 
@@ -38,11 +39,8 @@ all:
   children:
     gpu_workers:
       hosts:
-        aixp_worker1:
-          ansible_ssh_port: ""
+        aixp_worker_1:
           ansible_host: ""  
-          aixp_node_name: "aixp_worker1"
 
-        # worker2:
-        #   ansible_ssh_port: ""
+        # aixp_worker_1:
         #   ansible_host: ""  

@@ -91,7 +91,7 @@
 
 - name: Enable and start service
   ansible.builtin.systemd:
-    name: {{ aixp_app }}.service
+    name: "{{ aixp_app }}.service"
     enabled: yes
     state: started
   when: 
