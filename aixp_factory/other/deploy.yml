@@ -1,0 +1,11 @@
+---
+- name: Deploy AiXp
+  hosts: gpu_workers
+  become: true
+  gather_facts: true
+  roles:
+    - aixp00_prereq
+    - aixp01_gpu
+    - aixp02_docker
+    - aixp03_nvidia
+    - aixp04_deploy

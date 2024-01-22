@@ -4,5 +4,5 @@
   become: true
   gather_facts: true
   roles:
-    - s01_prereq
+    - axip00_prereq
     - s02_deploy

@@ -1,0 +1,49 @@
+---
+- name: Initial log display
+  debug:
+    msg: "Running prereq tasks on {{ inventory_hostname }}"
+
+- name: Get version of a specific collection
+  command: ansible-galaxy collection list 'andreiionutdamian.aixp_factory'
+  register: collection_version
+  delegate_to: localhost
+
+- name: Show collection version
+  debug:
+    msg: "{{ collection_version.stdout_lines }}"
+  delegate_to: localhost 
+
+- name: Update package lists
+  apt:
+    update_cache: yes
+    upgrade: yes
+  when: inventory_hostname == groups['gpu_workers'][0]
+
+- name: Install Python 3 and pip
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  loop:
+    - python3
+    - python3-pip
+  when: inventory_hostname in groups['gpu_workers']
+
+- name: Check if {{ aixp_target_folder_check }} exists
+  ansible.builtin.stat:
+    path: "{{ aixp_target_folder }}"
+  register: aixp_target_folder_check
+
+- name: Create {{ aixp_target_folder_check }}
+  ansible.builtin.file:
+    path: "{{ aixp_target_folder }}"
+    state: directory
+    mode: '0755'
+  when: not aixp_target_folder_check.stat.exists  
+
+- name: Add a simple README.md in the {{ aixp_target_folder_check }}
+  ansible.builtin.copy:
+    content: "# This folder is used to store the {{ deployed_app }} application."
+    dest: "{{ aixp_target_folder }}/README.md"
+  when: not aixp_target_folder_check.stat.exists
+  

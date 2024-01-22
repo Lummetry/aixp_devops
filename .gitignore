@@ -3,6 +3,6 @@
 *.pem
 
 .env
-xperimental/custom_deploy/hosts.yaml
-ansible/hosts.yml
+hosts*.yaml
+hosts*.yml
 

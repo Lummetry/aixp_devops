@@ -1,0 +1,22 @@
+all:
+  vars:
+    ansible_ssh_private_key_file: "./key.pem"
+    ansible_user: ""
+    ansible_host: ""  
+    ansible_ssh_common_args: "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+
+    deployed_app: "aixp_ee"
+    aixp_target_folder: "/var/cache/{{ deployed_app }}"
+    aixp_ee_version: "latest"
+
+
+  children:
+    gpu_workers:
+      hosts:
+        worker1:
+          ansible_ssh_port: ""
+          aixp_node_name: "aixp_worker1"
+
+        worker2:
+          ansible_ssh_port: ""
+          aixp_node_name: "aixp_worker1"
