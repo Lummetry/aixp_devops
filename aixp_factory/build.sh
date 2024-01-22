@@ -73,3 +73,7 @@ if [ $? -ne 0 ]; then
 fi
 
 log_with_color "Collection published successfully." green
+
+log_with_color "Deleting any .tar.gz files in the current directory..." blue
+# finds, displays and deletes all .tar.gz files in the current directory
+find . -name "*.tar.gz" -type f -print -delete
