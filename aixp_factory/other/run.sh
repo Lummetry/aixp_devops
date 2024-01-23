@@ -36,10 +36,17 @@ log_with_color "###############################################################"
 
 # check if factory folder exists
 if [ ! -d "./factory" ]; then
-    echo "factory folder does not exist. Please run install-factory.sh first."
+    log_with_color "factory folder does not exist. Please run install-factory.sh first." red
     exit 1
 fi
 cd factory
+
+# check if hosts.yml has been minimally configured
+if grep -q 'ansible_user: ""' hosts.yml; then
+    log_with_color "ansible_user is not set in hosts.yml" red
+    exit 1
+fi
+
 mkdir -p logs
 # check if logs folder contains ansible.log and rename it to ansible_YYYY_MM_DD__HH_MM.log
 if [ -f "./logs/ansible.log" ]; then

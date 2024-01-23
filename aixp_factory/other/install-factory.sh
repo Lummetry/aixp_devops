@@ -108,7 +108,11 @@ else
     log_with_color "hosts.yml already exists. Not copying." blue
 fi
 
+log_with_color "*************************************************************************" yellow
+log_with_color "********                                                         ********" yellow
 log_with_color "********  Please modify the hosts.yml file with your own values  ********" yellow
+log_with_color "********                                                         ********" yellow
+log_with_color "*************************************************************************" yellow
 
 
 # Copy ansible.cfg from collection to current directory as ansible.cfg - overwrite if it exists
