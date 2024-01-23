@@ -1,11 +1,18 @@
-namespace: andreiionutdamian
+namespace: aidamian
 name: aixp_factory
-version: 0.2.0
+
+version: 0.2.1
+
 readme: README.md
+
 authors:
   - Andrei Damian <andrei.damian@me.com>
+
 description: Deploy and AiXpand execution nodes
-license: MIT
+
+license: 
+  - MIT
+
 tags:
   - aixp
 build_ignore:
@@ -13,4 +20,5 @@ build_ignore:
   - .env
   - build.sh
   - install-factory.sh
+
 repository: 'https://github.com/lummetry/aixp_devops'

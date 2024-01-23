@@ -4,5 +4,5 @@
   become: true
   gather_facts: true
   roles:
-    # - andreiionutdamian.aixp_factory.aixp00_prereq
+    # - aidamian.aixp_factory.aixp00_prereq
     - s02_deploy

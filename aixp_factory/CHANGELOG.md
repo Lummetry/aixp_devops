@@ -7,3 +7,6 @@
 - Added target envs: dev, pre, prod
 - added config templates including .env template
 - tests
+
+## 0.2.1 - 2024-01-24
+ - moved to new account

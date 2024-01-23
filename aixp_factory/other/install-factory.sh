@@ -81,19 +81,19 @@ else
 fi
 
 # Install Ansible Collection
-log_with_color "Installing Ansible Collection: andreiionutdamian.aixp_factory" light
-ansible-galaxy collection install andreiionutdamian.aixp_factory --force --no-cache --clear-response-cache
+log_with_color "Installing Ansible Collection: aidamian.aixp_factory" light
+ansible-galaxy collection install aidamian.aixp_factory --force --no-cache --clear-response-cache
 
 # Check if the collection is successfully installed 
 if [ $? -eq 0 ]; then
-    log_with_color "Ansible Collection: andreiionutdamian.aixp_factory is successfully installed." green
+    log_with_color "Ansible Collection: aidamian.aixp_factory is successfully installed." green
 else
-    log_with_color "Ansible Collection: andreiionutdamian.aixp_factory is not installed." red
+    log_with_color "Ansible Collection: aidamian.aixp_factory is not installed." red
     exit 1
 fi
 
 # Define the path to the collection
-collection_path="$HOME/.ansible/collections/ansible_collections/andreiionutdamian/aixp_factory"
+collection_path="$HOME/.ansible/collections/ansible_collections/aidamian/aixp_factory"
 
 # Copy .hosts.yml from collection to current directory as hosts.yml if it does not exist
 if [ ! -f "./hosts.yml" ]; then

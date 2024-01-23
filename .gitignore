@@ -10,7 +10,7 @@ hosts*.yml
 
 *.tar.gz
 
-aixp_factory/andreiionutdamian-aixp_factory*.tar.gz
+aixp_factory/aidamian-aixp_factory*.tar.gz
 
 xperimental/e2-install-test1/factory
 xperimental/e2-install-test1/install-factory.sh
