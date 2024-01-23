@@ -33,11 +33,11 @@ collection_name="aidamian.aixp_factory"
 cover=$(ansible-galaxy collection list | grep "$collection_name" | awk '{print $2}')
 
 
-log_with_color "###############################################################" green
-log_with_color "########                                               ########" green
-log_with_color "########            AiXp Factory v$cover               ########" green
-log_with_color "########                                               ########" green
-log_with_color "###############################################################" green
+log_with_color "      ###############################################################" green
+log_with_color "      ########                                               ########" green
+log_with_color "      ########            AiXp Factory v$cover               ########" green
+log_with_color "      ########                                               ########" green
+log_with_color "      ###############################################################" green
 
 # check if factory folder exists
 if [ ! -d "./factory" ]; then
