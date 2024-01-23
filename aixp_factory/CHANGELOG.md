@@ -8,8 +8,9 @@
 - added config templates including .env template
 - tests
 
-## 0.4.1 - 2024-01-24
+## 0.4.2 - 2024-01-24
  - moved to new account
  - fix .env template
  - better run.sh script
  - fixed deploy
+ - image loading & checking
