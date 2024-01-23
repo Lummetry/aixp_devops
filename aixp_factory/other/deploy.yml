@@ -1,37 +1,24 @@
 ---
-- name: Run info
-  debug:
-    msg: "Debug: {{ aixp_debug_deploy }}, App: {{ aixp_app }}"
 
-- name: Deploy AiXp pre-requisites
+- name: "Deploy AiXp pre-req. for App: {{ aixp_app }}, Debug: {{ aixp_debug_deploy }}"
   hosts: gpu_workers
   become: true
   gather_facts: true
   roles:
     - aidamian.aixp_factory.aixp00_prereq    
 
-- name: Check if skip stack or not
-  hosts: gpu_workers
-  become: true
-  when: 
-    - aixp_debug_deploy | bool
-    - aixp_app in ["aixp_ee"]
-  debug:
-    msg: "GPU/Docker/Nvidia stack will be skipped..."
 
 - name: Deploy AiXp GPU/Docker stuff
   hosts: gpu_workers
   become: true
   gather_facts: true
-  when: 
-    - not aixp_debug_deploy | bool
-    - aixp_app in ["aixp_ee"]
   roles:
     - aidamian.aixp_factory.aixp01_gpu
     - aidamian.aixp_factory.aixp02_docker
     - aidamian.aixp_factory.aixp03_nvidia  
-  
+  when: not aixp_debug_deploy | bool and aixp_app in ["aixp_ee"]
 
+  
 - name: Deploy AiXp service
   hosts: gpu_workers
   become: true
