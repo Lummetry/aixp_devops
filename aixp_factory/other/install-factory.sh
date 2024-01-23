@@ -22,6 +22,9 @@ log_with_color() {
         light)
             color_code="1;37" # Light (White)
             ;;
+        gray)
+            color_code="2;37" # Gray (White)
+            ;;
         *)
             color_code="0" # Default color
             ;;
@@ -47,7 +50,7 @@ get_os_info() {
     fi
 }
 
-check_if_ubuntu() {
+check_if_os_accepted() {
     get_os_info
     log_with_color "Operating System: $OS_NAME" blue
     log_with_color "Version: $OS_VERSION" blue
@@ -56,6 +59,8 @@ check_if_ubuntu() {
         echo "This script runs only on . Exiting." red
         exit 1
     fi
+
+    log_with_color "Operating System is supported." green
 }
 
 
@@ -87,10 +92,10 @@ install_sshpass() {
 
 
 ## SCRIPT STARTS HERE
+log_with_color "########    Starting AiXp Factory setup v.0.1.1 ...    ########" green
 
 check_if_ubuntu
 
-log_with_color "########    Starting AiXp Factory setup v.0.1.1 ...    ########" green
 
 # Create a directory for the factory
 mkdir -p factory

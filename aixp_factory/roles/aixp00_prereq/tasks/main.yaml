@@ -17,6 +17,15 @@
   delegate_to: localhost
   when: inventory_hostname == groups['gpu_workers'][0]
 
+
+- name: Display OS information
+  debug:
+    msg: |
+      OS: {{ ansible_distribution }}
+      Version: {{ ansible_distribution_version }}
+      Release: {{ ansible_distribution_release }}
+
+
 - name: Get version of a specific collection
   shell: ansible-galaxy collection list 'aidamian.aixp_factory'
   register: collection_version

@@ -129,9 +129,17 @@
   # Outputs the nvidia-smi results for confirmation.
 
 
+- name: Add nvtop repository
+  ansible.builtin.apt_repository:
+    repo: ppa:flexiondotorg/nvtop
+    state: present
+  become: true
+
 - name: Install nvtop
-  apt:
+  ansible.builtin.apt:
     name: nvtop
     state: present
     update_cache: yes
+  become: true
+
   # Installs nvtop, a tool for monitoring NVIDIA GPUs, which can be useful for diagnostics and performance monitoring.

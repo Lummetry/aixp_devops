@@ -8,7 +8,7 @@
 - added config templates including .env template
 - tests
 
-## 0.3.7 - 2024-01-24
+## 0.3.13 - 2024-01-24
  - moved to new account
  - fix .env template
  - better run.sh script

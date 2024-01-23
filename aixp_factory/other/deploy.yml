@@ -1,6 +1,14 @@
 ---
+- name: "Start AiXp deploy"
+  hosts: gpu_workers
+  become: true
+  tasks:
+    - name: Setup variables
+      debug:
+        msg: "App: {{ aixp_app }}, Debug: {{ aixp_debug_deploy }}"
 
-- name: "Deploy AiXp pre-req. for App: {{ aixp_app }}, Debug: {{ aixp_debug_deploy }}"
+
+- name: "Deploy AiXp pre-req."
   hosts: gpu_workers
   become: true
   gather_facts: true
