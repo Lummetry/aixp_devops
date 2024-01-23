@@ -96,6 +96,7 @@ log_with_color "########    Starting AiXp Factory setup v.0.1.1 ...    ########"
 mkdir -p factory
 cd factory
 
+curr_dir1=$(pwd)
 
 # check if sshpass is installed
 if ! command -v sshpass &> /dev/null
@@ -164,7 +165,7 @@ log_with_color "****************************************************************
 
 # Copy ansible.cfg from collection to current directory as ansible.cfg - overwrite if it exists
 if [ ! -f "./ansible.cfg" ]; then
-    log_with_color "Copying ansible.cfg from the collection..."
+    log_with_color "Copying ansible.cfg to $curr_dir1"
     cp "${collection_path}/other/ansible.cfg" ./ansible.cfg
 else
     log_with_color "ansible.cfg already exists. Overwriting..." yellow
@@ -186,34 +187,35 @@ chmod 600 key.pem
 
 # Copy the playbook deploy.yml from the collection `other` folder to current directory if it does not exist
 if [ ! -f "./deploy.yml" ]; then
-    log_with_color "Copying deploy.yml from the collection..."
+    log_with_color "Copying deploy.yml to $curr_dir1"
     cp "${collection_path}/other/deploy.yml" ./deploy.yml
 else
-    log_with_color "deploy.yml already exists. Not copying." green
+    log_with_color "deploy.yml already exists in to $curr_dir1 - Overwriting..." yellow
+    cp "${collection_path}/other/deploy.yml" ./deploy.yml
 fi
 
 # we move from factory to parent folder
 cd ..
 
-curr_dir=$(pwd)
+curr_dir2=$(pwd)
 
-log_with_color "Checking main run.sh script in $curr_dir" blue
+log_with_color "Checking main run.sh script in $curr_dir2" blue
 
 # Copy run.sh from collection to current directory - overwrite if it exists
 if [ ! -f "./run.sh" ]; then
-    log_with_color "Copying run.sh from the collection to current directory $curr_dir."
+    log_with_color "Copying run.sh from the collection to current directory $curr_dir2."
     cp "${collection_path}/other/run.sh" ./run.sh
 else
-    log_with_color "run.sh already exists in $curr_dir - overwriting..." yellow
+    log_with_color "run.sh already exists in $curr_dir2 - overwriting..." yellow
     cp "${collection_path}/other/run.sh" ./run.sh
 fi
 
 # Copy run.sh from collection to current directory - overwrite if it exists
 if [ ! -f "./showlog.sh" ]; then
-    log_with_color "Copying showlog.sh from the collection to current directory $curr_dir."
+    log_with_color "Copying showlog.sh from the collection to current directory $curr_dir2."
     cp "${collection_path}/other/showlog.sh" ./showlog.sh
 else
-    log_with_color "run.sh already exists in $curr_dir - overwriting..." yellow
+    log_with_color "showlog.sh already exists in $curr_dir2 - overwriting..." yellow
     cp "${collection_path}/other/showlog.sh" ./showlog.sh
 fi
 
