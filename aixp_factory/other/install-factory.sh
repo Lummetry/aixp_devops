@@ -49,7 +49,11 @@ install_ansible() {
   sudo apt-get install ansible
 }
 
-log_with_color "Starting setup v.0.1.0 ..." green
+log_with_color "###############################################################" green
+log_with_color "########                                               ########" green
+log_with_color "########    Starting AiXp Factory setup v.0.1.1 ...    ########" green
+log_with_color "########                                               ########" green
+log_with_color "###############################################################" green
 
 # Create a directory for the factory
 mkdir -p factory
