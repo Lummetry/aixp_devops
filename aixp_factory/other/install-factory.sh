@@ -61,22 +61,28 @@ check_if_ubuntu() {
 
 # Function to install Python
 install_python() {
-  log_with_color "Installing Python..." 
+  log_with_color "Installing Python..." yellow
   sudo apt-get update
   sudo apt-get install python3
 }
 
 # Function to install Pip
 install_pip() {
-  log_with_color "Installing Pip..."  
+  log_with_color "Installing Pip..." yellow  
   sudo apt-get install python3-pip
 }
 
 # Function to install Ansible
 install_ansible() {
-  log_with_color "Installing Ansible..." 
+  log_with_color "Installing Ansible..." yellow 
   sudo apt-get update
   sudo apt-get install ansible
+}
+
+install_sshpass() {
+  log_with_color "Installing sshpass..." yellow 
+  sudo apt-get update
+  sudo apt-get install sshpass
 }
 
 
@@ -89,6 +95,16 @@ log_with_color "########    Starting AiXp Factory setup v.0.1.1 ...    ########"
 # Create a directory for the factory
 mkdir -p factory
 cd factory
+
+
+# check if sshpass is installed
+if ! command -v sshpass &> /dev/null
+then
+    log_with_color "sshpass is not installed." yellow
+    install_sshpass
+else
+    log_with_color "sshpass is already installed." green
+fi
 
 
 # Check if Python is installed

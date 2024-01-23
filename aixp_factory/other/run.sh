@@ -47,8 +47,10 @@ fi
 
 cd factory
 
+curr_dir=$(pwd)
+
 # print working directory
-log_with_color "Working in ${pwd}" blue
+log_with_color "Working in $curr_dir" blue
 
 
 # check if hosts.yml has been minimally configured
