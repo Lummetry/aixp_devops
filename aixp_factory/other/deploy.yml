@@ -1,11 +1,23 @@
 ---
-- name: Deploy AiXp
+- name: Deploy AiXp pre-requisites
   hosts: gpu_workers
   become: true
   gather_facts: true
   roles:
     - aidamian.aixp_factory.aixp00_prereq
-    # - aidamian.aixp_factory.aixp01_gpu
-    # - aidamian.aixp_factory.aixp02_docker
-    # - aidamian.aixp_factory.aixp03_nvidia
+
+- name: Deploy AiXp GPU/Docker stuff
+  hosts: gpu_workers
+  become: true
+  gather_facts: true
+  when: 
+    - not aixp_debug_deploy | bool
+    - aixp_app in ["aixp_ee"]
+  roles:
+    - aidamian.aixp_factory.aixp01_gpu
+    - aidamian.aixp_factory.aixp02_docker
+    - aidamian.aixp_factory.aixp03_nvidia  
+  
+
+- name: Deploy AiXp service
     - aidamian.aixp_factory.aixp04_deploy
