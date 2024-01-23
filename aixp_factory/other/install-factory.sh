@@ -148,14 +148,18 @@ fi
 # we move from factory to parent folder
 cd ..
 
+curr_dir=$(pwd)
+
+log_with_color "Checking main run.sh script in $curr_dir" blue
+
 # Copy run.sh from collection to current directory - overwrite if it exists
 if [ ! -f "./run.sh" ]; then
-    log_with_color "Copying run.sh from the collection to current directory ${pwd}."
+    log_with_color "Copying run.sh from the collection to current directory $curr_dir."
     cp "${collection_path}/other/run.sh" ./run.sh
 else
-    log_with_color "run.sh already exists in ${pwd}. Overwriting..." yellow
+    log_with_color "run.sh already exists in $curr_dir -overwriting..." yellow
     cp "${collection_path}/other/run.sh" ./run.sh
 fi
 
 
-log_with_color "Setup Completed." green
+log_with_color "Setup Completed. Edit ./factory/hosts.yml, ./factory/key.pem and launch the deploy with ./run.sh" green
