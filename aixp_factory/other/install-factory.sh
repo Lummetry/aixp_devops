@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 log_with_color() {
     local text="$1"
     local color="$2"
@@ -29,6 +30,35 @@ log_with_color() {
     echo -e "\e[${color_code}m${text}\e[0m"
 }
 
+# Function to get OS information
+get_os_info() {
+    if [ -f /etc/os-release ]; then
+        # Works for most Linux distributions
+        . /etc/os-release
+        OS_NAME=$NAME
+        OS_VERSION=$VERSION
+    elif type "sw_vers" &> /dev/null; then
+        # For macOS
+        OS_NAME="macOS"
+        OS_VERSION=$(sw_vers -productVersion)
+    else
+        log_with_color "Unsupported OS" red
+        exit 1
+    fi
+}
+
+check_if_ubuntu() {
+    get_os_info
+    log_with_color "Operating System: $OS_NAME" blue
+    log_with_color "Version: $OS_VERSION" blue
+
+    if [ "$OS_NAME" != "Ubuntu" ]; then
+        echo "This script runs only on . Exiting." red
+        exit 1
+    fi
+}
+
+
 # Function to install Python
 install_python() {
   log_with_color "Installing Python..." 
@@ -49,11 +79,12 @@ install_ansible() {
   sudo apt-get install ansible
 }
 
-log_with_color "###############################################################" green
-log_with_color "########                                               ########" green
+
+## SCRIPT STARTS HERE
+
+check_if_ubuntu
+
 log_with_color "########    Starting AiXp Factory setup v.0.1.1 ...    ########" green
-log_with_color "########                                               ########" green
-log_with_color "###############################################################" green
 
 # Create a directory for the factory
 mkdir -p factory
@@ -157,9 +188,22 @@ if [ ! -f "./run.sh" ]; then
     log_with_color "Copying run.sh from the collection to current directory $curr_dir."
     cp "${collection_path}/other/run.sh" ./run.sh
 else
-    log_with_color "run.sh already exists in $curr_dir -overwriting..." yellow
+    log_with_color "run.sh already exists in $curr_dir - overwriting..." yellow
     cp "${collection_path}/other/run.sh" ./run.sh
 fi
 
+# Copy run.sh from collection to current directory - overwrite if it exists
+if [ ! -f "./showlog.sh" ]; then
+    log_with_color "Copying showlog.sh from the collection to current directory $curr_dir."
+    cp "${collection_path}/other/showlog.sh" ./showlog.sh
+else
+    log_with_color "run.sh already exists in $curr_dir - overwriting..." yellow
+    cp "${collection_path}/other/showlog.sh" ./showlog.sh
+fi
 
-log_with_color "Setup Completed. Edit ./factory/hosts.yml, ./factory/key.pem and launch the deploy with ./run.sh" green
+chmod +x run.sh
+chmod +x showlog.sh
+
+log_with_color "Setup Completed." green
+log_with_color "Edit ./factory/hosts.yml, ./factory/key.pem" green
+log_with_color "Launch the deploy process with ./run.sh" green
