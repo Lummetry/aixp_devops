@@ -30,10 +30,18 @@
   - gnupg-agent
   - software-properties-common
 
+
+- name: Create /etc/apt/keyrings directory for Docker repo key
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+  become: true
+
 # Task 3: Add Docker's GPG key
 # This task retrieves the GPG key used to sign Docker packages and stores it locally.
 # This is a security measure to ensure the integrity and authenticity of Docker packages.
-- name: Docker | Install repo key
+- name: "Docker | Install repo key from https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"
   ansible.builtin.get_url:
     url: "https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"
     dest: /etc/apt/keyrings/docker.asc
@@ -151,3 +159,10 @@
   register: containerd_service_status
   changed_when: false
   failed_when: "'inactive' in containerd_service_status.stdout"
+
+- name: "Log in to DockerHub with {{ dockerhub_username }}"
+  community.docker.docker_login:
+    username: "{{ dockerhub_username }}"
+    password: "{{ dockerhub_password }}"
+  ignore_errors: yes
+  

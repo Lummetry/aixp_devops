@@ -99,9 +99,9 @@
     - not aixp_debug_deploy | bool
     - not aixp_service.stat.exists or not ('{{ aixp_app }}.service' in services and services['{{ aixp_app }}.service'].status == 'active')
 
-- name: Sleep for 5 seconds and continue with play
+- name: Sleep for 15 seconds and continue with play
   ansible.builtin.wait_for:
-    timeout: 5
+    timeout: 15
   delegate_to: localhost
   when:
     - not aixp_debug_deploy | bool
@@ -121,6 +121,27 @@
     - not aixp_debug_deploy | bool
     - aixp_app in ["aixp_ee"]
 
+## Additional tasks: create show and restart scripts
+- name: Create show.sh script
+  ansible.builtin.copy:
+    dest: "~/show.sh"
+    content: |
+      #!/bin/bash
+      journalctl -u {{ aixp_app }} -a -n 100 -f
+    mode: '0755'
+  become: false
+
+- name: Create restart.sh script
+  ansible.builtin.copy:
+    dest: "~/restart.sh"
+    content: |
+      #!/bin/bash
+      sudo systemctl restart {{ aixp_app }}
+    mode: '0755'
+  become: false
+
+
+### LLM API DEPLOYMENT ###
 # Task to wait for the container to be ready
 - name: Wait for container to be ready
   wait_for:

@@ -13,6 +13,9 @@ all:
     aixp_debug_deploy: true
 
     # enter below the values for the target environment .env
+    dockerhub_username: "<dockerhub_username>"
+    dockerhub_password: "<dockerhub_password>"
+    
     aixp_EE_MINIO_ENDPOINT: "<minio_endpoint>"
     aixp_EE_MINIO_ACCESS_KEY: "<minio_access_key>"
     aixp_EE_MINIO_SECRET_KEY: "<minio_secret_key>"

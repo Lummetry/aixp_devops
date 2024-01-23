@@ -21,14 +21,20 @@
   become: true
   gather_facts: true
   tasks:
-    - name: Include GPU/Docker/Nvidia roles
+    - name: GPU Role 
       include_role:
-        name: "{{ item }}"
-      loop:
-        - aidamian.aixp_factory.aixp01_gpu
-        - aidamian.aixp_factory.aixp02_docker
-        - aidamian.aixp_factory.aixp03_nvidia
+        name: aidamian.aixp_factory.aixp01_gpu
       when: not aixp_debug_deploy | bool and aixp_app in ["aixp_ee"]
+    
+    - name: Docker Role
+      include_role:
+        name: aidamian.aixp_factory.aixp02_docker
+      when: not aixp_debug_deploy | bool and aixp_app in ["aixp_ee"]
+
+    - name: Nvidia Role
+      include_role:
+        name: aidamian.aixp_factory.aixp03_nvidia
+      when: not aixp_debug_deploy | bool and aixp_app in ["aixp_ee"]      
 
 
 - name: Deploy AiXp service
