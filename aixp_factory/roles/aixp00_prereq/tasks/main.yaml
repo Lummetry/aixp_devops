@@ -63,7 +63,7 @@
     path: "{{ aixp_base_folder }}/README.md"
   register: aixp_base_folder_readme_check
 
-- name: "Add a simple README.md in the {{ aixp_base_folder_check }}"
+- name: "Add a simple README.md in the {{ aixp_base_folder }}"
   ansible.builtin.copy:
     content: "# This folder is used to store the {{ aixp_app }} base config application."
     dest: "{{ aixp_base_folder }}/README.md"

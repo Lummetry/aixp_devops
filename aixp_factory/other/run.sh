@@ -28,9 +28,14 @@ log_with_color() {
     echo -e "\e[${color_code}m${text}\e[0m"
 }
 
+# extract the aidamian.aixp_factory collection version 
+collection_name="aidamian.aixp_factory"
+cover=$(ansible-galaxy collection list | grep "$collection_name" | awk '{print $2}')
+
+
 log_with_color "###############################################################" green
 log_with_color "########                                               ########" green
-log_with_color "########                  AiXp Factory                 ########" green
+log_with_color "########            AiXp Factory v$cover               ########" green
 log_with_color "########                                               ########" green
 log_with_color "###############################################################" green
 
@@ -39,7 +44,12 @@ if [ ! -d "./factory" ]; then
     log_with_color "factory folder does not exist. Please run install-factory.sh first." red
     exit 1
 fi
+
 cd factory
+
+# print working directory
+log_with_color "Working in ${pwd}" blue
+
 
 # check if hosts.yml has been minimally configured
 if grep -q 'ansible_user: ""' hosts.yml; then
