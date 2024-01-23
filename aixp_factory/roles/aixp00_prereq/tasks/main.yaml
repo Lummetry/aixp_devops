@@ -58,9 +58,14 @@
     mode: '0755'
   when: not aixp_base_folder_check.stat.exists  
 
+- name: "Check if {{ aixp_base_folder }} has a README.md"
+  ansible.builtin.stat:
+    path: "{{ aixp_base_folder }}/README.md"
+  register: aixp_base_folder_readme_check
+
 - name: "Add a simple README.md in the {{ aixp_base_folder_check }}"
   ansible.builtin.copy:
     content: "# This folder is used to store the {{ aixp_app }} base config application."
-    dest: "{{ aixp_base_folder_check }}/README.md"
-  when: not aixp_base_folder_check.stat.exists
+    dest: "{{ aixp_base_folder }}/README.md"
+  when: not aixp_base_folder_readme_check.stat.exists
   

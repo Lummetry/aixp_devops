@@ -103,7 +103,7 @@ else
     log_with_color "hosts.yml already exists. Not copying." blue
 fi
 
-log_with_color "Please modify the hosts.yml file with your own values." yellow
+log_with_color "********  Please modify the hosts.yml file with your own values  ********" yellow
 
 
 # Copy ansible.cfg from collection to current directory as ansible.cfg - overwrite if it exists
@@ -111,7 +111,7 @@ if [ ! -f "./ansible.cfg" ]; then
     log_with_color "Copying ansible.cfg from the collection..."
     cp "${collection_path}/other/ansible.cfg" ./ansible.cfg
 else
-    log_with_color "ansible.cfg already exists. Overwriting..."
+    log_with_color "ansible.cfg already exists. Overwriting..." yellow
     cp "${collection_path}/other/ansible.cfg" ./ansible.cfg
 fi
 
@@ -121,7 +121,7 @@ if [ ! -f "./run.sh" ]; then
     log_with_color "Copying run.sh from the collection..."
     cp "${collection_path}/other/run.sh" ./run.sh
 else
-    log_with_color "run.sh already exists. Overwriting..."
+    log_with_color "run.sh already exists. Overwriting..." yellow
     cp "${collection_path}/other/run.sh" ./run.sh
 fi
 
@@ -130,7 +130,7 @@ fi
 if [ ! -f "./key.pem" ]; then
     log_with_color "Creating empy key.pem file"
     touch key.pem    
-    log_with_color "Please write a SK in the key.pem file" yellow
+    log_with_color "********  Please write a SK in the key.pem file  ********" yellow
 else
     log_with_color "key.pem already exists. Not creating." green
 fi
@@ -142,7 +142,7 @@ if [ ! -f "./deploy.yml" ]; then
     log_with_color "Copying deploy.yml from the collection..."
     cp "${collection_path}/other/deploy.yml" ./deploy.yml
 else
-    log_with_color "deploy.yml already exists. Not copying."
+    log_with_color "deploy.yml already exists. Not copying." green
 fi
 
 log_with_color "Setup Completed." green

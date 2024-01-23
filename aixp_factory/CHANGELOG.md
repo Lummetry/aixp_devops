@@ -8,5 +8,6 @@
 - added config templates including .env template
 - tests
 
-## 0.2.1 - 2024-01-24
+## 0.2.2 - 2024-01-24
  - moved to new account
+ - fix .env template

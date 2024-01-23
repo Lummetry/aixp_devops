@@ -9,13 +9,13 @@
   ansible.builtin.service_facts:
 
 # task for creating aixp_local_cache_folder for volume assignment
-- name: Check if aixp_local_cache_folder exists
+- name: "Check if {{ aixp_local_cache_folder }} exists"
   ansible.builtin.stat:
     path: "{{ aixp_local_cache_folder }}"
   register: aixp_local_cache_folder_check
   when: aixp_app in ["aixp_ee"]
 
-- name: Create aixp_local_cache_folder
+- name: "Create {{ aixp_local_cache_folder }}"
   ansible.builtin.file:
     path: "{{ aixp_local_cache_folder }}"
     state: directory
@@ -32,16 +32,16 @@
   register: env_file_check
   when: aixp_app in ["aixp_ee"]
 
-- name: Copy .env file
-  ansible.builtin.copy:
-    src: .env
-    dest: "{{ aixp_base_folder }}"
+- name: "Copy {{ aixp_base_folder }}/.env file"
+  ansible.builtin.template:
+    src: env.j2
+    dest: "{{ aixp_base_folder }}/.env"
     mode: '0644'
   when: 
     - not env_file_check.stat.exists
     - aixp_app in ["aixp_ee"]
 
-- name: Check if config_startup.json exists in aixp_local_cache_folder
+- name: "Check if config_startup.json exists in {{ aixp_local_cache_folder }}"
   ansible.builtin.stat:
     path: "{{ aixp_local_cache_folder }}/config_startup.json"
   register: config_startup_check
@@ -56,7 +56,7 @@
     - not config_startup_check.stat.exists
     - aixp_app in ["aixp_ee"]
 
-- name: Check if config_app.txt exists in aixp_local_cache_folder
+- name: "Check if config_app.txt exists in {{ aixp_local_cache_folder }}"
   ansible.builtin.stat:
     path: "{{ aixp_local_cache_folder }}/config_app.txt"
   register: config_app_check
@@ -81,7 +81,8 @@
     - not aixp_service.stat.exists
     - not aixp_debug_deploy | bool
 
-- name: Mock-copy aixp.service file in base folder
+# this is a debug-only task
+- name: "Mock-copy aixp.service file in base folder {{ aixp_base_folder }}"
   ansible.builtin.template:
     src: "{{ aixp_app }}.service.j2"
     dest: "{{ aixp_base_folder }}/{{ aixp_app }}.service"
