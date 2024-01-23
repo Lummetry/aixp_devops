@@ -28,10 +28,10 @@ log_with_color() {
 }
 
 
-# display the log in ./factory/logs/ansible.log
-if [ -f "./factory/logs/ansible.log" ]; then
+# display the log in ./logs/ansible.log
+if [ -f "./logs/ansible.log" ]; then
     log_with_color "Displaying ansible.log..." blue
-    cat ./factory/logs/ansible.log
+    cat ./logs/ansible.log
 else
     log_with_color "ansible.log does not exist." red
 fi
