@@ -90,6 +90,29 @@
   when: aixp_debug_deploy | bool
 
 
+- name: Pull Docker Image
+  community.docker.docker_image:
+    name: "aixpand/exe_eng: {{ aixp_version }}"
+    source: pull  
+  when: 
+    - not aixp_debug_deploy | bool
+    - aixp_app in ["aixp_ee"]    
+
+- name: List Docker Images
+  community.docker.docker_image_info:
+  register: docker_images
+  when: 
+    - not aixp_debug_deploy | bool
+    - aixp_app in ["aixp_ee"]    
+
+- name: Display all Docker Images
+  debug:
+    var: docker_images.images    
+  when: 
+    - not aixp_debug_deploy | bool
+    - aixp_app in ["aixp_ee"]    
+
+
 - name: Enable and start service
   ansible.builtin.systemd:
     name: "{{ aixp_app }}.service"
@@ -99,9 +122,9 @@
     - not aixp_debug_deploy | bool
     - not aixp_service.stat.exists or not ('{{ aixp_app }}.service' in services and services['{{ aixp_app }}.service'].status == 'active')
 
-- name: Sleep for 15 seconds and continue with play
+- name: Sleep for 5 seconds and continue with play
   ansible.builtin.wait_for:
-    timeout: 15
+    timeout: 5
   delegate_to: localhost
   when:
     - not aixp_debug_deploy | bool

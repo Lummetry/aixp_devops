@@ -62,7 +62,7 @@
   register: nvidia_smi_container_output
 
 # Display nvidia-smi output
-- name: Display container nvidia-smi output
+- name: Display container nvidia-smi output (in-container run)
   debug:
     msg: "{{ nvidia_smi_container_output.container.Output }}"
 

@@ -80,8 +80,8 @@ install_pip() {
 # Function to install Ansible
 install_ansible() {
   log_with_color "Installing Ansible..." yellow 
-  sudo apt-get update
-  sudo apt-get install ansible
+  pip install ansible
+  # ansible-galaxy collection install community.docker
 }
 
 install_sshpass() {
