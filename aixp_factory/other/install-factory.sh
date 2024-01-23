@@ -96,6 +96,7 @@ else
     exit 1
 fi
 
+
 # Define the path to the collection
 collection_path="$HOME/.ansible/collections/ansible_collections/aidamian/aixp_factory"
 
@@ -120,15 +121,6 @@ else
 fi
 
 
-# Copy run.sh from collection to current directory - overwrite if it exists
-if [ ! -f "./run.sh" ]; then
-    log_with_color "Copying run.sh from the collection..."
-    cp "${collection_path}/other/run.sh" ./run.sh
-else
-    log_with_color "run.sh already exists. Overwriting..." yellow
-    cp "${collection_path}/other/run.sh" ./run.sh
-fi
-
 
 # Create empty key.pem file if it does not exist
 if [ ! -f "./key.pem" ]; then
@@ -148,5 +140,18 @@ if [ ! -f "./deploy.yml" ]; then
 else
     log_with_color "deploy.yml already exists. Not copying." green
 fi
+
+# we move from factory to parent folder
+cd ..
+
+# Copy run.sh from collection to current directory - overwrite if it exists
+if [ ! -f "./run.sh" ]; then
+    log_with_color "Copying run.sh from the collection to current directory ${pwd}."
+    cp "${collection_path}/other/run.sh" ./run.sh
+else
+    log_with_color "run.sh already exists in ${pwd}. Overwriting..." yellow
+    cp "${collection_path}/other/run.sh" ./run.sh
+fi
+
 
 log_with_color "Setup Completed." green
