@@ -1,16 +1,14 @@
 all:
   vars:
+    #####################################
+    ###### MODIFY THE VALUES BELOW ######
+    #####################################
     ansible_user: ""
     # use either ansible_ssh_private_key_file or ansible_ssh_pass
     ansible_ssh_private_key_file: "./key.pem"
     # ansible_ssh_pass: ""
-    ansible_ssh_common_args: "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 
-    # select the app to deploy "aixp_ee", "llm_api" or other apps
-    aixp_app: "aixp_ee"
-    # select the target environment "staging" "preprod" "prod"
     aixp_app_target: "staging" 
-    aixp_debug_deploy: true
 
     # enter below the values for the target environment .env
     dockerhub_username: "<dockerhub_username>"
@@ -29,6 +27,21 @@ all:
     aixp_MQTT_HOST: "<mqtt_broker_address>"
     aixp_MQTT_USER: "coreaixp"
 
+
+    #########################################
+    ###### END MODIFY THE VALUES ABOVE ######
+    #########################################
+
+
+
+    ###### ADMIN-ONLY VARIABLES ######
+    ansible_ssh_common_args: "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+
+    # select the app to deploy "aixp_ee", "llm_api" or other apps
+    aixp_app: "aixp_ee"
+    # select the target environment "staging" "preprod" "prod"
+    aixp_debug_deploy: false
+
     # the default formatter
     aixp_formatter: "cavi2"
 
@@ -37,13 +50,21 @@ all:
     aixp_app_version: "{{ 'latest' if aixp_app_target in ['preprod', 'prod'] else 'develop' }}"
 
     aixp_app_port: "5050"
+    ###### END ADMIN-ONLY VARIABLES ######
 
 
   children:
     gpu_workers:
       hosts:
-        aixp_worker_1:
+        #####################################
+        ###### MODIFY THE VALUES BELOW ######
+        #####################################
+        aixp_node_name_1:
           ansible_host: ""  
 
         # aixp_worker_1:
         #   ansible_host: ""  
+
+        ####################################
+        ###### END MODIFY THE VALUES  ######
+        ####################################
