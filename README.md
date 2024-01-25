@@ -1,4 +1,4 @@
-# AiXpand main DevOps repository
+# AiXp main DevOps repository
 
 ## Description
 
