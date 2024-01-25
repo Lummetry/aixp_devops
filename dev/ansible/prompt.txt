@@ -20,14 +20,14 @@ the first role `stage1-gpu/tasks/main.yml` that installs the GPU drivers:
 ---
 - name: Check if nvidia-smi is available and working
   command: nvidia-smi
-  ignore_errors: yes
+  ignore_errors: true
   register: nvidia_smi_check1
 
 # only remove if nvidia-smi is not available
 - name: Cleanup existing NVIDIA drivers
   shell: "apt autoremove nvidia* --purge -y"
   when: nvidia_smi_check1.rc != 0 
-  ignore_errors: yes
+  ignore_errors: true
 
 - name: Reboot the system
   when: nvidia_smi_check1.rc != 0 

@@ -14,3 +14,7 @@
  - better run.sh script
  - fixed deploy
  - image loading & checking
+
+## 0.4.3 - 2024-01-25
+ - added Go install in pre-requisites
+ -

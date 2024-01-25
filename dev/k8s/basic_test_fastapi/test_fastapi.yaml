@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: test_py2
+  name: test-py
 spec:
   replicas: 4
   selector:
     matchLabels:
-      run: test_py2
+      run: test-py
   template:
     metadata:
       labels:
-        run: test_py2
+        run: test-py
     spec:
       containers:
       - image: aidamian/basic_test_fastapi
-        name: test_py2
+        name: test-py-container
         ports:
         - containerPort: 5050
           protocol: TCP
@@ -26,11 +26,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: test_py2_svc
+  name: test-py-svc
 spec:
   type: NodePort
   selector:
-    run: test_py2
+    run: test-py
   ports:
     - protocol: TCP
       port: 5050

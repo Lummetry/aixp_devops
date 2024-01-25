@@ -107,7 +107,7 @@
       exit 1
     fi
   register: containerd_config_check
-  ignore_errors: yes
+  ignore_errors: true
 
 - name: Generate default containerd configuration
   command: containerd config default > /etc/containerd/config.toml
@@ -164,5 +164,5 @@
   community.docker.docker_login:
     username: "{{ dockerhub_username }}"
     password: "{{ dockerhub_password }}"
-  ignore_errors: yes
+  ignore_errors: true
   

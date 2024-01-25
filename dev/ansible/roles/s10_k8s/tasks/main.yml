@@ -1,3 +1,4 @@
+# Kubernetes Installation
 ---
 # Python & pip on control plane nodes
 - name: Install python3 and pip3
@@ -83,7 +84,7 @@
   command: kubeadm init --pod-network-cidr=10.0.0.0/16
   register: kubeadm_init_result
   failed_when: "'error execution phase preflight' in kubeadm_init_result.stderr"
-  ignore_errors: yes
+  ignore_errors: true
   when: 
     - inventory_hostname == groups['kube_masters'][0]
     - not k8s_initialized.stat.exists
@@ -114,7 +115,7 @@
     path: "/home/{{ ansible_user }}/.kube"
     state: directory
     mode: 0755
-  become: yes
+  become: true
   become_user: "{{ ansible_user }}"
   when: 
     - inventory_hostname == groups['kube_masters'][0]
@@ -128,7 +129,7 @@
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
     mode: 0644
-  become: yes
+  become: true
   when: 
     - inventory_hostname == groups['kube_masters'][0]
     - not k8s_initialized.stat.exists
@@ -137,9 +138,9 @@
 # Generate join command
 - name: Get join command from master
   shell: kubeadm token create --print-join-command
-  become: yes
+  become: true
   when: inventory_hostname == groups['kube_masters'][0]
-  ignore_errors: yes
+  ignore_errors: true
   register: kubernetes_join_command_result
 
 
@@ -166,14 +167,14 @@
   register: calico_check
   failed_when: false
   changed_when: false
-  become: yes
+  become: true
   become_user: "{{ ansible_user }}"
   when: inventory_hostname in groups['kube_masters']
-  ignore_errors: yes
+  ignore_errors: true
 
 - name: Install Calico network plugin
   shell: kubectl apply -f https://projectcalico.docs.tigera.io/manifests/calico.yaml
-  become: yes
+  become: true
   become_user: "{{ ansible_user }}"
   when: 
     - inventory_hostname in groups['kube_masters']
@@ -185,7 +186,7 @@
   shell: kubectl get nodes | grep -w {{ inventory_hostname }}
   register: node_joined
   delegate_to: "{{ groups['kube_masters'][0] }}"
-  ignore_errors: yes
+  ignore_errors: true
 
 
 - name: Display join status if node is already part of the cluster
@@ -200,7 +201,7 @@
   when: 
     - not node_joined.stdout
     - (inventory_hostname in groups['gpu_workers'] or inventory_hostname in groups['non_gpu_workers'])
-  ignore_errors: yes
+  ignore_errors: true
 
 
 # Checking the status of all nodes in the cluster. This ensures that all nodes are connected and ready.
@@ -219,7 +220,7 @@
   shell: kubectl label node {{ inventory_hostname }} node-role.kubernetes.io/worker=worker
   when: "'<none>' in node_status.stdout"
   delegate_to: "{{ groups['kube_masters'][0] }}"
-  ignore_errors: yes
+  ignore_errors: true
 
 # Verifying that all nodes are in the Ready state. If a node is not Ready, further investigation is required.
 - name: Verify node status
@@ -307,7 +308,7 @@
     status_code: 200
     return_content: yes
   register: dashboard_test
-  ignore_errors: yes
+  ignore_errors: true
   when: inventory_hostname == groups['kube_masters'][0]
 
 - name: Print test results

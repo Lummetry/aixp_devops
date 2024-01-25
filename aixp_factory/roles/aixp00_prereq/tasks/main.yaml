@@ -52,6 +52,26 @@
     - python3-pip
   when: inventory_hostname in groups['gpu_workers']
 
+
+- name: Install Go with Snap
+  ansible.builtin.snap:
+    name: go
+    classic: yes
+    channel: latest/stable
+    state: present
+  when: inventory_hostname in groups['gpu_workers']
+
+- name: Run go to get version
+  shell: go version
+  register: go_version
+  when: inventory_hostname in groups['gpu_workers']
+
+- name: Show go version
+  debug:
+    var: go_version.stdout_lines
+  when: inventory_hostname in groups['gpu_workers']
+  
+
 - name: "Check if {{ aixp_base_folder }} exists"
   ansible.builtin.stat:
     path: "{{ aixp_base_folder }}"

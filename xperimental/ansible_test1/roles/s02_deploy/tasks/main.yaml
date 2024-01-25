@@ -20,7 +20,7 @@
     path: /home/{{ ansible_user }}/work/test_deploy
     state: directory
     mode: 0755
-  become: yes
+  become: true
   become_user: "{{ ansible_user }}"
   when: inventory_hostname in groups['gpu_workers']
 
@@ -29,13 +29,13 @@
   template:
     src: "{{ aixp_deployed_template }}.j2"
     dest: /home/{{ ansible_user }}/work/test_deploy/{{ aixp_target_name }}
-  become: yes
+  become: true
   become_user: "{{ ansible_user }}"
   when: inventory_hostname in groups['gpu_workers']
 
 - name: Get the content of the file
   shell: cat /home/{{ ansible_user }}/work/test_deploy/{{ aixp_target_name }}
-  become: yes
+  become: true
   become_user: "{{ ansible_user }}"
   when: inventory_hostname in groups['gpu_workers']
   register: cat_result
@@ -49,7 +49,7 @@
   copy:
     src: .env
     dest: /home/{{ ansible_user }}/work/test_deploy/.env
-  become: yes
+  become: true
   become_user: "{{ ansible_user }}"
   when: inventory_hostname in groups['gpu_workers']
 
