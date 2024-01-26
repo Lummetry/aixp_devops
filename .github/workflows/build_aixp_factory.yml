@@ -21,9 +21,6 @@ jobs:
     - name: Install Ansible
       run: pip install ansible
 
-    - name: Install jq
-      run: sudo apt-get install jq
-
     - name: Retrieve version from galaxy.yml
       id: galaxy_version
       run: |
@@ -37,8 +34,7 @@ jobs:
 
     - name: Get installed collection version
       run: |
-        collection_path=$(ansible-galaxy collection list | grep 'aidamian.aixp_factory' | awk '{print $2}')
-        collection_version=$(jq -r '.version' "${collection_path}/MANIFEST.json")
+        collection_version=$(ansible-galaxy collection list | grep 'aidamian.aixp_factory' | awk '{print $2}')
         echo "online_version=$collection_version" >> $GITHUB_OUTPUT
         echo "Online version is $collection_version"
 
