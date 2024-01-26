@@ -22,17 +22,18 @@ jobs:
       run: pip install ansible
 
     - name: Retrieve version from galaxy.yml
-      id: galaxy_version
+      id: repo_version
       run: |
         cd aixp_factory
         repo_version=$(grep 'version:' aixp_factory/galaxy.yml | cut -d ' ' -f 2) 
         echo "curernt_version=$repo_version" >> $GITHUB_OUTPUT
-        echo "Current version is $current_version"
+        echo "Current version is $repo_version"
 
     - name: Install collection from Ansible Galaxy
       run: ansible-galaxy collection install aidamian.aixp_factory
 
     - name: Get installed collection version
+      id: ansible_galaxy_version
       run: |
         collection_version=$(ansible-galaxy collection list | grep 'aidamian.aixp_factory' | awk '{print $2}')
         echo "online_version=$collection_version" >> $GITHUB_OUTPUT
@@ -40,8 +41,8 @@ jobs:
 
     - name: Compare versions and build if necessary
       run: |
-        current_version=${{ steps.galaxy_version.outputs.current_version }}
-        galaxy_version=${{ steps.ansible_galaxy_version.outputs.version }}
+        current_version=${{ steps.repo_version.outputs.current_version }}
+        galaxy_version=${{ steps.ansible_galaxy_version.outputs.online_version }}
 
         if [ "$current_version" != "$galaxy_version" ]; then
           echo "Building and pushing version $current_version, which is newer than the version $galaxy_version on Ansible Galaxy."
