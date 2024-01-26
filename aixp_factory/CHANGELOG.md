@@ -19,5 +19,6 @@
  - added Go install in pre-requisites
  - better .hosts.yml
 
-## 0.4.5 - 2024-01-26
+## 0.4.6 - 2024-01-26
  - control node precheck  
+ - fixed aixp_app_version

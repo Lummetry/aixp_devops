@@ -1,5 +1,5 @@
 ---
-- name: Check if NVIDIA-SMI is available and working
+- name: Check if NVIDIA-SMI is available and working (Error is ok)
   command: nvidia-smi
   ignore_errors: true
   register: nvidia_smi_check1

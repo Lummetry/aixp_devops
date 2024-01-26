@@ -92,7 +92,7 @@
 
 - name: Pull Docker Image
   community.docker.docker_image:
-    name: "aixpand/exe_eng: {{ aixp_version }}"
+    name: "aixpand/exe_eng: {{ aixp_app_version }}"
     source: pull  
   when: 
     - not aixp_debug_deploy | bool

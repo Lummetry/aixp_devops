@@ -98,7 +98,7 @@
   changed_when: false
   failed_when: "'inactive' in docker_service_status.stdout"
 
-- name: Check if config.toml exists and has desired settings
+- name: Check if config.toml exists and has desired settings (Error is ok)
   shell: |
     if [ -f /etc/containerd/config.toml ]; then
       grep -q 'SystemdCgroup = true' /etc/containerd/config.toml &&
