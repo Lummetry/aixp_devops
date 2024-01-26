@@ -1,4 +1,4 @@
-name: Ansible Collection CI
+name: AiXp Factory CI
 
 on: 
   push:
@@ -21,21 +21,30 @@ jobs:
     - name: Install Ansible
       run: pip install ansible
 
+    - name: Install jq
+      run: sudo apt-get install jq
+
     - name: Retrieve version from galaxy.yml
       id: galaxy_version
       run: |
         cd aixp_factory
-        echo "::set-output name=version::$(grep 'version:' galaxy.yml | cut -d ' ' -f 2)"
+        repo_version=$(grep 'version:' aixp_factory/galaxy.yml | cut -d ' ' -f 2) 
+        echo "curernt_version=$repo_version" >> $GITHUB_OUTPUT
+        echo "Current version is $current_version"
 
-    - name: Check version on Ansible Galaxy
-      id: ansible_galaxy_version
+    - name: Install collection from Ansible Galaxy
+      run: ansible-galaxy collection install aidamian.aixp_factory
+
+    - name: Get installed collection version
       run: |
-        collection_version=$(curl -s "https://galaxy.ansible.com/api/v2/collections/your_namespace/your_collection/versions/" | jq -r '.results[0].version')
-        echo "::set-output name=version::${collection_version}"
+        collection_path=$(ansible-galaxy collection list | grep 'aidamian.aixp_factory' | awk '{print $2}')
+        collection_version=$(jq -r '.version' "${collection_path}/MANIFEST.json")
+        echo "online_version=$collection_version" >> $GITHUB_OUTPUT
+        echo "Online version is $collection_version"
 
     - name: Compare versions and build if necessary
       run: |
-        current_version=${{ steps.galaxy_version.outputs.version }}
+        current_version=${{ steps.galaxy_version.outputs.current_version }}
         galaxy_version=${{ steps.ansible_galaxy_version.outputs.version }}
 
         if [ "$current_version" != "$galaxy_version" ]; then
