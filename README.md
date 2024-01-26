@@ -21,3 +21,9 @@ The above `./install.sh` script can be called anytime to update the AiXpand Fact
 
 ### [Todo list here](TODO.md)
 
+## License
+
+## Citation
+
+
+
