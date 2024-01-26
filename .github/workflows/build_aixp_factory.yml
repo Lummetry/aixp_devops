@@ -24,9 +24,8 @@ jobs:
     - name: Retrieve version from galaxy.yml
       id: repo_version
       run: |
-        cd aixp_factory
         repo_version=$(grep 'version:' aixp_factory/galaxy.yml | cut -d ' ' -f 2) 
-        echo "curernt_version=$repo_version" >> $GITHUB_OUTPUT
+        echo "current_version=$repo_version" >> $GITHUB_OUTPUT
         echo "Current version is $repo_version"
 
     - name: Install collection from Ansible Galaxy
@@ -41,6 +40,9 @@ jobs:
 
     - name: Compare versions and build if necessary
       run: |
+        cd aixp_factory
+        current_folder=$(pwd)
+        echo "Working in $current_folder"
         current_version=${{ steps.repo_version.outputs.current_version }}
         galaxy_version=${{ steps.ansible_galaxy_version.outputs.online_version }}
 
