@@ -194,6 +194,8 @@
     msg: "Node {{ inventory_hostname }} already joined to the cluster. Proof: {{ node_joined.stdout }}"
   when: node_joined.stdout != ''
   delegate_to: localhost
+  become: false
+
 
 
 - name: Join worker nodes to Kubernetes cluster

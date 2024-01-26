@@ -126,7 +126,8 @@
   ansible.builtin.wait_for:
     timeout: 5
   delegate_to: localhost
-  when:
+  become: false
+  when: 
     - not aixp_debug_deploy | bool
     - aixp_app in ["aixp_ee"]
 

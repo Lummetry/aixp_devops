@@ -96,6 +96,8 @@
       Content-Type: "application/json"
   register: api_response
   delegate_to: localhost
+  become: false
+
 
 - name: Display API response
   debug:

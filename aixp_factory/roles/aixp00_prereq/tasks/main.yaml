@@ -1,40 +1,45 @@
 ---
-- name: Initial log display
-  debug:
-    msg: "Running prereq tasks on {{ inventory_hostname }}"
-
-- name: Get local running info
-  shell: |
-    hostname
-    pwd
-  register: local_info
+- name: Get control node hostname and currend directory
+  ansible.builtin.shell:
+    cmd: |
+      hostname
+      pwd
+  register: control_node_info 
   delegate_to: localhost
+  become: false
   when: inventory_hostname == groups['gpu_workers'][0]
 
-- name: Show local running info
+- name: Show control node hostname and currend directory
   debug:
-    msg: "{{ local_info.stdout_lines }}"
-  delegate_to: localhost
+    msg: "{{ control_node_info.stdout_lines }}"
+  delegate_to: localhost 
+  become: false
   when: inventory_hostname == groups['gpu_workers'][0]
 
-
-- name: Display OS information
-  debug:
-    msg: "OS: {{ ansible_distribution }} Version: {{ ansible_distribution_version }} Release: {{ ansible_distribution_release }}"
-
-
-- name: Get version of a specific collection
+- name: Get control node factory version
   shell: ansible-galaxy collection list 'aidamian.aixp_factory'
   register: collection_version
   delegate_to: localhost
   become: false
   when: inventory_hostname == groups['gpu_workers'][0]
 
-- name: Show collection version
+- name: Show control node factory version
   debug:
     msg: "{{ collection_version.stdout_lines }}"
   delegate_to: localhost 
+  become: false
   when: inventory_hostname == groups['gpu_workers'][0]
+
+
+- name: Initial log display
+  debug:
+    msg: "Running prereq tasks on {{ inventory_hostname }}: {{ ansible_host }}"
+
+
+- name: Display OS information
+  debug:
+    msg: "OS: {{ ansible_distribution }} Version: {{ ansible_distribution_version }} Release: {{ ansible_distribution_release }}"
+
 
 - name: Update package lists
   apt:

@@ -12,6 +12,7 @@
   debug:
     msg: "{{ collection_version.stdout_lines }}"
   delegate_to: localhost 
+  become: false
   when: inventory_hostname == groups['gpu_workers'][0]
 
 

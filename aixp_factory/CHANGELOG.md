@@ -18,3 +18,6 @@
 ## 0.4.3 - 2024-01-25
  - added Go install in pre-requisites
  - better .hosts.yml
+
+## 0.4.5 - 2024-01-26
+ - control node precheck  
