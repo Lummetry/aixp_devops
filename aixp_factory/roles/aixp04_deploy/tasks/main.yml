@@ -89,12 +89,28 @@
     mode: '0644'
   when: aixp_debug_deploy | bool
 
+- name: Set the name of the image
+  set_fact:
+    docker_image_name: "aixpand/exe_eng:{{ aixp_app_version }}"
+  when: 
+    - inventory_hostname in groups['gpu_workers']
+    - not aixp_debug_deploy | bool
+    - aixp_app in ["aixp_ee"]  
+    
+- name: Display the name of the image
+  debug:
+    msg: "Pulling {{ docker_image_name }}"
+  when: 
+    - inventory_hostname in groups['gpu_workers']
+    - not aixp_debug_deploy | bool
+    - aixp_app in ["aixp_ee"]  
 
 - name: Pull Docker Image
   community.docker.docker_image:
-    name: "aixpand/exe_eng: {{ aixp_app_version }}"
+    name: "{{ docker_image_name }}"
     source: pull  
   when: 
+    - inventory_hostname in groups['gpu_workers']
     - not aixp_debug_deploy | bool
     - aixp_app in ["aixp_ee"]    
 

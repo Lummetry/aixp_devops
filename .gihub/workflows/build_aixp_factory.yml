@@ -1,0 +1,48 @@
+name: Ansible Collection CI
+
+on: 
+  push:
+    paths:
+      - 'aixp_factory/**'  # Specify path to your collection
+
+jobs:
+  build-and-push-collection:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    
+    - name: Install Ansible
+      run: pip install ansible
+
+    - name: Retrieve version from galaxy.yml
+      id: galaxy_version
+      run: |
+        cd aixp_factory
+        echo "::set-output name=version::$(grep 'version:' galaxy.yml | cut -d ' ' -f 2)"
+
+    - name: Check version on Ansible Galaxy
+      id: ansible_galaxy_version
+      run: |
+        collection_version=$(curl -s "https://galaxy.ansible.com/api/v2/collections/your_namespace/your_collection/versions/" | jq -r '.results[0].version')
+        echo "::set-output name=version::${collection_version}"
+
+    - name: Compare versions and build if necessary
+      run: |
+        current_version=${{ steps.galaxy_version.outputs.version }}
+        galaxy_version=${{ steps.ansible_galaxy_version.outputs.version }}
+
+        if [ "$current_version" != "$galaxy_version" ]; then
+          echo "Building and pushing version $current_version, which is newer than the version $galaxy_version on Ansible Galaxy."
+          ansible-galaxy collection build
+          ansible-galaxy collection publish ./*.tar.gz --api-key ${{ secrets.ANSIBLE_GALAXY_API_TOKEN }}
+        else
+          echo "The collection version $current_version has not changed compared to the version $galaxy_version on Ansible Galaxy. No action is required."
+        fi
+
