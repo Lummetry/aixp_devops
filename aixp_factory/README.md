@@ -3,4 +3,4 @@
 
 ## Description
 
-This repository contains all the DevOps related files for the on-prem fleet deployments of AiXpand project.   
+This sub-repository contains all the DevOps related files for the on-prem fleet deployments of AiXpand project.
