@@ -54,13 +54,6 @@
 #   become_user: "{{ ansible_user }}"
 #   when: inventory_hostname in groups['gpu_workers']
 
-- name: "Log in to DockerHub with {{ dockerhub_username }}"
-  community.docker.docker_login:
-    username: "{{ dockerhub_username }}"
-    password: "{{ dockerhub_password }}"
-  ignore_errors: true
-  when: inventory_hostname in groups['gpu_workers']
-
 - name: Set the name of the image
   set_fact:
     docker_image_name: "aixpand/exe_eng:{{ aixp_app_version }}"
@@ -68,23 +61,59 @@
 
 - name: Display the name of the image
   debug:
-    msg: "Pulling {{ docker_image_name }}"
+    msg: "Checking/pulling {{ docker_image_name }}"
+  when: inventory_hostname in groups['gpu_workers']
+
+- name: "Log in to DockerHub with {{ dockerhub_username }}"
+  community.docker.docker_login:
+    username: "{{ dockerhub_username }}"
+    password: "{{ dockerhub_password }}"
+  ignore_errors: true
+  when: inventory_hostname in groups['gpu_workers']
+
+- name: Run local plugin
+  aidamian.axip_factory.my_test_action:
+    param1: "Hello from local plugin"
+  when: inventory_hostname in groups['gpu_workers']
+
+- name: List Docker Images
+  community.docker.docker_image_info:
+  register: docker_images_pre
+  when: inventory_hostname in groups['gpu_workers']
+
+- name: Display each docker image tag
+  debug:
+    msg: "{{ item.tags }}"
+  loop: "{{ docker_images_pre.images }}"
+  when: inventory_hostname in groups['gpu_workers']
+
+- name: Check if the image exists
+  set_fact:
+    docker_image_exists: "{{ item.tags | contains(docker_image_name) }}"
+  loop: "{{ docker_images_pre.images }}"
   when: inventory_hostname in groups['gpu_workers']
 
 - name: Pull Docker Image
   community.docker.docker_image:
     name: "{{ docker_image_name }}"
     source: pull  
-  when: inventory_hostname in groups['gpu_workers']
+  when: 
+    - inventory_hostname in groups['gpu_workers']
+    - not docker_image_exists
 
 - name: List Docker Images
   community.docker.docker_image_info:
   register: docker_images
-  when: inventory_hostname in groups['gpu_workers']
+  when: 
+    - inventory_hostname in groups['gpu_workers']
+    - not docker_image_exists
 
 - name: Display all Docker Images
   debug:
     var: docker_images.images    
-  when: inventory_hostname in groups['gpu_workers']
+  when: 
+    - inventory_hostname in groups['gpu_workers']
+    - not docker_image_exists
+
 
 

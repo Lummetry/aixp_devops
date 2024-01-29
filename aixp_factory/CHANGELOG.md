@@ -24,3 +24,6 @@
  - fixed aixp_app_version
  - docker login/pull issues
  - GitHub actions
+
+## 0.4.9 - 2024-01-27
+ - added test_action.py script
