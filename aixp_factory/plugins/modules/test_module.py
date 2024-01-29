@@ -56,7 +56,8 @@ def run_module():
 
   # use whatever logic you need to determine whether or not this module
   # made any modifications to your target
-  if module.params['new']:
+  CONDITION = 0
+  if module.params.get(PARAM2) != CONDITION:
     result['changed'] = True
 
   # during the execution of the module, if there is an exception or a
