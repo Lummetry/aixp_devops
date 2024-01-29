@@ -1,0 +1,5 @@
+- name: Run local collection plugin
+  test_action:
+    param1: "Test action param"
+    param2: "Test action param"
+  when: inventory_hostname in groups['gpu_workers']

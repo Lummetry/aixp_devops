@@ -71,14 +71,25 @@
   ignore_errors: true
   when: inventory_hostname in groups['gpu_workers']
 
-- name: Run local plugin
-  aidamian.axip_factory.my_test_action:
-    param1: "Hello from local plugin"
+- name: Run local role plugin
+  my_test_action:
+    my_param1: "Hello from role-local plugin"
+  when: inventory_hostname in groups['gpu_workers']
+  register: my_test_action_result
+
+- name: Display result of local role plugin
+  debug:
+    msg: "{{ my_test_action_result }}"
   when: inventory_hostname in groups['gpu_workers']
 
 - name: List Docker Images
   community.docker.docker_image_info:
   register: docker_images_pre
+  when: inventory_hostname in groups['gpu_workers']
+
+- name: Display all Docker Images
+  debug:
+    var: docker_images_pre.images
   when: inventory_hostname in groups['gpu_workers']
 
 - name: Display each docker image tag

@@ -8,7 +8,7 @@ class ActionModule(ActionBase):
     module_args = self._task.args.copy()
     
     result = {
-    'message' : 'Test action message',
+    'message' : 'Hello World!',
     'time' : datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
     'args' : module_args,
     }
