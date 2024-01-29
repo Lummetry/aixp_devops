@@ -1,8 +1,12 @@
+# User sections:
+# 1. all-hosts values such as .env information or mqtt broker information
+# 2. worker connection information
+#
 all:
   vars:
-    #####################################
-    ###### MODIFY THE VALUES BELOW ######
-    #####################################
+    #######################################################
+    ###### USER SECTION #1 ! MODIFY THE VALUES BELOW ######
+    #######################################################
     ansible_user: ""
     # use either ansible_ssh_private_key_file or ansible_ssh_pass
     ansible_ssh_private_key_file: "./key.pem"
@@ -10,7 +14,7 @@ all:
 
     ansible_sudp_pass: ""
 
-    aixp_app_target: "staging" 
+    aixp_app_target: "staging"  # "staging" "preprod" "prod"
 
     # enter below the values for the target environment .env
     dockerhub_username: "<dockerhub_username>"
@@ -22,17 +26,17 @@ all:
     aixp_EE_MINIO_SECURE: "true"
     aixp_EE_MQTT: "<mqtt_broker_password>"
     aixp_EE_GITVER: "<git_version_access_token>"
-    aixp_EE_OPENAI: "<openai_api_key>"
-    aixp_EE_HF_TOKEN: "<huggingface_api_token>"
+    aixp_EE_OPENAI: "<openai_api_key>" # optional
+    aixp_EE_HF_TOKEN: "<huggingface_api_token>" # optional
 
     # enter below the values for the MQTT broker
     aixp_MQTT_HOST: "<mqtt_broker_address>"
-    aixp_MQTT_USER: "coreaixp"
+    aixp_MQTT_USER: "coreaixp" # or other user
 
 
-    #########################################
-    ###### END MODIFY THE VALUES ABOVE ######
-    #########################################
+    ########################################################
+    ###### END USER SECTION # MODIFY THE VALUES ABOVE ######
+    ########################################################
 
 
 
@@ -58,15 +62,16 @@ all:
   children:
     gpu_workers:
       hosts:
-        #####################################
-        ###### MODIFY THE VALUES BELOW ######
-        #####################################
+        ###########################################################
+        ######   USER SECTION #2 - MODIFY THE VALUES BELOW   ######
+        ###########################################################
         aixp_node_name_1:
           ansible_host: ""  
 
         # aixp_worker_1:
         #   ansible_host: ""  
 
-        ####################################
-        ###### END MODIFY THE VALUES  ######
-        ####################################
+        ###########################################################
+        ###### END USER SECTION #2 - MODIFY THE VALUES ABOVE ######
+        ###########################################################
+

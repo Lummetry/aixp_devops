@@ -9,3 +9,15 @@
   debug:
     msg: "{{ test_action_result }}"
   when: inventory_hostname in groups['gpu_workers']
+
+- name: Run the test module on the host
+  test_module:
+    param1: "Test module param"
+    param2: "Test module param"
+  when: inventory_hostname in groups['gpu_workers']
+  register: test_module_result
+
+- name: Display result of test module
+  debug:
+    msg: "{{ test_module_result }}"
+  when: inventory_hostname in groups['gpu_workers']

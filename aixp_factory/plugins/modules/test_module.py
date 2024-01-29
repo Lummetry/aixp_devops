@@ -1,15 +1,14 @@
 from ansible.module_utils.basic import AnsibleModule
 
 
-from ansible.module_utils.basic import AnsibleModule
-
-
 def run_module():
+  PARAM1 = 'param1'
+  PARAM2 = 'param2'
   # define available arguments/parameters a user can pass to the module
-  module_args = dict(
-    name=dict(type='str', required=True),
-    new=dict(type='bool', required=False, default=False)
-  )
+  module_args = {
+    PARAM1 : dict(type='str', required=False),
+    PARAM2 : dict(type='bool', required=False, default=False)
+  }
 
   # seed the result dict in the object
   # we primarily care about changed and state
@@ -18,7 +17,7 @@ def run_module():
   # for consumption, for example, in a subsequent task
   result = dict(
     changed=False,
-    original_message='',
+    original_input='',
     message=''
   )
 
@@ -36,11 +35,17 @@ def run_module():
   # state with no modifications
   if module.check_mode:
     module.exit_json(**result)
+    
+  param1 = module.params.get(PARAM1)
+  param2 = module.params.get(PARAM2)
 
   # manipulate or modify the state as needed (this is going to be the
   # part where your module will do what it needs to do)
-  result['original_message'] = module.params['name']
-  result['message'] = 'goodbye'
+  result['original_input'] = {
+    PARAM1 : param1,
+    PARAM2 : param2
+  }
+  result['message'] = 'processed'
 
   # use whatever logic you need to determine whether or not this module
   # made any modifications to your target
@@ -50,7 +55,7 @@ def run_module():
   # during the execution of the module, if there is an exception or a
   # conditional state that effectively causes a failure, run
   # AnsibleModule.fail_json() to pass in the message and the result
-  if module.params['name'] == 'fail me':
+  if param1== 'fail me':
     module.fail_json(msg='You requested this to fail', **result)
 
   # in the event of a successful module execution, you will want to
@@ -66,4 +71,4 @@ def main():
 
 
 if __name__ == '__main__':
-  main()  
+  main()  /home/andrei/work/aixp_devops/xperimental/ansible_test1/logs
