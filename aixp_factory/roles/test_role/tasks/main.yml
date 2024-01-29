@@ -3,3 +3,9 @@
     param1: "Test action param"
     param2: "Test action param"
   when: inventory_hostname in groups['gpu_workers']
+  register: test_action_result
+
+- name: Display result of local collection plugin
+  debug:
+    msg: "{{ test_action_result }}"
+  when: inventory_hostname in groups['gpu_workers']

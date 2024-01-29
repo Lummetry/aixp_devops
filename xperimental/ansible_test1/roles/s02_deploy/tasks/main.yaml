@@ -87,21 +87,23 @@
   register: docker_images_pre
   when: inventory_hostname in groups['gpu_workers']
 
-- name: Display all Docker Images
-  debug:
-    var: docker_images_pre.images
-  when: inventory_hostname in groups['gpu_workers']
-
 - name: Display each docker image tag
   debug:
-    msg: "{{ item.tags }}"
+    msg: "{{ item.RepoTags[0] }}"
   loop: "{{ docker_images_pre.images }}"
   when: inventory_hostname in groups['gpu_workers']
+  loop_control:
+    label: ''  
 
 - name: Check if the image exists
   set_fact:
-    docker_image_exists: "{{ item.tags | contains(docker_image_name) }}"
+    docker_image_exists: "{{ docker_image_name in item.RepoTags[0] }}"
   loop: "{{ docker_images_pre.images }}"
+  when: inventory_hostname in groups['gpu_workers']
+
+- name: Display if the image exists
+  debug:
+    msg: "Image {{ docker_image_name }} exists: {{ docker_image_exists }}"
   when: inventory_hostname in groups['gpu_workers']
 
 - name: Pull Docker Image
