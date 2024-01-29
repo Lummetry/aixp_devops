@@ -13,7 +13,7 @@
 - name: Run the test module on the host
   test_module:
     param1: "Test module param"
-    param2: "Test module param"
+    param2: False
   when: inventory_hostname in groups['gpu_workers']
   register: test_module_result
 

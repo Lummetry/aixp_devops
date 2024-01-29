@@ -6,8 +6,15 @@ def run_module():
   PARAM2 = 'param2'
   # define available arguments/parameters a user can pass to the module
   module_args = {
-    PARAM1 : dict(type='str', required=False),
-    PARAM2 : dict(type='bool', required=False, default=False)
+    PARAM1 : dict(
+      type='str', 
+      required=False
+    ),
+    PARAM2 : dict(
+      type='int', 
+      required=False, 
+      default=0
+    )
   }
 
   # seed the result dict in the object
