@@ -100,6 +100,8 @@
     docker_image_exists: "{{ docker_image_name in item.RepoTags[0] }}"
   loop: "{{ docker_images_pre.images }}"
   when: inventory_hostname in groups['gpu_workers']
+  loop_control:
+    label: ''  
 
 - name: Display if the image exists
   debug:
