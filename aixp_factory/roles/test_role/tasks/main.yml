@@ -1,10 +1,29 @@
+---
 - name: Install PyE2 package on localhost
   pip:
     name: pye2
-    state: present
+    state: latest
   delegate_to: localhost
   become: false
   when: inventory_hostname in groups['gpu_workers'][0]
+
+- name: Get version of pye2 Python package
+  ansible.builtin.shell:
+    cmd: pip show pye2 | grep 'Version:' | awk '{print $2}'
+  ignore_errors: true
+  register: pye2_version_localhost
+  delegate_to: localhost
+  become: false
+  when: inventory_hostname in groups['gpu_workers'][0]
+
+- name: Show localhost PyE2 version
+  debug:
+    msg: "PyE2 version: {{ pye2_version_localhost.stdout }}"
+  delegate_to: localhost
+  become: false
+  when: 
+    - inventory_hostname in groups['gpu_workers'][0]
+    - pye2_version_localhost is defined
 
 - name: Running localhost test action
   test_action:
@@ -18,12 +37,35 @@
     msg: "{{ test_action_result }}"
   when: inventory_hostname in groups['gpu_workers']
 
+- name: Install PyE2 Python package on hosts
+  ansible.builtin.pip:
+    name: PyE2
+    state: latest  
+  become: false  
+  when: inventory_hostname in groups['gpu_workers']
+
+- name: Get version of pye2 Python package
+  ansible.builtin.shell:
+    cmd: pip show pye2 | grep 'Version:' | awk '{print $2}'
+  ignore_errors: true
+  register: pye2_version_hosts
+  become: false
+  when: inventory_hostname in groups['gpu_workers']
+
+- name: Show target host PyE2 version
+  debug:
+    msg: "PyE2 version: {{ pye2_version_hosts.stdout }}"
+  become: false
+  when: 
+    - inventory_hostname in groups['gpu_workers']
+    - pye2_version_hosts is defined  
+
 - name: Running host test module
   test_module:
     app_base_folder: "{{ aixp_base_folder }}"
     app_cache_folder: "{{ aixp_local_cache_folder }}"
-  when: inventory_hostname in groups['gpu_workers']
   register: test_module_result
+  when: inventory_hostname in groups['gpu_workers']
 
 - name: Display result of host test
   debug:
