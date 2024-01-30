@@ -1,3 +1,11 @@
+- name: Install PyE2 package on localhost
+  pip:
+    name: pye2
+    state: present
+  delegate_to: localhost
+  become: false
+  when: inventory_hostname in groups['gpu_workers'][0]
+
 - name: Running localhost test action
   test_action:
     param1: "Test action param"
@@ -12,8 +20,8 @@
 
 - name: Running host test module
   test_module:
-    app_base_folder: aixp_base_folder
-    app_cache_folder: aixp_local_cache_folder
+    app_base_folder: "{{ aixp_base_folder }}"
+    app_cache_folder: "{{ aixp_local_cache_folder }}"
   when: inventory_hostname in groups['gpu_workers']
   register: test_module_result
 

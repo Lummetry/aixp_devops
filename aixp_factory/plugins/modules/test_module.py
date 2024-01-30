@@ -1,9 +1,31 @@
 from ansible.module_utils.basic import AnsibleModule
 
+try:
+  import py2e 
+  PY_EE_INSTALLED = True
+except ImportError:
+  PY_EE_INSTALLED = False
+  
+def pye2_version():
+  version = 'not installed'
+  if PY_EE_INSTALLED:
+    try:
+      version = py2e.version
+    except:
+      try:
+        version = py2e.__version__
+      except:
+        version = 'installed/unknown'
+      #end try
+    #end try
+  #end if
+  return version
 
 def run_module():
   PARAM_APP_FOLDER = 'app_base_folder'
   PARAM_CACHE_FOLDER = 'app_cache_folder'
+  
+  
   # define available arguments/parameters a user can pass to the module
   module_args = {
     PARAM_APP_FOLDER : dict(
@@ -24,7 +46,8 @@ def run_module():
   result = dict(
     changed=False,
     params='',
-    message=''
+    message='',
+    py2e=PY_EE_INSTALLED,
   )
 
   # the AnsibleModule object will be our abstraction working with Ansible
@@ -48,7 +71,7 @@ def run_module():
   # manipulate or modify the state as needed (this is going to be the
   # part where your module will do what it needs to do)
   result['params'] = module.params
-  result['message'] = 'processed'
+  result['pye2_version'] = pye2_version()
 
   # use whatever logic you need to determine whether or not this module
   # made any modifications to your target
