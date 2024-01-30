@@ -39,6 +39,9 @@ class ActionModule(ActionBase):
       'ansible_distribution',
       'ansible_distribution_release',
       'ansible_distribution_version',
+      'ansible_host',
+      'ansible_fqdn',
+      'ansible_hostname',
     ]
     
     aixp_vars = {
@@ -50,6 +53,7 @@ class ActionModule(ActionBase):
       if k in IMPORTANT_VARIABLES
     })
     
+    ansible_keys = [x for x in module_args if x.startswith('ansible_')]
     
 
     
@@ -60,6 +64,7 @@ class ActionModule(ActionBase):
       'aixp_vars'     : aixp_vars,
       'pye2'          : PY_EE_INSTALLED,
       'pye2_version'  : pye2_version(),
+      'ansible_keys'  : ansible_keys,
     }
 
     return dict(ansible_facts=result)
