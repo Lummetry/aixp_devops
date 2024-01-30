@@ -1,5 +1,6 @@
 #!/bin/bash
 
+INSTALLER_VERSION="0.2.1"
 
 log_with_color() {
     local text="$1"
@@ -94,7 +95,7 @@ install_sshpass() {
 
 
 ## SCRIPT STARTS HERE
-log_with_color "########    Starting AiXp Factory setup v.0.1.1 ...    ########" green
+log_with_color "########    Starting AiXp Factory setup v.$INSTALLER_VERSION ...    ########" green
 
 check_if_ubuntu
 
