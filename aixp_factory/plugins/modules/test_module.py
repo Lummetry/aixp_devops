@@ -50,7 +50,8 @@ def run_module():
   # part where your module will do what it needs to do)
   result['original_input'] = {
     PARAM1 : param1,
-    PARAM2 : param2
+    PARAM2 : param2,
+    'all_vars' : module.params,
   }
   result['message'] = 'processed'
 
@@ -79,4 +80,4 @@ def main():
 
 
 if __name__ == '__main__':
-  main()  /home/andrei/work/aixp_devops/xperimental/ansible_test1/logs
+  main() 

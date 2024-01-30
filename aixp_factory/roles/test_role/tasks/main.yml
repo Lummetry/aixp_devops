@@ -1,23 +1,23 @@
-- name: Run local collection plugin
+- name: Running localhost test action
   test_action:
     param1: "Test action param"
     param2: "Test action param"
-  when: inventory_hostname in groups['gpu_workers']
   register: test_action_result
+  when: inventory_hostname in groups['gpu_workers']
 
-- name: Display result of local collection plugin
+- name: Display result of localhost test
   debug:
     msg: "{{ test_action_result }}"
   when: inventory_hostname in groups['gpu_workers']
 
-- name: Run the test module on the host
+- name: Running host test module
   test_module:
     param1: "Test module param"
-    param2: False
+    param2: 1
   when: inventory_hostname in groups['gpu_workers']
   register: test_module_result
 
-- name: Display result of test module
+- name: Display result of host test
   debug:
     msg: "{{ test_module_result }}"
   when: inventory_hostname in groups['gpu_workers']
