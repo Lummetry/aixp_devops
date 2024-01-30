@@ -29,7 +29,10 @@ class ActionModule(ActionBase):
     
     module_args = self._task.args.copy()
     
-    aixp_vars = {k:v for k,v in task_vars.items() if k.startswith('aixp_')}    
+    aixp_vars = {
+      k : v for k,v in task_vars.items() 
+      if k.startswith('aixp_') and not isinstance(v, dict)
+    }
     
     result = {
       'message'       : 'Test action message',

@@ -51,16 +51,18 @@ get_os_info() {
 }
 
 check_if_os_accepted() {
+    ACCEPTED_OS=("Ubuntu" "Debian" "CentOS")
     get_os_info
     log_with_color "Operating System: $OS_NAME" blue
     log_with_color "Version: $OS_VERSION" blue
 
-    if [ "$OS_NAME" != "Ubuntu" ]; then
-        echo "This script runs only on . Exiting." red
+    # Check if the current OS is in the list of accepted OS
+    if [[ ! " ${ACCEPTED_OS[*]} " =~ " $OS_NAME " ]]; then
+        log_with_color "This script runs only on ${ACCEPTED_OS[*]}. Exiting." red
         exit 1
     fi
 
-    log_with_color "Operating System is supported." green
+    log_with_color "$OS_NAME:$OS_VERSION is supported." green
 }
 
 
@@ -132,7 +134,24 @@ fi
 # Check if Ansible is installed
 if ! ansible --version &> /dev/null
 then
+    log_with_color "Ansible is not installed. Installing..." yellow
     install_ansible
+
+    path_to_add="/home/$USER/.local/bin"
+
+    # Check if the path is already in the .bashrc
+    if grep -q "$path_to_add" ~/.bashrc; then
+        log_with_color "Path $path_to_add already in .bashrc" green
+    else
+        # Add the path to .bashrc
+        log_with_color "Adding $path_to_add to .bashrc" yellow
+        echo "export PATH=\"$PATH:$path_to_add\"" >> ~/.bashrc
+
+        # Reload .bashrc
+        source ~/.bashrc
+
+        log_with_color "$path_to_add added to .bashrc and reloaded" green
+    fi
 else
     log_with_color "Ansible is already installed." green
 fi
