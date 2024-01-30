@@ -31,10 +31,27 @@ class ActionModule(ActionBase):
     
     module_args = self._task.args.copy()
     
+    IMPORTANT_VARIABLES = [
+      'inventory_hostname',
+      'ansible_architecture',
+      'ansible_board_serial',
+      'ansible_board_asset_tag',
+      'ansible_distribution',
+      'ansible_distribution_release',
+      'ansible_distribution_version',
+    ]
+    
     aixp_vars = {
       k : v for k,v in task_vars.items() 
       if k.startswith('aixp_') and not isinstance(v, dict)
     }
+    aixp_vars.update({
+      k : v for k,v in task_vars.items() 
+      if k in IMPORTANT_VARIABLES
+    })
+    
+    
+
     
     result = {
       'message'       : 'Test action message',
