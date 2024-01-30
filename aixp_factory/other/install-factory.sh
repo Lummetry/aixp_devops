@@ -97,8 +97,7 @@ install_sshpass() {
 ## SCRIPT STARTS HERE
 log_with_color "########    Starting AiXp Factory setup v.$INSTALLER_VERSION ...    ########" green
 
-check_if_ubuntu
-
+check_if_os_accepted
 
 # Create a directory for the factory
 mkdir -p factory
@@ -136,6 +135,7 @@ fi
 if ! ansible --version &> /dev/null
 then
     log_with_color "Ansible is not installed. Installing..." yellow
+
     install_ansible
 
     path_to_add="/home/$USER/.local/bin"
@@ -146,10 +146,9 @@ then
     else
         # Add the path to .bashrc
         log_with_color "Adding $path_to_add to .bashrc" yellow
-        echo "export PATH=\"$PATH:$path_to_add\"" >> ~/.bashrc
+        echo "export PATH=\"\$PATH:$path_to_add\"" >> ~/.bashrc
 
-        # Reload .bashrc
-        source ~/.bashrc
+        export PATH="$PATH:$path_to_add"
 
         log_with_color "$path_to_add added to .bashrc and reloaded" green
     fi
