@@ -4,7 +4,7 @@
     name: pye2
     state: latest
   delegate_to: localhost
-  become: false
+  become: false # No need to become root
   when: inventory_hostname in groups['gpu_workers'][0]
 
 - name: Get version of pye2 Python package
@@ -30,18 +30,20 @@
     app_base_folder: "{{ aixp_base_folder }}"
     app_cache_folder: "{{ aixp_local_cache_folder }}"
   register: test_action_result
+  become: false # No need to become root
   when: inventory_hostname in groups['gpu_workers']
 
 - name: Display result of localhost test
   debug:
     msg: "{{ test_action_result }}"
+  become: false # No need to become root
   when: inventory_hostname in groups['gpu_workers']
 
 - name: Install PyE2 Python package on hosts
   ansible.builtin.pip:
     name: PyE2
     state: latest  
-  become: false  
+  become: false # No need to become root
   when: inventory_hostname in groups['gpu_workers']
 
 - name: Get version of pye2 Python package
@@ -49,13 +51,13 @@
     cmd: pip show pye2 | grep 'Version:' | awk '{print $2}'
   ignore_errors: true
   register: pye2_version_hosts
-  become: false
+  become: false # No need to become root
   when: inventory_hostname in groups['gpu_workers']
 
 - name: Show target host PyE2 version
   debug:
     msg: "PyE2 version: {{ pye2_version_hosts.stdout }}"
-  become: false
+  become: false # No need to become root
   when: 
     - inventory_hostname in groups['gpu_workers']
     - pye2_version_hosts is defined  
@@ -65,9 +67,11 @@
     app_base_folder: "{{ aixp_base_folder }}"
     app_cache_folder: "{{ aixp_local_cache_folder }}"
   register: test_module_result
+  become: false # No need to become root
   when: inventory_hostname in groups['gpu_workers']
 
 - name: Display result of host test
   debug:
     msg: "{{ test_module_result }}"
+  become: false # No need to become root
   when: inventory_hostname in groups['gpu_workers']

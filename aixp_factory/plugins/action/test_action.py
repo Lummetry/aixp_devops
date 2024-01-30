@@ -11,7 +11,7 @@ except Exception as exc:
   
   
 def pye2_version():
-  version = 'not installed/' + IMPORT_ERROR
+  version = 'not installed: ' + IMPORT_ERROR
   if PY_EE_INSTALLED:
     try:
       version = py2e.version
