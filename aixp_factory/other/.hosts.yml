@@ -24,7 +24,6 @@ all:
     aixp_EE_MINIO_ACCESS_KEY: "<minio_access_key>"
     aixp_EE_MINIO_SECRET_KEY: "<minio_secret_key>"
     aixp_EE_MINIO_SECURE: "true"
-    aixp_EE_MQTT: "<mqtt_broker_password>"
     aixp_EE_GITVER: "<git_version_access_token>"
     aixp_EE_OPENAI: "<openai_api_key>" # optional
     aixp_EE_HF_TOKEN: "<huggingface_api_token>" # optional
@@ -32,6 +31,8 @@ all:
     # enter below the values for the MQTT broker
     aixp_MQTT_HOST: "<mqtt_broker_address>"
     aixp_MQTT_USER: "coreaixp" # or other user
+    aixp_EE_MQTT: "<mqtt_broker_password>"
+    aixp_MQTT_PORT: 1883
 
 
     ########################################################
