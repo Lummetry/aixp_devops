@@ -28,6 +28,7 @@
 ## 0.4.16 - 2024-01-27
  - added test_action.py script
 
-## 0.4.22- 2024-01-28
+## 0.4.23- 2024-01-28
  - prepared module and action scripts
  - added PyE2 tests
+ - fix Nvidia container test

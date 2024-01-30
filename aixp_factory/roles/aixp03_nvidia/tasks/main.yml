@@ -42,6 +42,14 @@
     name: docker
     state: restarted
 
+
+- name: Sleep for 15 seconds and continue with container test
+  ansible.builtin.wait_for:
+    timeout: 15
+  delegate_to: localhost
+  become: false
+
+
 # Task 7: Run a temporary Docker container with NVIDIA GPU support
 # Launches a temporary Docker container to test NVIDIA GPU support using the `nvidia-smi` command.
 - name: Run a temporary Docker container with NVIDIA GPU support
