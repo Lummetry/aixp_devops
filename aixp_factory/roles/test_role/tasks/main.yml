@@ -8,8 +8,8 @@
 
 - name: Running localhost test action
   test_action:
-    param1: "Test action param"
-    param2: "Test action param"
+    app_base_folder: "{{ aixp_base_folder }}"
+    app_cache_folder: "{{ aixp_local_cache_folder }}"
   register: test_action_result
   when: inventory_hostname in groups['gpu_workers']
 

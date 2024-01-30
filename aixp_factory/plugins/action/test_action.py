@@ -1,15 +1,17 @@
 from ansible.plugins.action import ActionBase
 from datetime import datetime
 
+IMPORT_ERROR = ""
 try:
   import PyE2 as py2e 
   PY_EE_INSTALLED = True
-except ImportError:
+except Exception as exc:
+  IMPORT_ERROR = str(exc)
   PY_EE_INSTALLED = False
   
   
 def pye2_version():
-  version = 'not installed'
+  version = 'not installed/' + IMPORT_ERROR
   if PY_EE_INSTALLED:
     try:
       version = py2e.version
