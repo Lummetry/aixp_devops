@@ -2,7 +2,7 @@ from ansible.plugins.action import ActionBase
 from datetime import datetime
 
 try:
-  import py2e 
+  import PyE2 as py2e 
   PY_EE_INSTALLED = True
 except ImportError:
   PY_EE_INSTALLED = False

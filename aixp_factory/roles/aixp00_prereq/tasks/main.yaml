@@ -90,7 +90,7 @@
     # - inventory_hostname == groups['gpu_workers'][0]
     - install_extra_packages | default(true) | bool
   
-- name: Install PyE2 Python package
+- name: Install PyE2 Python package on hosts
   ansible.builtin.pip:
     name: PyE2
     state: present  

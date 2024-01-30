@@ -1,7 +1,7 @@
 from ansible.module_utils.basic import AnsibleModule
 
 try:
-  import py2e 
+  import PyE2 as py2e 
   PY_EE_INSTALLED = True
 except ImportError:
   PY_EE_INSTALLED = False
