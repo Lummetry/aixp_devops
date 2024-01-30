@@ -2,19 +2,18 @@ from ansible.module_utils.basic import AnsibleModule
 
 
 def run_module():
-  PARAM1 = 'param1'
-  PARAM2 = 'param2'
+  PARAM_APP_FOLDER = 'app_base_folder'
+  PARAM_CACHE_FOLDER = 'app_cache_folder'
   # define available arguments/parameters a user can pass to the module
   module_args = {
-    PARAM1 : dict(
+    PARAM_APP_FOLDER : dict(
       type='str', 
       required=False
     ),
-    PARAM2 : dict(
-      type='int', 
+    PARAM_CACHE_FOLDER : dict(
+      type='str', 
       required=False, 
-      default=0
-    )
+    ),
   }
 
   # seed the result dict in the object
@@ -24,7 +23,7 @@ def run_module():
   # for consumption, for example, in a subsequent task
   result = dict(
     changed=False,
-    original_input='',
+    params='',
     message=''
   )
 
@@ -43,29 +42,28 @@ def run_module():
   if module.check_mode:
     module.exit_json(**result)
     
-  param1 = module.params.get(PARAM1)
-  param2 = module.params.get(PARAM2)
+  app_folder = module.params.get(PARAM_APP_FOLDER)
+  app_cache_folder = module.params.get(PARAM_CACHE_FOLDER)
 
   # manipulate or modify the state as needed (this is going to be the
   # part where your module will do what it needs to do)
-  result['original_input'] = {
-    PARAM1 : param1,
-    PARAM2 : param2,
-    'all_vars' : module.params,
-  }
+  result['params'] = module.params
   result['message'] = 'processed'
 
   # use whatever logic you need to determine whether or not this module
   # made any modifications to your target
-  CONDITION = 0
-  if module.params.get(PARAM2) != CONDITION:
+  CONDITION_CHANGED = False
+  changed = CONDITION_CHANGED
+  if changed:
     result['changed'] = True
 
   # during the execution of the module, if there is an exception or a
   # conditional state that effectively causes a failure, run
   # AnsibleModule.fail_json() to pass in the message and the result
-  if param1== 'fail me':
-    module.fail_json(msg='You requested this to fail', **result)
+  CONDITION_FAILED = False
+  failed = CONDITION_FAILED
+  if failed:
+    module.fail_json(msg='Test module FAILED', **result)
 
   # in the event of a successful module execution, you will want to
   # simple AnsibleModule.exit_json(), passing the key/value results

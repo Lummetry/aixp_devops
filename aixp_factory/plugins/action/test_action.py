@@ -9,10 +9,10 @@ class ActionModule(ActionBase):
     module_args = self._task.args.copy()
     
     result = {
-    'message' : 'Test action message',
-    'time' : datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-    'args' : module_args,
-    'all_vars' : task_vars,
+      'message' : 'Test action message',
+      'time' : datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+      'args' : module_args,
+      'all_vars' : task_vars,
     }
 
     return dict(ansible_facts=result)
