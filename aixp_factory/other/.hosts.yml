@@ -49,10 +49,8 @@ all:
     aixp_app: "aixp_ee"
     # select the target environment "staging" "preprod" "prod"
     aixp_debug_deploy: false
-
     # the default formatter
     aixp_formatter: "cavi2"
-
     # default target folder
     aixp_base_folder: "/var/cache/{{ aixp_app }}"
     # default local cache folder
@@ -63,6 +61,8 @@ all:
     aixp_app_port: "5050"
     # install extra apps such as Go, Python and packages such PyE2
     install_extra_packages: true
+    # the name of the supervisor node
+    aixp_supernode: "{{ 'str_super' if aixp_app_target=='staging' else 'pre_super' if aixp_app_target=='preprod' else 'prod_super' }}"
     ###### END ADMIN-ONLY VARIABLES ######
 
 

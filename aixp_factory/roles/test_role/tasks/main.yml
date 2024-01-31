@@ -65,13 +65,13 @@
     - inventory_hostname in groups['gpu_workers']
     - pye2_version_hosts is defined  
 
-- name: Running host test module
+- name: Running host connection to its supervisor
   test_module:
     test_host: "{{ aixp_MQTT_HOST }}"
     test_user: "{{ aixp_MQTT_USER }}"
     test_pwd:  "{{ aixp_EE_MQTT }}"
     test_port: "{{ aixp_MQTT_PORT }}"
-    test_node: "stg_super"    
+    test_node: "{{ aixp_supernode | default(pre_super) }}"    
   register: test_module_result
   become: false # No need to become root
   when: inventory_hostname in groups['gpu_workers']

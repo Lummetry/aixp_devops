@@ -27,7 +27,13 @@ def run_test(target_node : str, host=None, port=None, user=None, password=None):
   hosts = [target_node,] # add other nodes if needed
   def on_hb(session : pye2.Session, e2id : str, data : dict):    
     if e2id in hosts:
-      msg = "Done: received hb from {} running on {}".format(e2id, data['CPU'])
+      str_cpu = data['CPU']      
+      str_ram = data['MACHINE_MEMORY']
+      str_free = data['AVAILABLE_MEMORY']
+      str_free_disk = data['AVAILABLE_DISK']
+      msg = "Done: received hb from {} running on {}, RAM/Free: {:.1f}Gi/{:.1f}Gi, Free Disk: {:1f}Gi".format(
+        e2id, str_cpu, str_ram, str_free, str_free_disk,
+      )      
       print(msg)
       dct_result['success'] = True
       dct_result['result'] = msg
