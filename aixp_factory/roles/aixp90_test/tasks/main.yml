@@ -72,21 +72,37 @@
   become: false # No need to become root
   when: inventory_hostname in groups['gpu_workers']
 
-- name: Get version of pye2 Python package
-  ansible.builtin.shell:
-    cmd: pip show pye2 | grep 'Version:' | awk '{print $2}'
+# - name: Get version of pye2 Python package
+#   ansible.builtin.shell:
+#     cmd: pip show pye2 | grep 'Version:' | awk '{print $2}'
+#   ignore_errors: true
+#   register: pye2_version_hosts
+#   become: false # No need to become root
+#   when: inventory_hostname in groups['gpu_workers']
+
+# - name: Show target host PyE2 version
+#   debug:
+#     msg: "PyE2 version: {{ pye2_version_hosts.stdout }}"
+#   become: false # No need to become root
+#   when: 
+#     - inventory_hostname in groups['gpu_workers']
+#     - pye2_version_hosts is defined  
+
+- name: Get versions of required Python packages on hosts
+  ansible.builtin.command: >
+    python -c "import json; import importlib; pkgs = ['pye2', 'pika', 'paho-mqtt', 'numpy', 'cryptography']; print(json.dumps({pkg: getattr(importlib.import_module(pkg), '__version__', 'Unknown') for pkg in pkgs}))"
+  register: pkg_versions
   ignore_errors: true
-  register: pye2_version_hosts
   become: false # No need to become root
   when: inventory_hostname in groups['gpu_workers']
 
-- name: Show target host PyE2 version
-  debug:
-    msg: "PyE2 version: {{ pye2_version_hosts.stdout }}"
+- name: Display versions of required Python packages on hosts
+  ansible.builtin.debug:
+    msg: "{{ pkg_versions.stdout }}"
   become: false # No need to become root
   when: 
+    - pkg_versions.rc == 0
     - inventory_hostname in groups['gpu_workers']
-    - pye2_version_hosts is defined  
 
 - name: Running host connection to its supervisor
   test_module:
