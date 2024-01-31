@@ -88,9 +88,28 @@
 #     - inventory_hostname in groups['gpu_workers']
 #     - pye2_version_hosts is defined  
 
+- name: Check & set default value for aixp_test_packages
+  ansible.builtin.set_fact:
+    aixp_test_packages: 
+      - pye2
+      - pika
+      - paho
+      - numpy
+      - cryptography
+  become: false # No need to become root
+  when: 
+    - aixp_test_packages is not defined
+    - inventory_hostname in groups['gpu_workers']
+
+- name: Display package to be checked on hosts
+  debug:
+    msg: "{{ aixp_test_packages }}"
+  become: false # No need to become root
+  when: inventory_hostname in groups['gpu_workers']
+
 - name: Get versions of required Python packages on hosts
   ansible.builtin.command: >
-    python -c "import json; import importlib; pkgs = ['pye2', 'pika', 'paho-mqtt', 'numpy', 'cryptography']; print(json.dumps({pkg: getattr(importlib.import_module(pkg), '__version__', 'Unknown') for pkg in pkgs}))"
+    python -c "import json; import importlib; pkgs = {{ aixp_test_packages | to_json }}; print(json.dumps({pkg: getattr(importlib.import_module(pkg), '__version__', 'Unknown') for pkg in pkgs}))"
   register: pkg_versions
   ignore_errors: true
   become: false # No need to become root

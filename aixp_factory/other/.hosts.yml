@@ -66,6 +66,12 @@ all:
     aixp_supernode: "{{ 'str_super' if aixp_app_target=='staging' else 'pre_super' if aixp_app_target=='preprod' else 'prod_super' }}"
     # test the AiXp connection even from the localhost-to-AiXp beside the host-to-AiXp
     aixp_test_localhost: true
+    aixp_test_packages:
+      - pye2
+      - pika
+      - paho
+      - numpy
+      - cryptography
     ###### END ADMIN-ONLY VARIABLES ######
 
 
