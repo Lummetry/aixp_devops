@@ -71,6 +71,17 @@
     test_user: "{{ aixp_MQTT_USER }}"
     test_pwd:  "{{ aixp_EE_MQTT }}"
     test_port: "{{ aixp_MQTT_PORT }}"
+    test_node: "stg_super"    
+  register: test_module_result
+  become: false # No need to become root
+  when: inventory_hostname in groups['gpu_workers']
+
+- name: Running host test module
+  test_module:
+    test_host: "{{ aixp_MQTT_HOST }}"
+    test_user: "{{ aixp_MQTT_USER }}"
+    test_pwd:  "{{ aixp_EE_MQTT }}"
+    test_port: "{{ aixp_MQTT_PORT }}"
     test_node: "{{ inventory_hostname }}"    
   register: test_module_result
   become: false # No need to become root

@@ -1,49 +1,6 @@
 from ansible.module_utils.basic import AnsibleModule
 
-try:
-  import PyE2 as pye2 
-  PY_EE_INSTALLED = True
-  IMPORT_ERROR = ""
-except Exception as exc:
-  IMPORT_ERROR = str(exc)
-  PY_EE_INSTALLED = False
-  
-def pye2_version():
-  version = 'not installed: ' + IMPORT_ERROR
-  if PY_EE_INSTALLED:
-    try:
-      version = pye2.version
-    except:
-      try:
-        version = pye2.__version__
-      except:
-        version = 'installed/unknown'
-      #end try
-    #end try
-  #end if
-  return version
-
-def run_test(target_node : str, host=None, port=None, user=None, password=None):
-  dct_result = {'success': False, 'result': f"Failed '{target_node}' after timeout", 'nodes' : []}  
-  hosts = [target_node,] # add other nodes if needed
-  def on_hb(session : pye2.Session, e2id : str, data : dict):    
-    if e2id in hosts:
-      msg = "Done: received hb from {} running on {}".format(e2id, data['CPU'])
-      print(msg)
-      dct_result['success'] = True
-      dct_result['result'] = msg
-      session.close()
-    else:
-      print("Rcv '{}' hb".format(e2id))
-      dct_result['nodes'] = list(set(dct_result['nodes'] + [e2id,]))
-    return
-  # run the session
-  pye2.Session(
-    host=host,port=port,
-    user=user, password=password,
-    on_heartbeat=on_hb,    
-  ).run(wait=120) # max 120 seconds or before
-  return dct_result
+from ansible_collections.aixp_factory.plugins.module_utils.aixp_utils import run_test, pye2_version
 
 
 def run_module():  
@@ -53,7 +10,10 @@ def run_module():
   AIXP_PWD  = 'test_pwd'
   AIXP_NODE = 'test_node'
   
-  failed = PY_EE_INSTALLED == False
+  str_pye2_ver = pye2_version()
+  
+  pye2_installed = str_pye2_ver is not None and 'not installed' not in str_pye2_ver.lower()
+  failed = not pye2_installed
   
   # define available arguments/parameters a user can pass to the module
   module_args = {
@@ -82,8 +42,9 @@ def run_module():
   # for consumption, for example, in a subsequent task
   result = dict(
     changed=False,
-    py2e=PY_EE_INSTALLED,
-    pye2_version=pye2_version()
+    py2e=pye2_installed,
+    pye2_version=str_pye2_ver,
+    test_result={},
   )
 
   # the AnsibleModule object will be our abstraction working with Ansible
@@ -101,25 +62,25 @@ def run_module():
   if module.check_mode:
     module.exit_json(**result)
     
-  aixp_host = module.params.get(AIXP_HOST)
-  aixp_port = module.params.get(AIXP_PORT)
-  aixp_user = module.params.get(AIXP_USER)
-  aixp_pwd = module.params.get(AIXP_PWD)
-  aixp_node = module.params.get(AIXP_NODE)
   
-  hb_result = run_test(
-    target_node=aixp_node,
-    host=aixp_host,
-    port=aixp_port,
-    user=aixp_user,
-    password=aixp_pwd
-  )
+  if pye2_installed:    
+    aixp_host = module.params.get(AIXP_HOST)
+    aixp_port = module.params.get(AIXP_PORT)
+    aixp_user = module.params.get(AIXP_USER)
+    aixp_pwd = module.params.get(AIXP_PWD)
+    aixp_node = module.params.get(AIXP_NODE)
 
-  # manipulate or modify the state as needed (this is going to be the
-  # part where your module will do what it needs to do)
-  result['test_result'] = hb_result
-  failed = hb_result['success'] != True
-
+    hb_result = run_test(
+      target_node=aixp_node,
+      host=aixp_host,
+      port=aixp_port,
+      user=aixp_user,
+      password=aixp_pwd
+    )
+    result['test_result'] = hb_result
+    failed = hb_result['success'] != True
+  #end if pye2_installed
+  
   # use whatever logic you need to determine whether or not this module
   # made any modifications to your target
   CONDITION_CHANGED = False
