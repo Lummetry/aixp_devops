@@ -26,10 +26,14 @@ def run_module():
       required=False, 
     ),
     AIXP_PORT : dict(
-      type='str', 
+      type='int', 
       required=False, 
     ),
     AIXP_PWD : dict(
+      type='str', 
+      required=False, 
+    ),
+    AIXP_NODE : dict(
       type='str', 
       required=False, 
     ),
