@@ -42,6 +42,7 @@ all:
 
 
     ###### ADMIN-ONLY VARIABLES ######
+
     # ssh options
     ansible_ssh_common_args: "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" 
 
@@ -63,6 +64,8 @@ all:
     install_extra_packages: true
     # the name of the supervisor node
     aixp_supernode: "{{ 'str_super' if aixp_app_target=='staging' else 'pre_super' if aixp_app_target=='preprod' else 'prod_super' }}"
+    # test the AiXp connection even from the localhost-to-AiXp beside the host-to-AiXp
+    aixp_test_localhost: true
     ###### END ADMIN-ONLY VARIABLES ######
 
 

@@ -1,20 +1,27 @@
 ---
+#######################
+#   Localhost tests   #
+#######################                         
 - name: Install PyE2 package on localhost
   pip:
     name: pye2
     state: latest
   delegate_to: localhost
   become: false # No need to become root
-  when: inventory_hostname in groups['gpu_workers'][0]
+  when: 
+    - inventory_hostname in groups['gpu_workers'][0]
+    - aixp_test_localhost | default(true) | bool
 
-- name: Get version of pye2 Python package
+- name: Get localhost version of pye2 Python package
   ansible.builtin.shell:
     cmd: pip show pye2 | grep 'Version:' | awk '{print $2}'
   ignore_errors: true
   register: pye2_version_localhost
   delegate_to: localhost
   become: false
-  when: inventory_hostname in groups['gpu_workers'][0]
+  when: 
+    - inventory_hostname in groups['gpu_workers'][0]
+    - aixp_test_localhost | default(true) | bool
 
 - name: Show localhost PyE2 version
   debug:
@@ -24,6 +31,7 @@
   when: 
     - inventory_hostname in groups['gpu_workers'][0]
     - pye2_version_localhost is defined
+    - aixp_test_localhost | default(true) | bool
 
 - name: Running localhost test action
   test_action:
@@ -34,13 +42,26 @@
     test_node: "{{ inventory_hostname }}"    
   register: test_action_result
   become: false # No need to become root
-  when: inventory_hostname in groups['gpu_workers']
+  when: 
+    - inventory_hostname in groups['gpu_workers'][0]
+    - aixp_test_localhost | default(true) | bool
 
 - name: Display result of localhost test
   debug:
     msg: "{{ test_action_result }}"
   become: false # No need to become root
-  when: inventory_hostname in groups['gpu_workers']
+  when: 
+    - inventory_hostname in groups['gpu_workers'][0]
+    - aixp_test_localhost | default(true) | bool
+
+#########################
+#  End localhost tests  #
+#########################                 
+
+##################
+#   Host tests   #
+##################
+
 
 - name: Install PyE2 Python package on hosts
   ansible.builtin.pip:
@@ -92,3 +113,7 @@
     msg: "{{ test_module_result }}"
   become: false # No need to become root
   when: inventory_hostname in groups['gpu_workers']
+
+######################
+#   End host tests   #
+######################
