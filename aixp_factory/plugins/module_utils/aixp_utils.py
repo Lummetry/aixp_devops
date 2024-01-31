@@ -51,11 +51,16 @@ def run_test(target_node : str, hostname=None, port=None, username=None, passwor
       hostname=hostname,port=port,
       username=username, password=password,
     )
+    print("Connecting to {} via {}:{}@{}:{}...".format(
+        target_node, username, '*' * len(password), hostname, port,
+      ), 
+      flush=True,
+    )
     sess = pye2.Session(      
       on_heartbeat=on_hb,    
       **kwargs
     )  
-    sess.run(wait=120) # max 120 seconds or before
+    sess.run(wait=60) # max 60 seconds wait (hb are usually at 10-15s intervals)
   except Exception as exc:
     msg = str(exc)
     msg += f"{kwargs}"
