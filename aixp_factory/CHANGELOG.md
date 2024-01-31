@@ -33,6 +33,6 @@
  - added PyE2 tests
  - fix Nvidia container test
 
-## 0.5.7 - 2024-01-29
+## 0.5.8 - 2024-01-29
  - added plugin utils
  - finished aixp connection tests

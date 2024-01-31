@@ -23,7 +23,11 @@ def pye2_version():
   return version
 
 def run_test(target_node : str, host=None, port=None, user=None, password=None):
-  dct_result = {'success': False, 'result': f"Failed '{target_node}' after timeout", 'nodes' : []}  
+  dct_result = {
+    'success': False, 
+    'result': f"Failed '{target_node}' after timeout", # predefined failure message
+    'nodes' : [],
+  }  
   hosts = [target_node,] # add other nodes if needed
   def on_hb(session : pye2.Session, e2id : str, data : dict):    
     if e2id in hosts:

@@ -7,32 +7,32 @@ all:
     #######################################################
     ###### USER SECTION #1 ! MODIFY THE VALUES BELOW ######
     #######################################################
-    ansible_user: ""
-    # use either ansible_ssh_private_key_file or ansible_ssh_pass
-    ansible_ssh_private_key_file: "./key.pem"
-    # ansible_ssh_pass: ""
 
-    ansible_sudp_pass: ""
+    # use either ansible_ssh_private_key_file or ansible_ssh_pass
+    ansible_user: ""                            # the user to connect to the remote host    
+    ansible_ssh_private_key_file: "./key.pem"   # the path to the private key file
+    # ansible_ssh_pass: ""                        # the password to connect to the remote host if no private key is used
+    ansible_sudo_pass: ""                       # the password to become root on the remote host if required
 
     aixp_app_target: "staging"  # "staging" "preprod" "prod"
 
     # enter below the values for the target environment .env
-    dockerhub_username: "<dockerhub_username>"
-    dockerhub_password: "<dockerhub_password>"
+    dockerhub_username: "<dockerhub_username>"      # dockerhub username
+    dockerhub_password: "<dockerhub_password>"      # dockerhub password
     
-    aixp_EE_MINIO_ENDPOINT: "<minio_endpoint>"
-    aixp_EE_MINIO_ACCESS_KEY: "<minio_access_key>"
-    aixp_EE_MINIO_SECRET_KEY: "<minio_secret_key>"
-    aixp_EE_MINIO_SECURE: "true"
-    aixp_EE_GITVER: "<git_version_access_token>"
-    aixp_EE_OPENAI: "<openai_api_key>" # optional
-    aixp_EE_HF_TOKEN: "<huggingface_api_token>" # optional
+    aixp_EE_MINIO_ENDPOINT: "<minio_endpoint>"      # minio endpoint such as s3.prod.org.com
+    aixp_EE_MINIO_ACCESS_KEY: "<minio_access_key>"  # minio access key (username)
+    aixp_EE_MINIO_SECRET_KEY: "<minio_secret_key>"  # minio secret key (password)
+    aixp_EE_MINIO_SECURE: "true"                    # minio secure connection (true/false)
+    aixp_EE_GITVER: "<git_version_access_token>"    # git version access token (required)
+    aixp_EE_OPENAI: "<openai_api_key>"              # optional openai api key
+    aixp_EE_HF_TOKEN: "<huggingface_api_token>"     # optional huggingface api token
 
     # enter below the values for the MQTT broker
-    aixp_MQTT_HOST: "<mqtt_broker_address>"
-    aixp_MQTT_USER: "coreaixp" # or other user
-    aixp_EE_MQTT: "<mqtt_broker_password>"
-    aixp_MQTT_PORT: 1883
+    aixp_MQTT_HOST: "<mqtt_broker_address>"         # mqtt broker address such as mqtt.prod.org.com
+    aixp_MQTT_USER: "coreaixp"                      # mqtt broker username (default coreaixp)
+    aixp_EE_MQTT: "<mqtt_broker_password>"          # mqtt broker password (required)
+    aixp_MQTT_PORT: 1883                            # mqtt broker port (default 1883 for non-secure)
 
 
     ########################################################
