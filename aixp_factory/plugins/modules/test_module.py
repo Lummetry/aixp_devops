@@ -1,6 +1,6 @@
 from ansible.module_utils.basic import AnsibleModule
 
-from ansible_collections.aixp_factory.plugins.module_utils.aixp_utils import run_test, pye2_version
+from ansible.module_utils.aixp_utils import run_test, pye2_version
 
 
 def run_module():  

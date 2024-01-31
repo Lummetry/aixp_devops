@@ -41,7 +41,7 @@
     msg: "Running prereq tasks on {{ inventory_hostname }}: {{ ansible_host }}"
 
 
-- name: Display OS information
+- name: Display host OS information
   debug:
     msg: "OS: {{ ansible_distribution }} Version: {{ ansible_distribution_version }} Release: {{ ansible_distribution_release }}"
 
