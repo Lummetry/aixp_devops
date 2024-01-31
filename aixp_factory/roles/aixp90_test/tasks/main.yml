@@ -94,7 +94,7 @@
     test_user: "{{ aixp_MQTT_USER }}"
     test_pwd:  "{{ aixp_EE_MQTT }}"
     test_port: "{{ aixp_MQTT_PORT }}"
-    test_node: "{{ aixp_supernode | default(pre_super) }}"    
+    test_node: "{{ aixp_supernode | default('pre_super') }}"    
   async: 100 # wait no more than 60 seconds
   poll: 5   # check every 5 seconds
   register: test_module_result
