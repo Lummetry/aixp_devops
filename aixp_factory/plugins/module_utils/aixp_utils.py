@@ -22,7 +22,7 @@ def pye2_version():
   #end if
   return version
 
-def run_test(target_node : str, host=None, port=None, user=None, password=None):
+def run_test(target_node : str, hostname=None, port=None, username=None, password=None):
   dct_result = {
     'success': False, 
     'result': f"Failed '{target_node}' after timeout", # predefined failure message
@@ -35,7 +35,7 @@ def run_test(target_node : str, host=None, port=None, user=None, password=None):
       str_ram = data['MACHINE_MEMORY']
       str_free = data['AVAILABLE_MEMORY']
       str_free_disk = data['AVAILABLE_DISK']
-      msg = "Done: received hb from {} running on {}, RAM/Free: {:.1f}Gi/{:.1f}Gi, Free Disk: {:1f}Gi".format(
+      msg = "Done: received hb from {} running on {}, RAM/Free: {:.1f} Gi / {:.1f} Gi, Free Disk: {:.1f} Gi".format(
         e2id, str_cpu, str_ram, str_free, str_free_disk,
       )      
       print(msg)
@@ -46,10 +46,19 @@ def run_test(target_node : str, host=None, port=None, user=None, password=None):
       print("Rcv '{}' hb".format(e2id))
       dct_result['nodes'] = list(set(dct_result['nodes'] + [e2id,]))
     return
-  # run the session
-  pye2.Session(
-    host=host,port=port,
-    user=user, password=password,
-    on_heartbeat=on_hb,    
-  ).run(wait=120) # max 120 seconds or before
+  try:
+    kwargs = dict(
+      hostname=hostname,port=port,
+      username=username, password=password,
+    )
+    sess = pye2.Session(      
+      on_heartbeat=on_hb,    
+      **kwargs
+    )  
+    sess.run(wait=120) # max 120 seconds or before
+  except Exception as exc:
+    msg = str(exc)
+    msg += f"{kwargs}"
+    dct_result['result'] = msg
+  #end try
   return dct_result

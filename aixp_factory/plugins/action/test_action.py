@@ -52,9 +52,9 @@ class ActionModule(ActionBase):
     if pye2_installed:
       hb_result = run_test(
         target_node=aixp_node,
-        host=aixp_host,
+        hostname=aixp_host,
         port=aixp_port,
-        user=aixp_user,
+        username=aixp_user,
         password=aixp_pwd
       )          
       failed = hb_result['success'] != True
