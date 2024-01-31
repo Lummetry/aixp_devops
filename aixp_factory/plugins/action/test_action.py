@@ -2,7 +2,7 @@ from ansible.plugins.action import ActionBase
 from datetime import datetime
 
 
-from ansible.module_utils.aixp_utils import run_test, pye2_version
+from ansible_collections.aidamian.aixp_factory.plugins.module_utils.aixp_utils import run_test, pye2_version
 
 
 
