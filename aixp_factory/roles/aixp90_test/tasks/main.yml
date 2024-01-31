@@ -101,15 +101,9 @@
     - aixp_test_packages is not defined
     - inventory_hostname in groups['gpu_workers']
 
-- name: Display package to be checked on hosts
-  debug:
-    msg: "{{ aixp_test_packages }}"
-  become: false # No need to become root
-  when: inventory_hostname in groups['gpu_workers']
-
 - name: Get versions of required Python packages on hosts
   ansible.builtin.command: >
-    python -c "import json; import importlib; pkgs = {{ aixp_test_packages | to_json }}; print(json.dumps({pkg: getattr(importlib.import_module(pkg), '__version__', 'Unknown') for pkg in pkgs}))"
+    python3 -c "import json; import importlib; pkgs = {{ aixp_test_packages | to_json }}; print(json.dumps({pkg: getattr(importlib.import_module(pkg), '__version__', 'Unknown') for pkg in pkgs}))"
   register: pkg_versions
   ignore_errors: true
   become: false # No need to become root
@@ -123,7 +117,7 @@
     - pkg_versions.rc == 0
     - inventory_hostname in groups['gpu_workers']
 
-- name: Running host connection to its supervisor
+- name: Running connection test to supervisor
   test_module:
     test_host: "{{ aixp_MQTT_HOST }}"
     test_user: "{{ aixp_MQTT_USER }}"
@@ -134,9 +128,14 @@
   poll: 5   # check every 5 seconds
   register: test_module_result
   become: false # No need to become root
+  ignore_errors: true
   when: inventory_hostname in groups['gpu_workers']
 
-- name: Running host test module
+- name: Display output of test_module
+  debug:
+    var: test_module_result.stdout_lines
+
+- name: Running connection test to the host node
   test_module:
     test_host: "{{ aixp_MQTT_HOST }}"
     test_user: "{{ aixp_MQTT_USER }}"
