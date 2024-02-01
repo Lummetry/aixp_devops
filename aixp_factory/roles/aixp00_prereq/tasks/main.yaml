@@ -1,6 +1,12 @@
 ---
 #################################################################
 # localhost/control node tasks for environment setup/review
+
+- name: Gather localhost facts
+  setup:
+  delegate_to: localhost
+  when: inventory_hostname == groups['gpu_workers'][0]
+
 - name: Get control node hostname and currend directory
   ansible.builtin.shell:
     cmd: |
@@ -30,6 +36,12 @@
     msg: "{{ collection_version.stdout_lines }}"
   delegate_to: localhost 
   become: false
+  when: inventory_hostname == groups['gpu_workers'][0]
+
+- name: Check Python version on localhost
+  debug:
+    msg: "Python version on localhost {{ ansible_local.ansible_python.version }}"
+  delegate_to: localhost  
   when: inventory_hostname == groups['gpu_workers'][0]
 
 
