@@ -43,7 +43,7 @@
 
 - name: Display host OS information
   debug:
-    msg: "OS: {{ ansible_distribution }} Version: {{ ansible_distribution_version }} Release: {{ ansible_distribution_release }}"
+    msg: "OS: {{ ansible_distribution }}, Version: {{ ansible_distribution_version }}, Release: {{ ansible_distribution_release }}"
 
 
 - name: Update package lists
@@ -51,20 +51,85 @@
     update_cache: yes
     upgrade: yes
 
-# Install extra apps and packages
 
-- name: Install Python 3 and pip
-  apt:
-    name: "{{ item }}"
-    state: present
-    update_cache: yes
-  loop:
-    - python3
-    - python3-pip
+################### Install extra apps and packages ###################
+
+### Install python3.10
+
+- name: Check Python version
+  command: python3 --version
+  register: python_version
+  ignore_errors: true
+
+- name: Update, upgrade, and install Python 3.10
+  block:
+    - name: Update and upgrade apt packages
+      ansible.builtin.apt:
+        update_cache: yes
+        upgrade: yes
+        force_apt_get: yes
+
+    - name: Add deadsnakes PPA
+      ansible.builtin.apt_repository:
+        repo: ppa:deadsnakes/ppa
+        update_cache: yes
+
+    - name: Install Python 3.10
+      ansible.builtin.apt:
+        name: python3.10
+        update_cache: yes
+        state: present
   when: 
-    # - inventory_hostname == groups['gpu_workers'][0]
     - install_extra_packages | default(true) | bool
+    - >
+      python_version.stdout is not defined or 
+      (python_version.stdout is defined and python_version.stdout.split()[1] is version('3.10', '<'))
 
+- name: Check pip version
+  command: pip --version
+  register: pip_version
+  ignore_errors: true
+
+- name: Set system-wide alias for Python 3.10 and install pip
+  block:
+    - name: Add alias for Python 3.10 to /etc/bash.bashrc
+      ansible.builtin.lineinfile:
+        path: /etc/bash.bashrc
+        line: 'alias python3=python3.10'
+        create: yes
+
+    - name: Install pip using get-pip.py script
+      ansible.builtin.shell:
+        cmd: curl -sS https://bootstrap.pypa.io/get-pip.py | python3.10
+
+  when: 
+    - install_extra_packages | default(true) | bool
+    - >  
+      pip_version.stdout is not defined or 
+      (pip_version.stdout is defined and pip_version.stdout.split()[1] is version('23', '<'))
+      ("pip 23." not in pip_version.stdout)
+
+- name: Get python & pip versions
+  shell: |
+    python3 --version
+    pip --version
+  register: python_pip_version
+  become: false
+  when: 
+    - install_extra_packages | default(true) | bool
+    - inventory_hostname in groups['gpu_workers']
+
+- name: Show python & pip versions
+  debug:
+    msg: "{{ python_pip_version.stdout_lines }}"
+  become: false
+  when: 
+    - install_extra_packages | default(true) | bool
+    - inventory_hostname in groups['gpu_workers']
+
+### End install python3.10
+
+### Install Go
 
 - name: Install Go with Snap
   ansible.builtin.snap:
@@ -73,7 +138,7 @@
     channel: latest/stable
     state: present
   when: 
-    # - inventory_hostname == groups['gpu_workers'][0]
+    # - inventory_hostname in groups['gpu_workers'] 
     - install_extra_packages | default(true) | bool
 
 - name: Run go to get version
@@ -87,9 +152,12 @@
   debug:
     var: go_version.stdout_lines
   when: 
-    # - inventory_hostname == groups['gpu_workers'][0]
+    # - inventory_hostname in groups['gpu_workers'] 
     - install_extra_packages | default(true) | bool
-  
+
+# End install go
+
+################# End install extra apps and packages #################
 
 # Create the base folder for the app
 
