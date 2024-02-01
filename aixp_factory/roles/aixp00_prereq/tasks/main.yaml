@@ -1,13 +1,14 @@
 ---
-#################################################################
-# localhost/control node tasks for environment setup/review
+####################################################################
+#### localhost/control node tasks for environment setup/review  ####
+####################################################################
 
-- name: Gather localhost facts
+- name: CONTROL NODE - Gather localhost facts
   setup:
   delegate_to: localhost
   when: inventory_hostname == groups['gpu_workers'][0]
 
-- name: Get control node hostname and currend directory
+- name: CONTROL NODE - Get control node hostname and current directory
   ansible.builtin.shell:
     cmd: |
       hostname
@@ -17,42 +18,33 @@
   become: false
   when: inventory_hostname == groups['gpu_workers'][0]
 
-- name: Show control node hostname and currend directory
+- name: CONTROL NODE - Show control node hostname and currend directory
   debug:
     msg: "{{ control_node_info.stdout_lines }}"
   delegate_to: localhost 
   become: false
   when: inventory_hostname == groups['gpu_workers'][0]
 
-- name: Get control node factory version
+- name: CONTROL NODE - Get control node factory version
   shell: ansible-galaxy collection list 'aidamian.aixp_factory'
   register: collection_version
   delegate_to: localhost
   become: false
   when: inventory_hostname == groups['gpu_workers'][0]
 
-- name: Show control node factory version
+- name: CONTROL NODE - Show control node factory version
   debug:
     msg: "{{ collection_version.stdout_lines }}"
   delegate_to: localhost 
   become: false
   when: inventory_hostname == groups['gpu_workers'][0]
 
-- name: Check Python version on localhost hostvars
-  debug:
-    msg: "Python version on localhost {{ hostvars['localhost'] }}"
-  delegate_to: localhost  
-  when: inventory_hostname == groups['gpu_workers'][0]
 
-- name: Check Python version on localhost ansible_local
-  debug:
-    msg: "Python version on localhost {{ ansible_local }}"
-  delegate_to: localhost  
-  when: inventory_hostname == groups['gpu_workers'][0]
+########################################################################
+#### END localhost/control node tasks for environment setup/review  ####
+########################################################################
 
-
-# end of localhost/control node tasks for environment setup/review
-#################################################################
+# Actual startup of host tasks
 
 - name: Initial log display
   debug:
@@ -69,17 +61,35 @@
     update_cache: yes
     upgrade: yes
 
-
 ################### Install extra apps and packages ###################
 
 ### Install python3.10
 
+- name: Get python version
+  block:
+    - name: Get python version
+      shell: python3 --version
+      register: python_version
+    
+    - name: Parse version
+      set_fact:
+        target_py_major: "{{ python_version.stdout.split()[1].split('.')[0] }}"
+        target_py_minor: "{{ python_version.stdout.split()[1].split('.')[1] }}"
+        target_py_version: "{{ target_py_major }}.{{ target_py_minor }}"
+      when: python_version.stdout is defined
+  become: false
+  when: 
+    - install_extra_packages | default(true) | bool
+    - inventory_hostname in groups['gpu_workers']
+
+
 - name: Show python version
   debug:
-    msg: "Python {{ ansible_python.version }}"
+    msg: "Target host has Python {{ target_py_version }} while control has {{ ansible_python.version.major }}.{{ ansible_python.version.minor }}"
   when: 
     # - inventory_hostname in groups['gpu_workers']
     - install_extra_packages | default(true) | bool
+    - target_py_version is defined
 
 - name: Update, upgrade, and install Python 3.10
   block:
@@ -108,7 +118,7 @@
   when: 
     # - inventory_hostname in groups['gpu_workers']
     - install_extra_packages | default(true) | bool
-    - ansible_python.version.major == 3 and ansible_python.version.minor < 10        
+    - target_py_version is not defined or (target_py_major == 3 and target_py_minor < 10)
 
 
 - name: Get python version
