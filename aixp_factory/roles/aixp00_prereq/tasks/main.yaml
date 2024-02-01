@@ -107,7 +107,6 @@
     - >  
       pip_version.stdout is not defined or 
       (pip_version.stdout is defined and pip_version.stdout.split()[1] is version('23', '<'))
-      ("pip 23." not in pip_version.stdout)
 
 - name: Get python & pip versions
   shell: |
