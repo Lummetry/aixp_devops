@@ -37,5 +37,5 @@
  - added plugin utils
  - finished aixp connection tests
 
-## 0.5.23 - 2024-01-30
+## 0.5.24 - 2024-01-30
  - better python/pip install tasks

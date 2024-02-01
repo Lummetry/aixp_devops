@@ -56,10 +56,12 @@
 
 ### Install python3.10
 
-- name: Check Python version
-  command: python3 --version
-  register: python_version
-  ignore_errors: true
+- name: Show python version
+  debug:
+    msg: "Python {{ ansible_python.version }}"
+  when: 
+    # - inventory_hostname in groups['gpu_workers']
+    - install_extra_packages | default(true) | bool
 
 - name: Update, upgrade, and install Python 3.10
   block:
@@ -69,58 +71,73 @@
         upgrade: yes
         force_apt_get: yes
 
-    - name: Add deadsnakes PPA
+    - name: Add the Deadsnakes PPA
       ansible.builtin.apt_repository:
         repo: ppa:deadsnakes/ppa
+        codename: "{{ ansible_distribution_release }}"
         update_cache: yes
+      when: ansible_distribution == 'Ubuntu'
 
     - name: Install Python 3.10
       ansible.builtin.apt:
         name: python3.10
         update_cache: yes
         state: present
+
+    - name: Update python3 symlink to point to python3.10
+      ansible.builtin.command:
+        cmd: update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 1
+  when: 
+    # - inventory_hostname in groups['gpu_workers']
+    - install_extra_packages | default(true) | bool
+    - ansible_python.version.major == 3 and ansible_python.version.minor < 10        
+
+
+- name: Get python version
+  shell: python3 --version
+  register: python_update_version
+  become: false
   when: 
     - install_extra_packages | default(true) | bool
-    - >
-      python_version.stdout is not defined or 
-      (python_version.stdout is defined and python_version.stdout.split()[1] is version('3.10', '<'))
+    - inventory_hostname in groups['gpu_workers']
+
+- name: Show python update version
+  debug:
+    msg: "{{ python_update_version.stdout_lines }}"
+  become: false
+  when: 
+    - install_extra_packages | default(true) | bool
+    - inventory_hostname in groups['gpu_workers']
+
+### Install pip
 
 - name: Check pip version
   command: pip --version
   register: pip_version
   ignore_errors: true
+  when: 
+    - install_extra_packages | default(true) | bool
 
-- name: Set system-wide alias for Python 3.10 and install pip
-  block:
-    - name: Add alias for Python 3.10 to /etc/bash.bashrc
-      ansible.builtin.lineinfile:
-        path: /etc/bash.bashrc
-        line: 'alias python3=python3.10'
-        create: yes
-
-    - name: Install pip using get-pip.py script
-      ansible.builtin.shell:
-        cmd: curl -sS https://bootstrap.pypa.io/get-pip.py | python3.10
-
+- name: Install pip using get-pip.py script
+  ansible.builtin.shell:
+    cmd: curl -sS https://bootstrap.pypa.io/get-pip.py | python3
   when: 
     - install_extra_packages | default(true) | bool
     - >  
       pip_version.stdout is not defined or 
       (pip_version.stdout is defined and pip_version.stdout.split()[1] is version('23', '<'))
 
-- name: Get python & pip versions
-  shell: |
-    python3 --version
-    pip --version
-  register: python_pip_version
+- name: Get pip version
+  shell: pip --version
+  register: pip_update_version
   become: false
   when: 
     - install_extra_packages | default(true) | bool
     - inventory_hostname in groups['gpu_workers']
 
-- name: Show python & pip versions
+- name: Show pip update version
   debug:
-    msg: "{{ python_pip_version.stdout_lines }}"
+    msg: "{{ pip_update_version.stdout_lines }}"
   become: false
   when: 
     - install_extra_packages | default(true) | bool
