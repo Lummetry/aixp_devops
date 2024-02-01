@@ -38,9 +38,15 @@
   become: false
   when: inventory_hostname == groups['gpu_workers'][0]
 
-- name: Check Python version on localhost
+- name: Check Python version on localhost hostvars
   debug:
-    msg: "Python version on localhost {{ ansible_local.ansible_python.version }}"
+    msg: "Python version on localhost {{ hostvars['localhost'] }}"
+  delegate_to: localhost  
+  when: inventory_hostname == groups['gpu_workers'][0]
+
+- name: Check Python version on localhost ansible_local
+  debug:
+    msg: "Python version on localhost {{ ansible_local }}"
   delegate_to: localhost  
   when: inventory_hostname == groups['gpu_workers'][0]
 
