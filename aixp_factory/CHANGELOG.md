@@ -40,6 +40,7 @@
 ## 0.5.27 - 2024-02-01
  - better python/pip install tasks
 
-## 0.7.0 - 2024-02-02
+## 0.7.2 - 2024-02-02
  - removed Py3.10 required install
  - working end-to-end tests
+ - refactor & cleanup

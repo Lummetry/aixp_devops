@@ -29,12 +29,6 @@
   changed_when: false
   ignore_errors: true
 
-- name: Show test raw output
-  ansible.builtin.debug:
-    msg: "{{ test_raw_output }}"
-  become: false
-  when: 
-    - test_raw_output.stdout is defined
 
 - name: Parse test output
   ansible.builtin.set_fact:
@@ -42,13 +36,6 @@
   become: false
   when: 
     - test_raw_output.stdout is defined
-
-- name: Show test output
-  ansible.builtin.debug:
-    msg: "{{ test_output }}"
-  become: false
-  when: 
-    - test_output is defined
 
 - name: Set execution log, result and success
   ansible.builtin.set_fact:
