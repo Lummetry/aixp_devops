@@ -1,0 +1,31 @@
+
+- name: Update, upgrade, and install Python 3.10
+  block:
+    - name: Update and upgrade apt packages
+      ansible.builtin.apt:
+        update_cache: yes
+        upgrade: yes
+        force_apt_get: yes
+
+    - name: Add the Deadsnakes PPA
+      ansible.builtin.apt_repository:
+        repo: ppa:deadsnakes/ppa
+        codename: "{{ ansible_distribution_release }}"
+        update_cache: yes
+      when: ansible_distribution == 'Ubuntu'
+
+    - name: Install Python 3.10
+      ansible.builtin.apt:
+        name: python3.10
+        update_cache: yes
+        state: present
+
+    - name: Update python3 symlink to point to python3.10
+      ansible.builtin.command:
+        cmd: update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 1
+
+  when: 
+    # - inventory_hostname in groups['gpu_workers']
+    - install_extra_packages | default(true) | bool
+    - target_py_version is not defined or (target_py_major | int == 3 and target_py_minor | int < 10)
+

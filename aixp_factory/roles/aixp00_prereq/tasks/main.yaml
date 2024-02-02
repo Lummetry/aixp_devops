@@ -7,6 +7,7 @@
   setup:
   delegate_to: localhost
   when: inventory_hostname == groups['gpu_workers'][0]
+  become: false
 
 - name: CONTROL NODE - Get control node hostname and current directory
   ansible.builtin.shell:
@@ -20,7 +21,7 @@
 
 - name: CONTROL NODE - Show control node hostname and currend directory
   debug:
-    msg: "{{ control_node_info.stdout_lines }}"
+    var: control_node_info.stdout_lines
   delegate_to: localhost 
   become: false
   when: inventory_hostname == groups['gpu_workers'][0]
@@ -34,7 +35,7 @@
 
 - name: CONTROL NODE - Show control node factory version
   debug:
-    msg: "{{ collection_version.stdout_lines }}"
+    var: collection_version.stdout_lines
   delegate_to: localhost 
   become: false
   when: inventory_hostname == groups['gpu_workers'][0]
@@ -50,92 +51,34 @@
   debug:
     msg: "Running prereq tasks on {{ inventory_hostname }}: {{ ansible_host }}"
 
-
 - name: Display host OS information
   debug:
     msg: "OS: {{ ansible_distribution }}, Version: {{ ansible_distribution_version }}, Release: {{ ansible_distribution_release }}"
 
-
-- name: Update package lists
-  apt:
-    update_cache: yes
-    upgrade: yes
-
-################### Install extra apps and packages ###################
-
-### Install python3.10
-
-- name: Get python version
-  block:
-    - name: Get python version
-      shell: python3 --version
-      register: python_version
+- name: Get target host python version
+  become: false
+  shell: python3 --version
+  register: python_version
+  when: 
+    - inventory_hostname in groups['gpu_workers']
     
-    - name: Parse version
-      set_fact:
-        target_py_major: "{{ python_version.stdout.split()[1].split('.')[0] }}"
-        target_py_minor: "{{ python_version.stdout.split()[1].split('.')[1] }}"
-        target_py_version: "{{ target_py_major }}.{{ target_py_minor }}"
-      when: python_version.stdout is defined
+- name: Parse version
+  set_fact:
+    target_py_major: "{{ python_version.stdout.split()[1].split('.')[0] }}"
+    target_py_minor: "{{ python_version.stdout.split()[1].split('.')[1] }}"
+    target_py_version: "{{ python_version.stdout.split()[1].split('.')[0] }}.{{ python_version.stdout.split()[1].split('.')[1] }}"
   become: false
   when: 
-    - install_extra_packages | default(true) | bool
     - inventory_hostname in groups['gpu_workers']
+    - python_version.stdout is defined
 
 
 - name: Show python version
   debug:
     msg: "Target host has Python {{ target_py_version }} while control has {{ ansible_python.version.major }}.{{ ansible_python.version.minor }}"
   when: 
-    # - inventory_hostname in groups['gpu_workers']
-    - install_extra_packages | default(true) | bool
+    - inventory_hostname in groups['gpu_workers']
     - target_py_version is defined
-
-- name: Update, upgrade, and install Python 3.10
-  block:
-    - name: Update and upgrade apt packages
-      ansible.builtin.apt:
-        update_cache: yes
-        upgrade: yes
-        force_apt_get: yes
-
-    - name: Add the Deadsnakes PPA
-      ansible.builtin.apt_repository:
-        repo: ppa:deadsnakes/ppa
-        codename: "{{ ansible_distribution_release }}"
-        update_cache: yes
-      when: ansible_distribution == 'Ubuntu'
-
-    - name: Install Python 3.10
-      ansible.builtin.apt:
-        name: python3.10
-        update_cache: yes
-        state: present
-
-    - name: Update python3 symlink to point to python3.10
-      ansible.builtin.command:
-        cmd: update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 1
-  when: 
-    # - inventory_hostname in groups['gpu_workers']
-    - install_extra_packages | default(true) | bool
-    - target_py_version is not defined or (target_py_major == 3 and target_py_minor < 10)
-
-
-- name: Get python version
-  shell: python3 --version
-  register: python_update_version
-  become: false
-  when: 
-    - install_extra_packages | default(true) | bool
-    - inventory_hostname in groups['gpu_workers']
-
-- name: Show python update version
-  debug:
-    msg: "{{ python_update_version.stdout_lines }}"
-  become: false
-  when: 
-    - install_extra_packages | default(true) | bool
-    - inventory_hostname in groups['gpu_workers']
 
 ### Install pip
 
@@ -144,23 +87,49 @@
   register: pip_version
   ignore_errors: true
   when: 
-    - install_extra_packages | default(true) | bool
+    - inventory_hostname in groups['gpu_workers']
+
+- name: Parse pip version
+  set_fact:
+    pip_major: "{{ pip_version.stdout.split()[1].split('.')[0] }}"
+    pip_minor: "{{ pip_version.stdout.split()[1].split('.')[1] }}"
+  when: 
+    - inventory_hostname in groups['gpu_workers']
+    - pip_version.rc == 0
+
+- name: Show pip version
+  debug:
+    msg: "Pip version: {{ pip_major }}.{{ pip_minor }}"
+  when: 
+    - inventory_hostname in groups['gpu_workers']
+    - pip_version.rc == 0
+
+- name: Determine if pip needs to be installed
+  set_fact:
+    pip_needs_install: true
+  when:
+    - inventory_hostname in groups['gpu_workers']
+    - pip_version.rc != 0
+
+- name: Determine if pip needs to be upgraded
+  set_fact:
+    pip_needs_update: "{{ pip_major | int < 23 }}"
+  when: 
+    - inventory_hostname in groups['gpu_workers']
+    - pip_major is defined    
 
 - name: Install pip using get-pip.py script
   ansible.builtin.shell:
     cmd: curl -sS https://bootstrap.pypa.io/get-pip.py | python3
   when: 
-    - install_extra_packages | default(true) | bool
-    - >  
-      pip_version.stdout is not defined or 
-      (pip_version.stdout is defined and pip_version.stdout.split()[1] is version('23', '<'))
+    - inventory_hostname in groups['gpu_workers']
+    - (pip_needs_update | default(false)) or (pip_needs_install | default(false))
 
 - name: Get pip version
   shell: pip --version
   register: pip_update_version
   become: false
   when: 
-    - install_extra_packages | default(true) | bool
     - inventory_hostname in groups['gpu_workers']
 
 - name: Show pip update version
@@ -168,12 +137,28 @@
     msg: "{{ pip_update_version.stdout_lines }}"
   become: false
   when: 
-    - install_extra_packages | default(true) | bool
     - inventory_hostname in groups['gpu_workers']
 
-### End install python3.10
+################### Install extra apps and packages ###################
 
-### Install Go
+
+### Install Snap & Go
+
+- name: Check if Snap is installed
+  command: which snap
+  register: snap_installed
+  failed_when: false
+  changed_when: false
+
+- name: Display if snap is installed or not
+  debug:
+    msg: "Snap is installed: {{ snap_installed.rc == 0 }}"
+
+- name: Install Snap package
+  package:
+    name: snapd
+    state: present
+  when: snap_installed.rc != 0
 
 - name: Install Go with Snap
   ansible.builtin.snap:

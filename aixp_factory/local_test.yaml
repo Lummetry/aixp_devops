@@ -4,8 +4,8 @@
   become: true
   gather_facts: true
   roles:
-    - aidamian.aixp_factory.aixp00_prereq
+    - aixp00_prereq
     # - aidamian.aixp_factory.aixp02_docker
-    - aidamian.aixp_factory.aixp90_test_prep
-    - aidamian.aixp_factory.aixp91_test_exec
+    - aixp90_test_prep
+    - aixp91_test_exec
     # - s02_deploy

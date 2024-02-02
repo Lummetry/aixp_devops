@@ -1,4 +1,6 @@
-from time import time 
+import json
+
+from time import time
 
 try:
   import PyE2 as pye2 
@@ -23,51 +25,75 @@ def pye2_version():
   #end if
   return version
 
+OUTPUT = {
+  'log' : [],
+}
+def add_log(msg, **kwargs):
+  OUTPUT['log'].append(msg)
+  return
+
 def run_test(target_node : str, hostname=None, port=None, username=None, password=None):
   dct_result = {
     'success': False, 
     'result': f"Failed '{target_node}' after timeout", # predefined failure message
     'nodes' : [],
   }  
-  start_test_time = time()
+  start_time = time()
   hosts = [target_node,] # add other nodes if needed
   def on_hb(session : pye2.Session, e2id : str, data : dict):    
+    elapsed = time() - start_time
     if e2id in hosts:
       str_cpu = data['CPU']      
       str_ram = data['MACHINE_MEMORY']
       str_free = data['AVAILABLE_MEMORY']
       str_free_disk = data['AVAILABLE_DISK']
-      msg = "Done: received hb from {} running on {}, RAM/Free: {:.1f} Gi / {:.1f} Gi, Free Disk: {:.1f} Gi".format(
-        e2id, str_cpu, str_ram, str_free, str_free_disk,
+      msg = "Received hb from {} after {:.1f}s. CPU: {}, RAM/Free: {:.1f} Gi / {:.1f} Gi, Free Disk: {:.1f} Gi".format(
+        e2id, elapsed, str_cpu, str_ram, str_free, str_free_disk,
       )      
-      print(msg)
+      add_log(msg)
       dct_result['success'] = True
       dct_result['result'] = msg
       session.close()
     else:
-      print("Rcv '{}' hb at {:.1f}s".format(e2id, time() - start_test_time))
+      add_log("Rcv '{}' hb after {:.1f}s".format(e2id, elapsed))
       dct_result['nodes'] = list(set(dct_result['nodes'] + [e2id,]))
     return
+  #end def on_hearbeat callback
   try:
     kwargs = dict(
       hostname=hostname,port=port,
       username=username, password=password,
     )
-    print("Connecting to {} via {}:{}@{}:{}...".format(
+    add_log("Connecting to {} via {}:{}@{}:{}...".format(
         target_node, username, '*' * len(password), hostname, port,
-      ), 
-      flush=True,
-    )
+    ))
     sess = pye2.Session(      
-      on_heartbeat=on_hb,   
+      on_heartbeat=on_hb,  
+      silent=True, 
       verbosity=0, 
       **kwargs
     )  
     sess.run(wait=60) # max 60 seconds wait (hb are usually at 10-15s intervals)
-    #
   except Exception as exc:
     msg = str(exc)
     msg += f"{kwargs}"
     dct_result['result'] = msg
   #end try
   return dct_result
+
+
+if __name__ == '__main__':
+  start_time = time()
+  add_log(f"PyE2 version: {pye2_version()}")
+  add_log("Running test...")
+  dct_result = run_test(
+    target_node='{{ test_node }}',
+    hostname='{{ test_host }}',
+    port='{{ test_port }}',
+    username='{{ test_user }}',
+    password='{{ test_pwd }}',
+  )
+  OUTPUT.update(dct_result)
+  end_time = time()
+  OUTPUT['elapsed'] = end_time - start_time
+  print(json.dumps(OUTPUT, indent=2, sort_keys=True, default=str))

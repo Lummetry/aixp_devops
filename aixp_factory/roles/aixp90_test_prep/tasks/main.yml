@@ -1,0 +1,85 @@
+---
+#######################
+#   Localhost prep    #
+#######################                         
+- name: CONTROL NODE - Install PyE2 package on localhost
+  pip:
+    name: pye2
+    state: latest
+  delegate_to: localhost
+  become: false # No need to become root
+  when: 
+    - inventory_hostname in groups['gpu_workers'][0]
+    - aixp_test_localhost | default(true) | bool
+
+- name: CONTROL NODE - Get localhost version of pye2 Python package
+  ansible.builtin.shell:
+    cmd: pip show pye2 | grep 'Version:' | awk '{print $2}'
+  ignore_errors: true
+  register: pye2_version_localhost
+  delegate_to: localhost
+  become: false
+  when: 
+    - inventory_hostname in groups['gpu_workers'][0]
+    - aixp_test_localhost | default(true) | bool
+
+- name: CONTROL NODE - Show localhost PyE2 version
+  debug:
+    msg: "PyE2 version: {{ pye2_version_localhost.stdout }}"
+  delegate_to: localhost
+  become: false
+  when: 
+    - inventory_hostname in groups['gpu_workers'][0]
+    - pye2_version_localhost is defined
+    - aixp_test_localhost | default(true) | bool
+
+
+#########################
+#  End localhost prep  #
+#########################                 
+
+##################
+#   Host tests   #
+##################
+
+
+- name: Install PyE2 Python package on hosts
+  ansible.builtin.pip:
+    name: PyE2
+    state: latest  
+  become: false # No need to become root
+  when: inventory_hostname in groups['gpu_workers']
+
+
+- name: Prepare list of Python packages to install on hosts 2
+  ansible.builtin.set_fact:    
+    aixp_test_packages:
+      - PyE2
+      - pika
+      - paho
+      - numpy
+      - cryptography
+  become: false # No need to become root
+  when: 
+    - inventory_hostname in groups['gpu_workers']
+
+- name: Running ver check on "pkgs = {{ aixp_test_packages }}"
+  ansible.builtin.command: >
+    python3 -c "import json; import importlib; pkgs = {{ aixp_test_packages }}; print(json.dumps({pkg: getattr(importlib.import_module(pkg), '__version__', 'Unknown') for pkg in pkgs}))"
+  register: pkg_versions
+  ignore_errors: true
+  become: false # No need to become root
+  when: inventory_hostname in groups['gpu_workers']
+
+- name: Display versions of required Python packages on hosts
+  ansible.builtin.debug:
+    msg: "{{ pkg_versions.stdout }}"
+  become: false # No need to become root
+  when: 
+    - pkg_versions.rc == 0
+    - inventory_hostname in groups['gpu_workers']
+
+
+##########################
+#   End host test prep   #
+##########################

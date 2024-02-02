@@ -1,0 +1,77 @@
+---
+- name: Create AiXp test folder in user home
+  ansible.builtin.file:
+    path: "/home/{{ ansible_user }}/.aixp_testing"
+    state: directory
+  become: false
+
+- name: Set facts for python script
+  ansible.builtin.set_fact:
+    test_host: "{{ aixp_MQTT_HOST }}"
+    test_user: "{{ aixp_MQTT_USER }}"
+    test_pwd:  "{{ aixp_EE_MQTT }}"
+    test_port: "{{ aixp_MQTT_PORT }}"
+    test_node: "{{ aixp_supernode | default('pre_super') }}"
+  become: false
+
+- name: Create test.py from template
+  ansible.builtin.template:
+    src: aixp_test.py.j2
+    dest: "/home/{{ ansible_user }}/.aixp_testing/aixp_test.py"
+  become: false
+
+- name: "Run test with {{ test_node }} via {{ test_host }}:{{ test_port }} with timeout"
+  ansible.builtin.shell: |
+    cd "/home/{{ ansible_user }}/.aixp_testing/" && timeout --foreground 100 python3 aixp_test.py
+  become: false
+  register: test_raw_output
+  failed_when: false
+  changed_when: false
+  ignore_errors: true
+
+- name: Show test raw output
+  ansible.builtin.debug:
+    msg: "{{ test_raw_output }}"
+  become: false
+  when: 
+    - test_raw_output.stdout is defined
+
+- name: Parse test output
+  ansible.builtin.set_fact:
+    test_output: "{{ test_raw_output.stdout | from_json }}"
+  become: false
+  when: 
+    - test_raw_output.stdout is defined
+
+- name: Show test output
+  ansible.builtin.debug:
+    msg: "{{ test_output }}"
+  become: false
+  when: 
+    - test_output is defined
+
+- name: Set execution log, result and success
+  ansible.builtin.set_fact:
+    test_log: "{{ test_output.log }}"
+    test_result: "{{ test_output.result }}"
+    test_success: "{{ test_output.success }}"
+  become: false
+  when: 
+    - test_output is defined
+
+- name: Show execution log
+  ansible.builtin.debug:
+    msg: "{{ test_log }}"
+  become: false
+  when: 
+    - test_output is defined
+
+- name: Show test result
+  ansible.builtin.debug:
+    msg: "Success: {{ test_success }}, Info: {{ test_result }}"
+  become: false
+  failed_when: test_success == false
+  when: 
+    - test_output is defined
+
+

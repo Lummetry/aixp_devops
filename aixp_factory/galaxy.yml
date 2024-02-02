@@ -1,7 +1,7 @@
 namespace: aidamian
 name: aixp_factory
 
-version: 0.5.27
+version: 0.7.0
 
 readme: README.md
 
@@ -20,5 +20,8 @@ build_ignore:
   - .env
   - build.sh
   - install-factory.sh
+  - local_test.yaml
+  - test_run.sh
+  - ansible.cfg
 
 repository: 'https://github.com/lummetry/aixp_devops'
