@@ -1,1 +1,0 @@
-Role for testing K8s installation with inference API in GPU-enabled pod
