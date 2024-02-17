@@ -117,7 +117,7 @@
   when: 
     - inventory_hostname in groups['gpu_workers']
     - pip_major is defined    
-
+    
 - name: Install pip using get-pip.py script
   ansible.builtin.shell:
     cmd: curl -sS https://bootstrap.pypa.io/get-pip.py | python3
