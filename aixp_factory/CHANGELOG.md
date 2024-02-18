@@ -44,3 +44,6 @@
  - removed Py3.10 required install
  - working end-to-end tests
  - refactor & cleanup
+
+## 0.7.3 - 2024-02-02
+ - fixed pip install

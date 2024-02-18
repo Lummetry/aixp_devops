@@ -118,23 +118,33 @@
     - inventory_hostname in groups['gpu_workers']
     - pip_major is defined    
     
-- name: Install pip using get-pip.py script
-  ansible.builtin.shell:
-    cmd: curl -sS https://bootstrap.pypa.io/get-pip.py | python3
+# - name: Install pip using get-pip.py script
+#   ansible.builtin.shell:
+#     cmd: curl -sS https://bootstrap.pypa.io/get-pip.py | python3
+#   become: true
+#   when: 
+#     - inventory_hostname in groups['gpu_workers']
+#     - pip_needs_install | default(false) | bool
+#   register: pip_install
+#     - inventory_hostname in groups['gpu_workers']
+#     - (pip_needs_update | default(false)) or (pip_needs_install | default(false))
+
+# - name: Show pip install output
+#   debug:
+#     var: pip_install
+#   when: 
+#     - inventory_hostname in groups['gpu_workers']
+#     - (pip_needs_update | default(false)) or (pip_needs_install | default(false))
+
+- name: Install pip using apt
+  ansible.builtin.apt:
+    update_cache: true
+    name: python3-pip
+    state: present
   become: true
   when: 
     - inventory_hostname in groups['gpu_workers']
     - pip_needs_install | default(false) | bool
-  register: pip_install
-    - inventory_hostname in groups['gpu_workers']
-    - (pip_needs_update | default(false)) or (pip_needs_install | default(false))
-
-- name: Show pip install output
-  debug:
-    var: pip_install
-  when: 
-    - inventory_hostname in groups['gpu_workers']
-    - (pip_needs_update | default(false)) or (pip_needs_install | default(false))
 
 - name: Get pip version
   shell: pip --version
