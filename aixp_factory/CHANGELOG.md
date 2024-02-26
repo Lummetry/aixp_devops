@@ -47,3 +47,6 @@
 
 ## 0.7.3 - 2024-02-02
  - fixed pip install
+
+## 0.7.4 - 2024-02-26
+ - fixed doker prune
