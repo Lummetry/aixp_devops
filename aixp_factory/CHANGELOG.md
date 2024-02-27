@@ -50,3 +50,6 @@
 
 ## 0.7.4 - 2024-02-26
  - fixed doker prune
+
+## 0.7.5 - 2024-02-27
+ - non-mandatory Snap install

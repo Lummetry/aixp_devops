@@ -179,6 +179,7 @@
   package:
     name: snapd
     state: present
+  failed_when: false
   when: snap_installed.rc != 0
 
 - name: Install Go with Snap
@@ -187,6 +188,7 @@
     classic: yes
     channel: latest/stable
     state: present
+  failed_when: false
   when: 
     # - inventory_hostname in groups['gpu_workers'] 
     - install_extra_packages | default(true) | bool
@@ -194,6 +196,7 @@
 - name: Run go to get version
   shell: go version
   register: go_version
+  failed_when: false
   when: 
     # - inventory_hostname == groups['gpu_workers'][0]
     - install_extra_packages | default(true) | bool
@@ -201,6 +204,7 @@
 - name: Show go version
   debug:
     var: go_version.stdout_lines
+  failed_when: false
   when: 
     # - inventory_hostname in groups['gpu_workers'] 
     - install_extra_packages | default(true) | bool
