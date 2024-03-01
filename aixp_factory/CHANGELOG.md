@@ -57,6 +57,7 @@
 ## 0.7.6 - 2024-02-27
  - non-mandatory Snap install
 
-## 0.7.9 - 2024-03-01
+## 0.7.10 - 2024-03-01
  - verbosity
  - fixed os check
+ - fixed apt upgrade

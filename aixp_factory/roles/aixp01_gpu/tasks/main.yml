@@ -67,7 +67,6 @@
   when: nvidia_smi_check1.rc != 0
   apt:
     update_cache: yes
-    upgrade: yes
     name:
       - nvidia-driver-535
     state: present
