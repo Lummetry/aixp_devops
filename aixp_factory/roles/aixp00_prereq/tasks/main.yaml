@@ -55,6 +55,18 @@
   debug:
     msg: "OS: {{ ansible_distribution }}, Version: {{ ansible_distribution_version }}, Release: {{ ansible_distribution_release }}"
 
+- name: Get ubuntu version with lsb_release -a
+  shell: lsb_release -a
+  register: ubuntu_version_lsb
+  when: 
+    - inventory_hostname in groups['gpu_workers']
+
+- name: Show ubuntu version
+  debug:
+    msg: "{{ ubuntu_version_lsb.stdout_lines }}"
+  when: 
+    - inventory_hostname in groups['gpu_workers']
+
 - name: Get target host python version
   become: false
   shell: python3 --version

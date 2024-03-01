@@ -61,6 +61,7 @@
   # Outputs the list of available GPGPU drivers for informational purposes.
 
 - name: Install NVIDIA driver
+  become: true
   when: nvidia_smi_check1.rc != 0
   apt:
     name:
