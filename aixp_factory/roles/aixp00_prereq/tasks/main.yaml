@@ -40,6 +40,11 @@
   become: false
   when: inventory_hostname == groups['gpu_workers'][0]
 
+- name: CONTROL NODE - Display OS information
+  debug:
+    msg: "OS: {{ ansible_distribution }}, Version: {{ ansible_distribution_version }}, Release: {{ ansible_distribution_release }}"
+
+
 
 ########################################################################
 #### END localhost/control node tasks for environment setup/review  ####
@@ -50,10 +55,6 @@
 - name: Initial log display
   debug:
     msg: "Running prereq tasks on {{ inventory_hostname }}: {{ ansible_host }}"
-
-- name: Display host OS information
-  debug:
-    msg: "OS: {{ ansible_distribution }}, Version: {{ ansible_distribution_version }}, Release: {{ ansible_distribution_release }}"
 
 - name: Get ubuntu version with lsb_release -a
   shell: lsb_release -a
