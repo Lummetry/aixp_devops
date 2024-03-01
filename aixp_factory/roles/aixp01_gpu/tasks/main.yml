@@ -31,13 +31,9 @@
   # It ensures that subsequent tasks do not run before the system is ready.
 
 - name: Update package lists
-  when: nvidia_smi_check1.rc != 0
   apt:
     update_cache: yes
     upgrade: yes
-  # Runs only if initial nvidia-smi check failed.
-  # Update the package lists and upgrade packages only if NVIDIA drivers were not found.
-  # This is essential to ensure the latest packages and dependencies are installed.
 
 - name: Install NTP
   apt:
@@ -60,14 +56,21 @@
   # Runs only if initial nvidia-smi check failed.
   # Outputs the list of available GPGPU drivers for informational purposes.
 
+- name: Extra update package lists
+  become: true
+  apt:
+    update_cache: yes
+    upgrade: yes
+
 - name: Install NVIDIA driver
   become: true
   when: nvidia_smi_check1.rc != 0
   apt:
+    update_cache: yes
+    upgrade: yes
     name:
       - nvidia-driver-535
     state: present
-    update_cache: yes
   register: nvidia_driver_installation
   # Runs only if initial nvidia-smi check failed.
   # Installs the specified NVIDIA driver. The version should be updated as needed.
