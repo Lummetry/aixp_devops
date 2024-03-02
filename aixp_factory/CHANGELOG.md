@@ -61,3 +61,6 @@
  - verbosity
  - fixed os check
  - fixed apt upgrade
+
+## 0.7.11 - 2024-03-02
+ - no spaces allowed in host names

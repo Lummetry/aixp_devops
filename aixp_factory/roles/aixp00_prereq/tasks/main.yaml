@@ -52,6 +52,11 @@
 
 # Actual startup of host tasks
 
+- name: Verify if each inventory_hostname has correct name with no spaces
+  assert:
+    that: "' ' not in inventory_hostname"
+    msg: "Inventory_hostname has spaces or special characters. Please correct it."
+
 - name: Initial log display
   debug:
     msg: "Running prereq tasks on {{ inventory_hostname }}: {{ ansible_host }}"
