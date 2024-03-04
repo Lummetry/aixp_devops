@@ -71,6 +71,7 @@
     - not config_app_check.stat.exists
     - aixp_app in ["aixp_ee"]
 
+
 - name: "Create /etc/systemd/system/{{ aixp_app }}.service"
   ansible.builtin.template:
     src: "{{ aixp_app }}.service.j2"
@@ -181,6 +182,16 @@
   become: false
 
 
+- name: "Create  {{ aixp_local_cache_folder }}/authorized_addrs file and add the authorized addresses"
+  ansible.builtin.copy:
+    dest: "{{ aixp_local_cache_folder }}/authorized_addrs"
+    content: "{{ aixp_authorized_addrs }}"
+    mode: '0644'
+  when: 
+    - aixp_app in ["aixp_ee"]
+
+
+
 ### LLM API DEPLOYMENT ###
 # Task to wait for the container to be ready
 - name: Wait for container to be ready
@@ -225,3 +236,4 @@
   when: 
     - not aixp_debug_deploy | bool
     - aixp_app in ["llm_api"]
+

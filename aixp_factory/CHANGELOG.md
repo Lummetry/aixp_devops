@@ -64,3 +64,6 @@
 
 ## 0.7.11 - 2024-03-02
  - no spaces allowed in host names
+
+## 0.7.12 - 2024-03-04
+ - hold GPU

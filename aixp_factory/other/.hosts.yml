@@ -34,6 +34,9 @@ all:
     aixp_EE_MQTT: "<mqtt_broker_password>"          # mqtt broker password (required)
     aixp_MQTT_PORT: 1883                            # mqtt broker port (default 1883 for non-secure)
 
+    aixp_authorized_addrs: |
+      aixp_backed_address_00000000000000
+
 
     ########################################################
     ###### END USER SECTION # MODIFY THE VALUES ABOVE ######

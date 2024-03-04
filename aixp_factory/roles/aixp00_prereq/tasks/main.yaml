@@ -45,6 +45,12 @@
     msg: "OS: {{ ansible_distribution }}, Version: {{ ansible_distribution_version }}, Release: {{ ansible_distribution_release }}"
 
 
+- name: Check if `aixp_authorized_addrs` is defined and fail if not
+  assert:
+    that: "aixp_authorized_addrs is defined"
+    msg: "`aixp_authorized_addrs`` is not defined. Please define it in the hosts.yaml inventory file."
+
+
 
 ########################################################################
 #### END localhost/control node tasks for environment setup/review  ####

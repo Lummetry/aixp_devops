@@ -6,6 +6,7 @@
   roles:
     - aixp00_prereq
     # - aidamian.aixp_factory.aixp02_docker
-    - aixp90_test_prep
-    - aixp91_test_exec
+    - aixp04_deploy
+    # - aixp90_test_prep
+    # - aixp91_test_exec
     # - s02_deploy

@@ -6,6 +6,7 @@
   # This task checks if NVIDIA's System Management Interface (nvidia-smi) is available.
   # It is a quick way to verify if NVIDIA drivers are properly installed.
 
+
 - name: Cleanup existing NVIDIA drivers
   shell: "apt autoremove nvidia* --purge -y"
   when: nvidia_smi_check1.rc != 0
@@ -14,12 +15,14 @@
   # This task removes any existing NVIDIA drivers only if nvidia-smi is not found.
   # It ensures that the system is cleaned up before installing new drivers.
 
+
 - name: Reboot the system
   when: nvidia_smi_check1.rc != 0
   reboot:
   # Runs only if initial nvidia-smi check failed.
   # A reboot is required after removing the NVIDIA drivers to ensure that changes take effect.
   # The system will only reboot if the NVIDIA drivers were removed.
+
 
 - name: Wait for system to come back online after reboot
   when: nvidia_smi_check1.rc != 0
@@ -56,11 +59,13 @@
   # Runs only if initial nvidia-smi check failed.
   # Outputs the list of available GPGPU drivers for informational purposes.
 
+
 - name: Extra update package lists
   become: true
   apt:
     update_cache: yes
     upgrade: yes
+
 
 - name: Install NVIDIA driver
   become: true
@@ -75,6 +80,7 @@
   # Installs the specified NVIDIA driver. The version should be updated as needed.
   # This task is executed only if the initial check for NVIDIA drivers failed.
 
+
 - name: Output NVIDIA driver installation result
   when: nvidia_smi_check1.rc != 0
   debug:
@@ -82,11 +88,23 @@
   # Runs only if initial nvidia-smi check failed.
   # Outputs the result of the NVIDIA driver installation for verification.
 
+
+- name: Hold the nvidia driver package
+  become: true
+  when: nvidia_smi_check1.rc != 0
+  ansible.builtin.dpkg_selections:
+    name: nvidia-driver-535
+    selection: hold
+  # Runs only if initial nvidia-smi check failed.
+  # This task holds the NVIDIA driver package to prevent it from being automatically updated.
+
+
 - name: Reboot the system
   when: nvidia_smi_check1.rc != 0
   reboot:
   # Runs only if initial nvidia-smi check failed.
   # Rebooting again to ensure the new NVIDIA drivers are properly loaded.
+
 
 - name: Wait for system to come back online after reboot
   when: nvidia_smi_check1.rc != 0
@@ -97,28 +115,6 @@
   # Waits for the system to be ready after the second reboot.
 
 
-# - name: Check NVIDIA-SMI
-#   command: nvidia-smi
-#   register: nvidia_smi_output
-#   failed_when: nvidia_smi_output.rc != 0
-#   # Verifies that NVIDIA-SMI is functional after driver installation.
-#   # This is a second check to ensure that the NVIDIA drivers were properly installed.
-
-# - name: Extract Driver version
-#   set_fact:
-#     driver_version: "{{ nvidia_smi_output.stdout | regex_search('Driver Version:\\s*(\\S+)', '\\1') | first }}"
-#   # Extracts the NVIDIA driver version from the nvidia-smi output.
-
-# - name: Extract GPU name
-#   set_fact:
-#     gpu_name: "{{ nvidia_smi_output.stdout_lines[8] | regex_search('\\|\\s*([^\\|]+)\\s*\\|', '\\1') | first | trim }}"
-#   # Extracts the GPU name from the nvidia-smi output.
-
-# - name: Output GPU Name and Driver Version
-#   debug:
-#     msg: "GPU: {{ gpu_name }}, NVIDIA Driver Version: {{ driver_version }}"
-#   # Outputs the GPU name and driver version for confirmation.
-
 - name: Check NVIDIA-SMI
   command: "nvidia-smi --query-gpu=gpu_name,memory.total,driver_version,pci.device_id --format=csv"
   register: nvidia_smi_output
@@ -126,10 +122,22 @@
   # Verifies that NVIDIA-SMI is functional after driver installation.
   # This is a second check to ensure that the NVIDIA drivers were properly installed.
 
+
 - name: Output nvidia-smi results
   debug:
     msg: "{{ nvidia_smi_output.stdout }}"
   # Outputs the nvidia-smi results for confirmation.
+
+
+- name: Check if nvidia-driver-535 is held
+  command: dpkg --get-selections | grep nvidia-driver-535
+  register: nvidia_driver_held
+
+
+- name: Show held nvidia-driver-535
+  debug:
+    var: nvidia_driver_held
+  # Outputs the result of the check for the held NVIDIA driver package.
 
 
 - name: Add nvtop repository
@@ -138,11 +146,11 @@
     state: present
   become: true
 
+
 - name: Install nvtop
   ansible.builtin.apt:
     name: nvtop
     state: present
     update_cache: yes
   become: true
-
   # Installs nvtop, a tool for monitoring NVIDIA GPUs, which can be useful for diagnostics and performance monitoring.
