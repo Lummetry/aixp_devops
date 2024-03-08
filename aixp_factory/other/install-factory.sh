@@ -217,7 +217,7 @@ if [ ! -f "./deploy.yml" ]; then
     log_with_color "Copying deploy.yml to $curr_dir1" blue
     cp "${collection_path}/other/deploy.yml" ./deploy.yml
 else
-    log_with_color "deploy.yml already exists in to $curr_dir1 - Overwriting..." yellow
+    log_with_color "deploy.yml already exists in to $curr_dir1. OOverwriting..." yellow
     cp "${collection_path}/other/deploy.yml" ./deploy.yml
 fi
 
@@ -226,7 +226,7 @@ if [ ! -f "./deploy-gpu.yml" ]; then
     log_with_color "Copying deploy-gpu.yml to $curr_dir1" blue
     cp "${collection_path}/other/deploy-gpu.yml" ./deploy-gpu.yml
 else
-    log_with_color "deploy-gpu.yml already exists in to $curr_dir1 - Overwriting..." yellow
+    log_with_color "deploy-gpu.yml already exists in to $curr_dir1. OOverwriting..." yellow
     cp "${collection_path}/other/deploy-gpu.yml" ./deploy-gpu.yml
 fi
 
@@ -243,7 +243,7 @@ if [ ! -f "./run.sh" ]; then
     log_with_color "Copying run.sh from the collection to current directory $curr_dir2." blue
     cp "${collection_path}/other/run.sh" ./run.sh
 else
-    log_with_color "run.sh already exists in $curr_dir2 - overwriting..." yellow
+    log_with_color "run.sh already exists in $curr_dir2. Overwriting..." yellow
     cp "${collection_path}/other/run.sh" ./run.sh
 fi
 
@@ -252,16 +252,16 @@ if [ ! -f "./run-gpu-only.sh" ]; then
     log_with_color "Copying run-gpu-only.sh from the collection to current directory $curr_dir2." blue
     cp "${collection_path}/other/run-gpu-only.sh" ./run-gpu-only.sh
 else
-    log_with_color "run.sh already exists in $curr_dir2 - overwriting..." yellow
+    log_with_color "run-gpu-only.sh already exists in $curr_dir2. Overwriting..." yellow
     cp "${collection_path}/other/run-gpu-only.sh" ./run-gpu-only.sh
 fi
 
-# Copy run.sh from collection to current directory - overwrite if it exists
+# Copy showlog.sh from collection to current directory - overwrite if it exists
 if [ ! -f "./showlog.sh" ]; then
     log_with_color "Copying showlog.sh from the collection to current directory $curr_dir2."
     cp "${collection_path}/other/showlog.sh" ./showlog.sh
 else
-    log_with_color "showlog.sh already exists in $curr_dir2 - overwriting..." yellow
+    log_with_color "showlog.sh already exists in $curr_dir2. Overwriting..." yellow
     cp "${collection_path}/other/showlog.sh" ./showlog.sh
 fi
 
