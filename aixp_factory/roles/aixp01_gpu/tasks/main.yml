@@ -7,6 +7,34 @@
   # It is a quick way to verify if NVIDIA drivers are properly installed.
 
 
+- name: Ensure mokutil is installed
+  package:
+    name: mokutil
+    state: present
+  when: nvidia_smi_check1.rc != 0
+
+
+- name: Check if Secure Boot is enabled
+  command: mokutil --sb-state
+  register: sb_state
+  when: nvidia_smi_check1.rc != 0
+  ignore_errors: true
+
+- name: Display Secure Boot state
+  debug:
+    var: sb_state.stdout
+  when: nvidia_smi_check1.rc != 0
+
+  # This task checks if Secure Boot is enabled and fails the playbook if it is.
+  # Secure Boot can prevent the installation of unsigned drivers, including NVIDIA drivers.
+- name: Fail task with error if Secure Boot is enabled
+  fail:
+    msg: "Secure Boot is enabled. Please disable Secure Boot in the BIOS settings and reboot the system."    
+  when: |
+    - "'SecureBoot enabled' in sb_state.stdout"
+    - nvidia_smi_check1.rc != 0
+  
+
 - name: Cleanup existing NVIDIA drivers
   shell: "apt autoremove nvidia* --purge -y"
   when: nvidia_smi_check1.rc != 0

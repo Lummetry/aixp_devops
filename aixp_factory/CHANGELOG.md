@@ -68,7 +68,7 @@
 ## 0.7.12 - 2024-03-04
  - hold GPU
 
-## 0.7.16 - 2024-03-04
+## 0.7.17 - 2024-03-04
  - added GPU-only setup 
  - README.md
  - various changes in install scripts
