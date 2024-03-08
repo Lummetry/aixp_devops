@@ -7,13 +7,29 @@ This sub-repository contains all the DevOps related files for the on-prem fleet 
 
 ## Installation
 
-To install the collection, you can use the following command:
+To install the collection, create a folder such as `edge-deploy` and within create a `install.sh` as follows:
 
 ```bash
+mkdir edge-deploy
+cd edge-deploy
+touch install.sh
+```
+
+Then paste the following into the `install.sh` file:
+
+```bash
+#!/bin/bash
 curl -L "https://raw.githubusercontent.com/Lummetry/aixp_devops/main/aixp_factory/other/install-factory.sh?$RANDOM" -o install-factory.sh
 chmod +x install-factory.sh
 ./install-factory.sh
 rm install-factory.sh
+```
+
+Then run the `install.sh` script:
+
+```bash
+chmod +x install.sh
+./install.sh
 ```
 
 

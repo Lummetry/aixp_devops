@@ -264,8 +264,10 @@ else
 fi
 
 chmod +x run.sh
+chmod +x run-gpu-only.sh
 chmod +x showlog.sh
-
-log_with_color "Setup Completed." green
-log_with_color "Edit ./factory/hosts.yml, ./factory/key.pem" green
+log_with_color "Done setting up the factory." green
+log_with_color "Edit ./factory/hosts.yml, ./factory/key.pem" yellow
+log_with_color "You can use ./run-gpu-only.sh to setup only the GPU on target hosts" yellow
 log_with_color "Launch the deploy process with ./run.sh" green
+log_with_color "Setup Completed." green
