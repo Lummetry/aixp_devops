@@ -1,9 +1,20 @@
 # Collection for AiXp edge nodes deployment factory
 
-
 ## Description
 
 This sub-repository contains all the DevOps related files for the on-prem fleet deployments of AiXpand project.
+
+
+## Installation
+
+To install the collection, you can use the following command:
+
+```bash
+curl -L "https://raw.githubusercontent.com/Lummetry/aixp_devops/main/aixp_factory/other/install-factory.sh?$RANDOM" -o install-factory.sh
+chmod +x install-factory.sh
+./install-factory.sh
+rm install-factory.sh
+```
 
 
 ## Logistics

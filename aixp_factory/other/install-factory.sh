@@ -212,12 +212,22 @@ chmod 600 key.pem
 
 # Copy the playbook deploy.yml from the collection `other` folder to current directory if it does not exist
 if [ ! -f "./deploy.yml" ]; then
-    log_with_color "Copying deploy.yml to $curr_dir1"
+    log_with_color "Copying deploy.yml to $curr_dir1" blue
     cp "${collection_path}/other/deploy.yml" ./deploy.yml
 else
     log_with_color "deploy.yml already exists in to $curr_dir1 - Overwriting..." yellow
     cp "${collection_path}/other/deploy.yml" ./deploy.yml
 fi
+
+# Copy the playbook deploy.yml from the collection `other` folder to current directory if it does not exist
+if [ ! -f "./deploy-gpu.yml" ]; then
+    log_with_color "Copying deploy-gpu.yml to $curr_dir1" blue
+    cp "${collection_path}/other/deploy-gpu.yml" ./deploy-gpu.yml
+else
+    log_with_color "deploy-gpu.yml already exists in to $curr_dir1 - Overwriting..." yellow
+    cp "${collection_path}/other/deploy-gpu.yml" ./deploy-gpu.yml
+fi
+
 
 # we move from factory to parent folder
 cd ..
@@ -228,11 +238,20 @@ log_with_color "Checking main run.sh script in $curr_dir2" blue
 
 # Copy run.sh from collection to current directory - overwrite if it exists
 if [ ! -f "./run.sh" ]; then
-    log_with_color "Copying run.sh from the collection to current directory $curr_dir2."
+    log_with_color "Copying run.sh from the collection to current directory $curr_dir2." blue
     cp "${collection_path}/other/run.sh" ./run.sh
 else
     log_with_color "run.sh already exists in $curr_dir2 - overwriting..." yellow
     cp "${collection_path}/other/run.sh" ./run.sh
+fi
+
+# Copy run-gpu-only.sh from collection to current directory - overwrite if it exists
+if [ ! -f "./run-gpu-only.sh" ]; then
+    log_with_color "Copying run-gpu-only.sh from the collection to current directory $curr_dir2." blue
+    cp "${collection_path}/other/run-gpu-only.sh" ./run-gpu-only.sh
+else
+    log_with_color "run.sh already exists in $curr_dir2 - overwriting..." yellow
+    cp "${collection_path}/other/run-gpu-only.sh" ./run-gpu-only.sh
 fi
 
 # Copy run.sh from collection to current directory - overwrite if it exists
