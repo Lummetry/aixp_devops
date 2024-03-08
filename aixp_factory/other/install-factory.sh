@@ -183,11 +183,11 @@ else
     log_with_color "hosts.yml already exists. Not copying." blue
 fi
 
-log_with_color "*************************************************************************" yellow
-log_with_color "********                                                         ********" yellow
-log_with_color "********  Please modify the hosts.yml file with your own values  ********" yellow
-log_with_color "********                                                         ********" yellow
-log_with_color "*************************************************************************" yellow
+log_with_color "***********************************************************************************" yellow
+log_with_color "********                                                                   ********" yellow
+log_with_color "********  Please modify the ./factory/hosts.yml file with your own values  ********" yellow
+log_with_color "********                                                                   ********" yellow
+log_with_color "***********************************************************************************" yellow
 
 
 # Copy ansible.cfg from collection to current directory as ansible.cfg - overwrite if it exists
@@ -269,7 +269,7 @@ chmod +x run.sh
 chmod +x run-gpu-only.sh
 chmod +x showlog.sh
 log_with_color "Done setting up the factory." green
-log_with_color "Edit ./factory/hosts.yml, ./factory/key.pem" yellow
+log_with_color "Edit 'nano ./factory/hosts.yml' and enter your hosts and setup ./factory/key.pem or assign a already existing ~/.ssh .pem file" yellow
 log_with_color "You can use ./run-gpu-only.sh to setup only the GPU on target hosts" yellow
 log_with_color "Launch the deploy process with ./run.sh" green
 log_with_color "Setup Completed." green
