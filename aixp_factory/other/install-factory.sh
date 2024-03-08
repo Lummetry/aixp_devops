@@ -163,7 +163,9 @@ ansible-galaxy collection install aidamian.aixp_factory --force --no-cache --cle
 # Check if the collection is successfully installed 
 if [ $? -eq 0 ]; then
     COLLECTION_VER=$(ansible-galaxy collection list | grep aidamian.aixp_factory | awk '{print $2}')
+    log_with_color " " 
     log_with_color "Ansible Collection: aidamian.aixp_factory v$COLLECTION_VER is successfully installed." green
+    log_with_color "_____________________________________________________________________________________" green
 else
     log_with_color "Ansible Collection: aidamian.aixp_factory is not installed." red
     exit 1
