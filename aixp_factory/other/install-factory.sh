@@ -103,6 +103,9 @@ check_if_os_accepted
 mkdir -p factory
 cd factory
 
+path_to_add="/home/$USER/.local/bin"
+export PATH="$PATH:$path_to_add"
+
 curr_dir1=$(pwd)
 
 # check if sshpass is installed
@@ -138,8 +141,6 @@ then
 
     install_ansible
 
-    path_to_add="/home/$USER/.local/bin"
-
     # Check if the path is already in the .bashrc
     if grep -q "$path_to_add" ~/.bashrc; then
         log_with_color "Path $path_to_add already in .bashrc" green
@@ -148,7 +149,6 @@ then
         log_with_color "Adding $path_to_add to .bashrc" yellow
         echo "export PATH=\"\$PATH:$path_to_add\"" >> ~/.bashrc
 
-        export PATH="$PATH:$path_to_add"
 
         log_with_color "$path_to_add added to .bashrc and reloaded" green
     fi
