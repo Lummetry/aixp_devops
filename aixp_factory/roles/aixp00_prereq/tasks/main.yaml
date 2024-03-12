@@ -50,6 +50,15 @@
     that: "aixp_authorized_addrs is defined"
     msg: "`aixp_authorized_addrs`` is not defined. Please define it in the hosts.yaml inventory file."
 
+- name: Show `aixp_authorized_addrs`
+  debug:
+    var: aixp_authorized_addrs
+
+- name: Fail if `aixp_authorized_addrs` contains only `aixp_back_end_address_00000000000000``
+  assert:
+    that: "'aixp_back_end_address_00000000000000' not in aixp_authorized_addrs"
+    msg: "Please define `aixp_authorized_addrs` in the hosts.yaml inventory file (only fake template address is written)."
+
 
 
 ########################################################################

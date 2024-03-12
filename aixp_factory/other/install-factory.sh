@@ -175,7 +175,9 @@ fi
 # Define the path to the collection
 collection_path="$HOME/.ansible/collections/ansible_collections/aidamian/aixp_factory"
 
-# Copy .hosts.yml from collection to current directory as hosts.yml if it does not exist
+# first copy .hosts.yml from collection to current directory
+cp "${collection_path}/other/.hosts.yml" .
+# then copy .hosts.yml from collection to current directory as hosts.yml if it does not exist
 if [ ! -f "./hosts.yml" ]; then
     log_with_color "Copying .hosts.yml from the collection to hosts.yml" blue
     cp "${collection_path}/other/.hosts.yml" ./hosts.yml

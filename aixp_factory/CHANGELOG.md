@@ -72,3 +72,6 @@
  - added GPU-only setup 
  - README.md
  - various changes in install scripts
+
+## 0.7.19 - 2024-03-12
+  - fixed service to allow restart
