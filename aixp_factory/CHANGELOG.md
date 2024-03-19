@@ -76,3 +76,6 @@
 ## 0.7.21 - 2024-03-12
   - fixed service to allow restart
   - url names
+
+## 0.7.22 - 2024-03-13
+  - show.sh with params

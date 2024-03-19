@@ -164,11 +164,9 @@
 
 ## Additional tasks: create show and restart scripts
 - name: Create show.sh script
-  ansible.builtin.copy:
+  ansible.builtin.template:
+    src: show.sh.j2
     dest: "~/show.sh"
-    content: |
-      #!/bin/bash
-      journalctl -u {{ aixp_app }} -a -n 100 -f
     mode: '0755'
   become: false
 
