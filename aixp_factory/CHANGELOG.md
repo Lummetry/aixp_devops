@@ -80,5 +80,6 @@
 ## 0.7.22 - 2024-03-13
   - show.sh with params
 
-## 0.7.23 - 2024-03-13
+## 0.7.24 - 2024-03-13
   - fix target envs
+  - added QA env
