@@ -14,7 +14,7 @@ all:
     # ansible_ssh_pass: ""                        # the password to connect to the remote host if no private key is used
     ansible_sudo_pass: ""                       # the password to become root on the remote host if required
 
-    aixp_app_target: "staging"  # "staging" "preprod" "prod"
+    aixp_app_target: "staging"  # "staging" "qa" "preprod" "prod"
 
     # enter below the values for the target environment .env
     dockerhub_username: "<dockerhub_username>"      # dockerhub username
@@ -59,7 +59,7 @@ all:
     # default local cache folder
     aixp_local_cache_folder: "{{ aixp_base_folder }}/_local_cache"
     # default app version for image pulling
-    aixp_app_version: "{{ 'latest' if aixp_app_target in ['preprod', 'prod'] else 'develop' }}"
+    aixp_app_version: aixp_app_target
     # default app port for web-api 
     aixp_app_port: "5050"
     # install extra apps such as Go, Python and packages such PyE2
