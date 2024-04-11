@@ -86,3 +86,6 @@
 
 ## 0.7.25 - 2024-03-28
   - removed timezones
+
+## 0.7.26 - 2024-04-11
+  - added docker package

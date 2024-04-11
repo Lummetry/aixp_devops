@@ -83,7 +83,7 @@ install_pip() {
 # Function to install Ansible
 install_ansible() {
   log_with_color "Installing Ansible..." yellow 
-  pip install ansible
+  pip install ansible --upgrade
   # ansible-galaxy collection install community.docker
 }
 
