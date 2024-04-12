@@ -89,3 +89,6 @@
 
 ## 0.7.26 - 2024-04-11
   - added docker package
+
+## 0.7.27 - 2024-04-12
+  - hot-fix: reverted to timezone volume for the moment
