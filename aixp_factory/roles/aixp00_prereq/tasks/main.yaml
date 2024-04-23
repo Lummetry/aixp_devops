@@ -72,10 +72,10 @@
 
 # Actual startup of host tasks
 
-# - name: Verify if each inventory_hostname has correct name with no spaces
-#   assert:
-#     that: "' ' not in inventory_hostname"
-#     msg: "Inventory_hostname has spaces or special characters. Please correct it."
+
+- name: Verify if aixp_debug_deploy is ON/OFF
+  debug:
+    msg: "{{ inventory_hostname }} has aixp_debug_deploy set to {{ aixp_debug_deploy }}"
 
 - name: Verify if each inventory_hostname has correct name with lowercase letters, numbers, underscore, and hyphens
   assert:

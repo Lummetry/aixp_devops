@@ -1,0 +1,54 @@
+---
+
+- name: Start AiXp deploy
+  hosts: gpu_workers
+  become: true
+  tasks:
+  - name: Setup variables
+    debug:
+      msg: "App: {{ aixp_app }}, Debug: {{ aixp_debug_deploy }}"
+
+
+- name: Deploy AiXp pre-req.
+  hosts: gpu_workers
+  become: true
+  gather_facts: true
+  roles:
+  - aidamian.aixp_factory.aixp00_prereq    
+
+
+- name: Deploy AiXp GPU/Docker stuff
+  hosts: gpu_workers
+  become: true
+  gather_facts: true
+  tasks:
+  - name: GPU Role 
+    include_role:
+      name: aidamian.aixp_factory.aixp01_gpu
+    when: 
+    - not aixp_debug_deploy | bool
+    - aixp_app in ["aixp_ee"]
+    - (aixp_jetson is not defined) or (not aixp_jetson | bool)
+  
+  - name: Docker Role
+    include_role:
+      name: aidamian.aixp_factory.aixp02_docker
+    when: 
+    - not aixp_debug_deploy | bool
+    - aixp_app in ["aixp_ee"]
+    - (aixp_jetson is not defined) or (not aixp_jetson | bool)
+
+  - name: Nvidia Role
+    include_role:
+      name: aidamian.aixp_factory.aixp03_nvidia
+    when: 
+    - not aixp_debug_deploy | bool 
+    - aixp_app in ["aixp_ee"]      
+    - (aixp_jetson is not defined) or (not aixp_jetson | bool)
+
+- name: Deploy AiXp service
+  hosts: gpu_workers
+  become: true
+  gather_facts: true
+  roles:
+    - aidamian.aixp_factory.aixp04_deploy
