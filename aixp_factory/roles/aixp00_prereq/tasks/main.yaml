@@ -66,6 +66,15 @@
     msg: "aixp_app_version is '{{ aixp_app_version }}'. Please make sure you selected the right target for your application. Check if the hosts.yaml is properly configure for aixp_app_version variable."
 
 
+- name: Display target app version
+  debug:
+    msg: "{{ inventory_hostname }} aixp_app_version: {{ aixp_app_version }}"
+
+
+- name: Check if target host is configured as a Nvidia Jetson
+  debug:
+    msg: "{{ inventory_hostname }} is a Jetson: {{ aixp_jetson | default(false) | bool }}"
+
 ########################################################################
 #### END localhost/control node tasks for environment setup/review  ####
 ########################################################################
