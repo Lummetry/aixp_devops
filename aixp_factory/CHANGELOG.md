@@ -96,5 +96,5 @@
 ## 0.7.28 - 2024-04-15
   - fixed version in default config for Hyfy E2
 
-## 0.8.0 - 2024-04-23
+## 0.8.1 - 2024-04-23
   - support for Nvidia Jetson

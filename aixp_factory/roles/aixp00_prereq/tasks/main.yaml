@@ -66,7 +66,6 @@
     msg: "aixp_app_version is '{{ aixp_app_version }}'. Please make sure you selected the right target for your application. Check if the hosts.yaml is properly configure for aixp_app_version variable."
 
 
-
 ########################################################################
 #### END localhost/control node tasks for environment setup/review  ####
 ########################################################################
