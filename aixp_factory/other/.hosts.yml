@@ -86,9 +86,11 @@ all:
         ###########################################################
         aixp_node_name_1:
           ansible_host: ""  
+          aixp_jetson: false
 
-        # aixp_worker_1:
+        # aixp_worker_2:
         #   ansible_host: ""  
+        #   aixp_jetson: false
 
         ###########################################################
         ###### END USER SECTION #2 - MODIFY THE VALUES ABOVE ######

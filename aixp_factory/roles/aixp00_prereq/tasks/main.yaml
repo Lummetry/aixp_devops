@@ -125,6 +125,14 @@
     - inventory_hostname in groups['gpu_workers']
     - target_py_version is defined
 
+
+
+- name: Append "_tegra" to aixp_app_version if aixp_jetson is true
+  set_fact:
+    aixp_app_version: "{{ aixp_app_version }}_tegra"
+  when: aixp_jetson is defined and aixp_jetson | bool
+
+
 ### Install pip
 
 - name: Check pip version
@@ -132,36 +140,41 @@
   register: pip_version
   ignore_errors: true
   when: 
-    - inventory_hostname in groups['gpu_workers']
+  - inventory_hostname in groups['gpu_workers']
 
 - name: Parse pip version
   set_fact:
     pip_major: "{{ pip_version.stdout.split()[1].split('.')[0] }}"
     pip_minor: "{{ pip_version.stdout.split()[1].split('.')[1] }}"
   when: 
-    - inventory_hostname in groups['gpu_workers']
-    - pip_version.rc == 0
+  - inventory_hostname in groups['gpu_workers']
+  - pip_version.rc == 0
+
 
 - name: Show pip version
   debug:
     msg: "Pip version: {{ pip_major }}.{{ pip_minor }}"
   when: 
-    - inventory_hostname in groups['gpu_workers']
-    - pip_version.rc == 0
+  - inventory_hostname in groups['gpu_workers']
+  - pip_version.rc == 0
 
 - name: Determine if pip needs to be installed
   set_fact:
     pip_needs_install: true
   when:
-    - inventory_hostname in groups['gpu_workers']
-    - pip_version.rc != 0
+  - inventory_hostname in groups['gpu_workers']
+  - pip_version.rc != 0
+  - (aixp_jetson is not defined) or (not aixp_jetson | bool)
+
 
 - name: Determine if pip needs to be upgraded
   set_fact:
     pip_needs_update: "{{ pip_major | int < 23 }}"
   when: 
-    - inventory_hostname in groups['gpu_workers']
-    - pip_major is defined    
+  - (aixp_jetson is not defined) or (not aixp_jetson | bool)
+  - inventory_hostname in groups['gpu_workers']
+  - pip_major is defined    
+
     
 # - name: Install pip using get-pip.py script
 #   ansible.builtin.shell:
@@ -188,22 +201,25 @@
     state: present
   become: true
   when: 
-    - inventory_hostname in groups['gpu_workers']
-    - pip_needs_install | default(false) | bool
+  - (aixp_jetson is not defined) or (not aixp_jetson | bool)
+  - inventory_hostname in groups['gpu_workers']
+  - pip_needs_install | default(false) | bool
 
 - name: Get pip version
   shell: pip --version
   register: pip_update_version
   become: false
   when: 
-    - inventory_hostname in groups['gpu_workers']
+  - (aixp_jetson is not defined) or (not aixp_jetson | bool)
+  - inventory_hostname in groups['gpu_workers']
 
 - name: Show pip update version
   debug:
     msg: "{{ pip_update_version.stdout_lines }}"
   become: false
   when: 
-    - inventory_hostname in groups['gpu_workers']
+  - (aixp_jetson is not defined) or (not aixp_jetson | bool)
+  - inventory_hostname in groups['gpu_workers']
 
 
 - name: Install Docker SDK for Python (root)
@@ -211,7 +227,8 @@
     name: docker  # This will install the latest version compatible with Python 3.6+
     executable: /usr/bin/pip3  # Ensure this points to the correct pip executable
   when: 
-    - inventory_hostname in groups['gpu_workers']
+  - (aixp_jetson is not defined) or (not aixp_jetson | bool)
+  - inventory_hostname in groups['gpu_workers']
 
 - name: Install Docker SDK for Python (user)
   become: false
@@ -219,7 +236,8 @@
     name: docker  # This will install the latest version compatible with Python 3.6+
     # executable: /usr/bin/pip3  # Ensure this points to the correct pip executable
   when: 
-    - inventory_hostname in groups['gpu_workers']
+  - (aixp_jetson is not defined) or (not aixp_jetson | bool)
+  - inventory_hostname in groups['gpu_workers']
 
 ################### Install extra apps and packages ###################
 
@@ -232,6 +250,7 @@
   failed_when: false
   changed_when: false
 
+
 - name: Display if snap is installed or not
   debug:
     msg: "Snap is installed: {{ snap_installed.rc == 0 }}"
@@ -241,7 +260,10 @@
     name: snapd
     state: present
   failed_when: false
-  when: snap_installed.rc != 0
+  when: 
+  - snap_installed.rc != 0
+  - (aixp_jetson is not defined) or (not aixp_jetson | bool)
+
 
 - name: Install Go with Snap
   ansible.builtin.snap:
@@ -251,24 +273,27 @@
     state: present
   failed_when: false
   when: 
-    # - inventory_hostname in groups['gpu_workers'] 
-    - install_extra_packages | default(true) | bool
+  - (aixp_jetson is not defined) or (not aixp_jetson | bool)
+  # - inventory_hostname in groups['gpu_workers'] 
+  - install_extra_packages | default(true) | bool
 
 - name: Run go to get version
   shell: go version
   register: go_version
   failed_when: false
   when: 
-    # - inventory_hostname == groups['gpu_workers'][0]
-    - install_extra_packages | default(true) | bool
+  - (aixp_jetson is not defined) or (not aixp_jetson | bool)
+  # - inventory_hostname == groups['gpu_workers'][0]
+  - install_extra_packages | default(true) | bool
 
 - name: Show go version
   debug:
     var: go_version.stdout_lines
   failed_when: false
   when: 
-    # - inventory_hostname in groups['gpu_workers'] 
-    - install_extra_packages | default(true) | bool
+  - (aixp_jetson is not defined) or (not aixp_jetson | bool)
+  # - inventory_hostname in groups['gpu_workers'] 
+  - install_extra_packages | default(true) | bool
 
 # End install go
 

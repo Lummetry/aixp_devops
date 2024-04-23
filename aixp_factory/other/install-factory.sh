@@ -219,7 +219,7 @@ if [ ! -f "./deploy.yml" ]; then
     log_with_color "Copying deploy.yml to $curr_dir1" blue
     cp "${collection_path}/other/deploy.yml" ./deploy.yml
 else
-    log_with_color "deploy.yml already exists in to $curr_dir1. OOverwriting..." yellow
+    log_with_color "deploy.yml already exists in to $curr_dir1. Overwriting..." yellow
     cp "${collection_path}/other/deploy.yml" ./deploy.yml
 fi
 
