@@ -110,7 +110,7 @@
 # this is a debug-only task
 - name: "Mock-create Nvidia Jetson {{ aixp_base_folder }}/{{ aixp_app }}.service"
   ansible.builtin.template:
-    src: "{{ aixp_app }}.service.j2"
+    src: "{{ aixp_app }}_tegra.service.j2"
     dest: "{{ aixp_base_folder }}/{{ aixp_app }}.service"
     mode: '0644'
   when:
