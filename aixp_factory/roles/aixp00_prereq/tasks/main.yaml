@@ -135,9 +135,9 @@
 
 
 
-- name: Append "_tegra" to aixp_app_version if aixp_jetson is true
+- name: Prepend "tegra_" to aixp_app_version if aixp_jetson is true
   set_fact:
-    aixp_app_version: "{{ aixp_app_version }}_tegra"
+    aixp_app_version: "tegra_{{ aixp_app_version }}"
   when: aixp_jetson is defined and aixp_jetson | bool
 
 
