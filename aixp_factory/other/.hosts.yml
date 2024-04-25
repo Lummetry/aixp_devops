@@ -14,6 +14,7 @@ all:
     # ansible_ssh_pass: ""                        # the password to connect to the remote host if no private key is used
     ansible_sudo_pass: ""                       # the password to become root on the remote host if required
 
+    # select the target environment "staging" "qa" "preprod" "prod"
     aixp_app_target: "staging"  # "staging" "qa" "preprod" "prod"
 
     # enter below the values for the target environment .env
@@ -50,7 +51,6 @@ all:
     ansible_ssh_common_args: "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" 
     # select the app to deploy "aixp_ee", "llm_api" or other apps
     aixp_app: "aixp_ee"
-    # select the target environment "staging" "preprod" "prod"
     aixp_debug_deploy: false
     # the default formatter
     aixp_formatter: "cavi2"
