@@ -170,6 +170,30 @@
     - aixp_app in ["aixp_ee"]    
 
 
+- name: Set a varible as service name
+  set_fact:
+    aixp_service_name: "{{ aixp_app }}.service"
+  when: 
+    - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
+    - aixp_app in ["aixp_ee"]
+
+- name: Get service status
+  ansible.builtin.systemd:
+    name: "{{ aixp_service_name }}"
+    state: status
+  register: aix_service_status
+  when: 
+    - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
+    - aixp_app in ["aixp_ee"]
+
+- name: Show service status
+  debug:
+    msg: "{{ aixp_service_name }} -> {{ aix_service_status }}"
+  when: 
+    - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
+    - aixp_app in ["aixp_ee"]
+
+
 - name: Enable and start service
   ansible.builtin.systemd:
     name: "{{ aixp_app }}.service"
@@ -177,7 +201,7 @@
     state: started
   when: 
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
-    - not aixp_service.stat.exists or not ('{{ aixp_app }}.service' in services and services['{{ aixp_app }}.service'].status == 'active')
+    # - not aixp_service.stat.exists or not (aixp_service_name in services and services[aixp_service_name].status == 'active')
 
 - name: Sleep for 5 seconds and continue with play
   ansible.builtin.wait_for:
