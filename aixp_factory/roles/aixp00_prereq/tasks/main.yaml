@@ -243,7 +243,6 @@
     name: docker  # This will install the latest version compatible with Python 3.6+
     executable: /usr/bin/pip3  # Ensure this points to the correct pip executable
   when: 
-  - (aixp_jetson is not defined) or (not aixp_jetson | bool)
   - inventory_hostname in groups['gpu_workers']
 
 - name: Install Docker SDK for Python (user)
@@ -252,7 +251,6 @@
     name: docker  # This will install the latest version compatible with Python 3.6+
     # executable: /usr/bin/pip3  # Ensure this points to the correct pip executable
   when: 
-  - (aixp_jetson is not defined) or (not aixp_jetson | bool)
   - inventory_hostname in groups['gpu_workers']
 
 ################### Install extra apps and packages ###################
