@@ -159,10 +159,4 @@
   register: containerd_service_status
   changed_when: false
   failed_when: "'inactive' in containerd_service_status.stdout"
-
-- name: "Log in to DockerHub with {{ dockerhub_username }}"
-  community.docker.docker_login:
-    username: "{{ dockerhub_username }}"
-    password: "{{ dockerhub_password }}"
-  ignore_errors: true
   
