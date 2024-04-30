@@ -141,6 +141,14 @@
   when: aixp_jetson is defined and aixp_jetson | bool
 
 
+- name: Show aixp_app_version 
+  debug:
+    msg: "aixp_app_version: {{ aixp_app_version }}"
+  when: 
+    - inventory_hostname in groups['gpu_workers']
+    - aixp_app_version is defined
+
+
 ### Install pip
 
 - name: Check pip version
