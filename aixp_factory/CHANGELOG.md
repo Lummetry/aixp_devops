@@ -1,8 +1,8 @@
 # Changelog
 
-## 0.8.8 - 2024-04-30
+## 0.8.9 - 2024-04-30
   - show aixp_app_version tag 
-  - docker package also for Jetson
+  - pip, docker package also for Jetson
 
 
 --------------------------------------------------------------------------

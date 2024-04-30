@@ -180,14 +180,12 @@
   when:
   - inventory_hostname in groups['gpu_workers']
   - pip_version.rc != 0
-  - (aixp_jetson is not defined) or (not aixp_jetson | bool)
 
 
 - name: Determine if pip needs to be upgraded
   set_fact:
     pip_needs_update: "{{ pip_major | int < 23 }}"
   when: 
-  - (aixp_jetson is not defined) or (not aixp_jetson | bool)
   - inventory_hostname in groups['gpu_workers']
   - pip_major is defined    
 
@@ -217,7 +215,6 @@
     state: present
   become: true
   when: 
-  - (aixp_jetson is not defined) or (not aixp_jetson | bool)
   - inventory_hostname in groups['gpu_workers']
   - pip_needs_install | default(false) | bool
 
@@ -226,7 +223,6 @@
   register: pip_update_version
   become: false
   when: 
-  - (aixp_jetson is not defined) or (not aixp_jetson | bool)
   - inventory_hostname in groups['gpu_workers']
 
 - name: Show pip update version
@@ -234,7 +230,6 @@
     msg: "{{ pip_update_version.stdout_lines }}"
   become: false
   when: 
-  - (aixp_jetson is not defined) or (not aixp_jetson | bool)
   - inventory_hostname in groups['gpu_workers']
 
 
