@@ -1,11 +1,15 @@
 # Changelog
 
-## 0.8.11 - 2024-04-30
-  - show aixp_app_version tag 
-  - pip, docker package also for Jetson
+## 0.8.12 - 2024-05-09
+  - new release manager update
+
 
 
 --------------------------------------------------------------------------
+
+## 0.8.11 - 2024-04-30
+  - show aixp_app_version tag 
+  - pip, docker package also for Jetson
 
 ## 0.8.6 - 2024-04-25
   - check for target env
