@@ -170,6 +170,35 @@
     - aixp_app in ["aixp_ee"]    
 
 
+## Additional file creating tasks: create show and restart scripts
+- name: Create show.sh script
+  ansible.builtin.template:
+    src: show.sh.j2
+    dest: "~/show.sh"
+    mode: '0755'
+  become: false
+
+- name: Create restart.sh script
+  ansible.builtin.copy:
+    dest: "~/restart.sh"
+    content: |
+      #!/bin/bash
+      sudo systemctl restart {{ aixp_app }}
+    mode: '0755'
+  become: false
+
+
+- name: "Create  {{ aixp_local_cache_folder }}/authorized_addrs file and add the authorized addresses"
+  ansible.builtin.copy:
+    dest: "{{ aixp_local_cache_folder }}/authorized_addrs"
+    content: "{{ aixp_authorized_addrs }}"
+    mode: '0644'
+  when: 
+    - aixp_app in ["aixp_ee"]
+
+
+# Now check the status of the service
+
 - name: Set a varible as service name
   set_fact:
     aixp_service_name: "{{ aixp_app }}.service"
@@ -177,18 +206,22 @@
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
     - aixp_app in ["aixp_ee"]
 
-- name: Get service status
-  ansible.builtin.systemd:
-    name: "{{ aixp_service_name }}"
-    state: status
-  register: aix_service_status
+- name: Checking services
+  ansible.builtin.service_facts:
+  when: 
+    - aixp_app in ["aixp_ee"]
+
+
+- name: Set aix_service_status based on the service status
+  set_fact:
+    aix_service_status: "{{ ansible_facts.services[aixp_service_name] }}"
   when: 
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
     - aixp_app in ["aixp_ee"]
 
 - name: Show service status
   debug:
-    msg: "{{ aixp_service_name }} -> {{ aix_service_status }}"
+    msg: "{{ aixp_service_name }}: {{ aix_service_status }}"
   when: 
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
     - aixp_app in ["aixp_ee"]
@@ -224,32 +257,6 @@
     msg: "{{ journalctl_log.stdout_lines }}"
   when: 
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
-    - aixp_app in ["aixp_ee"]
-
-## Additional tasks: create show and restart scripts
-- name: Create show.sh script
-  ansible.builtin.template:
-    src: show.sh.j2
-    dest: "~/show.sh"
-    mode: '0755'
-  become: false
-
-- name: Create restart.sh script
-  ansible.builtin.copy:
-    dest: "~/restart.sh"
-    content: |
-      #!/bin/bash
-      sudo systemctl restart {{ aixp_app }}
-    mode: '0755'
-  become: false
-
-
-- name: "Create  {{ aixp_local_cache_folder }}/authorized_addrs file and add the authorized addresses"
-  ansible.builtin.copy:
-    dest: "{{ aixp_local_cache_folder }}/authorized_addrs"
-    content: "{{ aixp_authorized_addrs }}"
-    mode: '0644'
-  when: 
     - aixp_app in ["aixp_ee"]
 
 
