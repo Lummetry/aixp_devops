@@ -17,7 +17,8 @@ all:
     # select the target environment "staging" "qa" "preprod" "prod"
     aixp_app_target: "staging"  # "staging" "qa" "preprod" "prod"
 
-    # enter below the values for the target environment .env
+    # STRT values for the target environment .env
+
     dockerhub_username: "<dockerhub_username>"      # dockerhub username
     dockerhub_password: "<dockerhub_password>"      # dockerhub password
     
@@ -25,15 +26,25 @@ all:
     aixp_EE_MINIO_ACCESS_KEY: "<minio_access_key>"  # minio access key (username)
     aixp_EE_MINIO_SECRET_KEY: "<minio_secret_key>"  # minio secret key (password)
     aixp_EE_MINIO_SECURE: "true"                    # minio secure connection (true/false)
-    aixp_EE_GITVER: "<git_version_access_token>"    # git version access token (required)
-    aixp_EE_OPENAI: "<openai_api_key>"              # optional openai api key
-    aixp_EE_HF_TOKEN: "<huggingface_api_token>"     # optional huggingface api token
+    aixp_EE_MINIO_MODEL_BUCKET: "model-zoo"         # minio model bucket
+    aixp_EE_MINIO_UPLOAD_BUCKET: "<TBD>"            # minio default (not mandatory) upload bucket
+
 
     # enter below the values for the MQTT broker
     aixp_MQTT_HOST: "<mqtt_broker_address>"         # mqtt broker address such as mqtt.prod.org.com
     aixp_MQTT_USER: "coreaixp"                      # mqtt broker username (default coreaixp)
     aixp_EE_MQTT: "<mqtt_broker_password>"          # mqtt broker password (required)
     aixp_MQTT_PORT: 1883                            # mqtt broker port (default 1883 for non-secure)
+    aixp_MQTT_SECURED: false                        # mqtt broker secure connection (true/false)
+  
+
+
+    aixp_EE_GITVER: "<git_version_access_token>"    # git version access token (required)
+    aixp_EE_OPENAI: "<openai_api_key>"              # optional openai api key
+    aixp_EE_HF_TOKEN: "<huggingface_api_token>"     # optional huggingface api token
+
+    # END .env
+
 
     aixp_authorized_addrs: |
       aixp_back_end_address_00000000000000
