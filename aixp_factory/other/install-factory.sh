@@ -1,6 +1,6 @@
 #!/bin/bash
 
-INSTALLER_VERSION="0.2.1"
+INSTALLER_VERSION="0.2.2"
 
 log_with_color() {
     local text="$1"
@@ -176,10 +176,11 @@ fi
 collection_path="$HOME/.ansible/collections/ansible_collections/aidamian/aixp_factory"
 
 # first copy .hosts.yml from collection to current directory
-cp "${collection_path}/other/.hosts.yml" .
+log_with_color "Copying .hosts.yml from the collection to factory .hosts.yml" blue
+cp "${collection_path}/other/.hosts.yml" ./.hosts.yml
 # then copy .hosts.yml from collection to current directory as hosts.yml if it does not exist
 if [ ! -f "./hosts.yml" ]; then
-    log_with_color "Copying .hosts.yml from the collection to hosts.yml" blue
+    log_with_color "Copying .hosts.yml from the collection to hosts.yml for edit" blue
     cp "${collection_path}/other/.hosts.yml" ./hosts.yml
 else
     log_with_color "hosts.yml already exists. Not copying." blue
