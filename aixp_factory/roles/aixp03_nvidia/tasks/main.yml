@@ -89,9 +89,9 @@
     
 - name: Display nvidia-smi container output
   ansible.builtin.debug:
-    msg: "{{ nvidia_smi_container_output }}"
-    # msg: "{{ nvidia_smi_container_output.stdout_lines }}"
-  # when: container_run_successful
+    # msg: "{{ nvidia_smi_container_output }}"
+    msg: "{{ nvidia_smi_container_output.stdout_lines }}"
+  when: container_run_successful
 
 # # The following tasks are usefull only if simple nvidia-smi is run without --query-gpu option
 # - name: Extract Driver version
