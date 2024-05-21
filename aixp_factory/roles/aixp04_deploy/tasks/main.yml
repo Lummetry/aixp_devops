@@ -261,6 +261,47 @@
 
 
 
+# install lm-sensors
+
+- name: Ensure lm-sensors is installed
+  apt:
+    name: lm-sensors
+    state: present
+  when: 
+  - (aixp_jetson is not defined) or (not aixp_jetson | bool)
+  # - inventory_hostname in groups['gpu_workers'] 
+  - install_extra_packages | default(true) | bool  
+  - aixp_app in ["aixp_ee"]  
+
+- name: Run sensors-detect script
+  command: sensors-detect --auto
+  when: 
+  - (aixp_jetson is not defined) or (not aixp_jetson | bool)
+  # - inventory_hostname in groups['gpu_workers'] 
+  - install_extra_packages | default(true) | bool  
+  - aixp_app in ["aixp_ee"]  
+
+- name: Display current sensor readings
+  command: sensors
+  register: sensors_output
+  when:
+  - (aixp_jetson is not defined) or (not aixp_jetson | bool)
+  # - inventory_hostname in groups['gpu_workers'] 
+  - install_extra_packages | default(true) | bool  
+  - aixp_app in ["aixp_ee"]  
+
+- name: Show current sensor readings
+  debug:
+    var: sensors_output.stdout_lines
+  when:
+  - (aixp_jetson is not defined) or (not aixp_jetson | bool)
+  # - inventory_hostname in groups['gpu_workers'] 
+  - install_extra_packages | default(true) | bool  
+  - aixp_app in ["aixp_ee"]  
+
+
+
+
 ### LLM API DEPLOYMENT ###
 # Task to wait for the container to be ready
 - name: Wait for container to be ready

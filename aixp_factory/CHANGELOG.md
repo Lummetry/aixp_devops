@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.8.18 - 2024-05-21
+## 0.8.19 - 2024-05-21
   - added hosts and lm-sensors
 
 
