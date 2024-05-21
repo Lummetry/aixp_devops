@@ -89,11 +89,12 @@
   become: true
   failed_when: false
 
-# Display nvidia-smi output
+# Display nvidia-smi output if previous command has not failed
 - name: Display container nvidia-smi output (in-container run)
   debug:
     msg: "{{ nvidia_smi_container_output.container.Output }}"
-  when: nvidia_smi_container_output is defined
+  when: nvidia_smi_container_output is defined and nvidia_smi_container_output.failed == false
+  failed_when: false
 
 # # The following tasks are usefull only if simple nvidia-smi is run without --query-gpu option
 # - name: Extract Driver version
