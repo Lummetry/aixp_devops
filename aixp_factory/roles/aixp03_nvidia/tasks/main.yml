@@ -89,12 +89,15 @@
   become: true
   failed_when: false
 
-# Display nvidia-smi output if previous command has not failed
+- name: Check if nvidia-smi container run was successful
+  ansible.builtin.set_fact:
+    container_run_successful: "{{ nvidia_smi_container_output is defined and 'stdout' in nvidia_smi_container_output }}"
+  when: nvidia_smi_container_output is defined
+
 - name: Display container nvidia-smi output (in-container run)
-  debug:
-    msg: "{{ nvidia_smi_container_output.container.Output }}"
-  when: nvidia_smi_container_output is defined and nvidia_smi_container_output.failed == false
-  failed_when: false
+  ansible.builtin.debug:
+    msg: "{{ nvidia_smi_container_output.stdout_lines }}"
+  when: container_run_successful  
 
 # # The following tasks are usefull only if simple nvidia-smi is run without --query-gpu option
 # - name: Extract Driver version
