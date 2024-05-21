@@ -302,9 +302,44 @@
   when: 
   - (aixp_jetson is not defined) or (not aixp_jetson | bool)
   # - inventory_hostname in groups['gpu_workers'] 
-  - install_extra_packages | default(true) | bool
+  - install_extra_packages | default(true) | bool  
 
 # End install go
+
+# install lm-sensors
+
+- name: Ensure lm-sensors is installed
+  apt:
+    name: lm-sensors
+    state: present
+  when: 
+  - (aixp_jetson is not defined) or (not aixp_jetson | bool)
+  # - inventory_hostname in groups['gpu_workers'] 
+  - install_extra_packages | default(true) | bool  
+
+- name: Run sensors-detect script
+  command: sensors-detect --auto
+  when: 
+  - (aixp_jetson is not defined) or (not aixp_jetson | bool)
+  # - inventory_hostname in groups['gpu_workers'] 
+  - install_extra_packages | default(true) | bool  
+
+- name: Display current sensor readings
+  command: sensors
+  register: sensors_output
+  when:
+  - (aixp_jetson is not defined) or (not aixp_jetson | bool)
+  # - inventory_hostname in groups['gpu_workers'] 
+  - install_extra_packages | default(true) | bool  
+
+- name: Show current sensor readings
+  debug:
+    var: sensors_output.stdout
+  when:
+  - (aixp_jetson is not defined) or (not aixp_jetson | bool)
+  # - inventory_hostname in groups['gpu_workers'] 
+  - install_extra_packages | default(true) | bool  
+
 
 ################# End install extra apps and packages #################
 
@@ -332,4 +367,13 @@
     content: "# This folder is used to store the {{ aixp_app }} base config application.\n\n"
     dest: "{{ aixp_base_folder }}/README.md"
   when: not aixp_base_folder_readme_check.stat.exists
+
+
+- name: Ensure /etc/hosts contains the aixp_hosts entry
+  lineinfile:
+    path: /etc/hosts
+    line: "{{ aixp_hosts }}"
+    state: present
+
+
   

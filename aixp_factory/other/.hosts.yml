@@ -17,6 +17,8 @@ all:
     # select the target environment "staging" "qa" "preprod" "prod"
     aixp_app_target: "staging"  # "staging" "qa" "preprod" "prod"
 
+    aixp_hosts: "A.B.C.D host.name.domain"
+
     # STRT values for the target environment .env
 
     dockerhub_username: "<dockerhub_username>"      # dockerhub username
