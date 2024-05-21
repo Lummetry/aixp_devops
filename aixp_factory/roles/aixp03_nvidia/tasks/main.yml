@@ -87,11 +87,13 @@
           - utility
   register: nvidia_smi_container_output
   become: true
+  failed_when: false
 
 # Display nvidia-smi output
 - name: Display container nvidia-smi output (in-container run)
   debug:
     msg: "{{ nvidia_smi_container_output.container.Output }}"
+  when: nvidia_smi_container_output is defined
 
 # # The following tasks are usefull only if simple nvidia-smi is run without --query-gpu option
 # - name: Extract Driver version
