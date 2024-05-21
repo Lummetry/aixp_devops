@@ -71,33 +71,27 @@
 # Task 7: Run a temporary Docker container with NVIDIA GPU support
 # Launches a temporary Docker container to test NVIDIA GPU support using the `nvidia-smi` command.
 - name: Run a temporary Docker container with NVIDIA GPU support
-  community.docker.docker_container:
-    name: nvidia-smi-test
-    image: nvidia/cuda:11.6.1-base-ubuntu20.04
-    command: nvidia-smi --query-gpu=gpu_name,memory.total,driver_version,pci.device_id --format=csv
-    state: started
-    detach: false
-    cleanup: true
-    device_requests:
-      - device_ids: ['0']
-        driver: nvidia
-        capabilities: 
-          - gpu
-          - compute
-          - utility
+  ansible.builtin.command:
+    cmd: docker run --rm --gpus=all nvidia/cuda:11.6.1-base-ubuntu20.04 nvidia-smi --query-gpu=gpu_name,memory.total,driver_version,pci.device_id --format=csv
   register: nvidia_smi_container_output
   become: true
   failed_when: false
+  ignore_errors: true
 
 - name: Check if nvidia-smi container run was successful
   ansible.builtin.set_fact:
     container_run_successful: "{{ nvidia_smi_container_output is defined and 'stdout' in nvidia_smi_container_output }}"
   when: nvidia_smi_container_output is defined
 
-- name: Display container nvidia-smi output (in-container run)
+- name: Display nvidia-smi container success
   ansible.builtin.debug:
-    msg: "{{ nvidia_smi_container_output.stdout_lines }}"
-  when: container_run_successful  
+    msg: "nvidia-smi success: {{ container_run_successful }}"
+    
+- name: Display nvidia-smi container output
+  ansible.builtin.debug:
+    msg: "{{ nvidia_smi_container_output }}"
+    # msg: "{{ nvidia_smi_container_output.stdout_lines }}"
+  # when: container_run_successful
 
 # # The following tasks are usefull only if simple nvidia-smi is run without --query-gpu option
 # - name: Extract Driver version

@@ -119,9 +119,12 @@
 
 
 - name: "Log in to DockerHub with {{ dockerhub_username }}"
-  community.docker.docker_login:
-    username: "{{ dockerhub_username }}"
-    password: "{{ dockerhub_password }}"
+  ansible.builtin.command:
+    cmd: >
+      docker login -u {{ dockerhub_username }} -p {{ dockerhub_password }}
+  # community.docker.docker_login:
+  #   username: "{{ dockerhub_username }}"
+  #   password: "{{ dockerhub_password }}"
   ignore_errors: true
   when:
     - inventory_hostname in groups['gpu_workers']
@@ -147,16 +150,22 @@
     
 
 - name: Pull Docker Image
-  community.docker.docker_image:
-    name: "{{ docker_image_name }}"
-    source: pull  
+  ansible.builtin.command:
+    cmd: >
+      docker pull {{ docker_image_name }}
+  # community.docker.docker_image:
+  #   name: "{{ docker_image_name }}"
+  #   source: pull  
   when: 
     - inventory_hostname in groups['gpu_workers']
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
     - aixp_app in ["aixp_ee"]    
 
 - name: List Docker Images
-  community.docker.docker_image_info:
+  ansible.builtin.command:
+    cmd: >
+      docker images
+  # community.docker.docker_image_info:
   register: docker_images
   when: 
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
@@ -261,43 +270,6 @@
 
 
 
-# install lm-sensors
-
-- name: Ensure lm-sensors is installed
-  apt:
-    name: lm-sensors
-    state: present
-  when: 
-  - (aixp_jetson is not defined) or (not aixp_jetson | bool)
-  # - inventory_hostname in groups['gpu_workers'] 
-  - install_extra_packages | default(true) | bool  
-  - aixp_app in ["aixp_ee"]  
-
-- name: Run sensors-detect script
-  command: sensors-detect --auto
-  when: 
-  - (aixp_jetson is not defined) or (not aixp_jetson | bool)
-  # - inventory_hostname in groups['gpu_workers'] 
-  - install_extra_packages | default(true) | bool  
-  - aixp_app in ["aixp_ee"]  
-
-- name: Display current sensor readings
-  command: sensors
-  register: sensors_output
-  when:
-  - (aixp_jetson is not defined) or (not aixp_jetson | bool)
-  # - inventory_hostname in groups['gpu_workers'] 
-  - install_extra_packages | default(true) | bool  
-  - aixp_app in ["aixp_ee"]  
-
-- name: Show current sensor readings
-  debug:
-    var: sensors_output.stdout_lines
-  when:
-  - (aixp_jetson is not defined) or (not aixp_jetson | bool)
-  # - inventory_hostname in groups['gpu_workers'] 
-  - install_extra_packages | default(true) | bool  
-  - aixp_app in ["aixp_ee"]  
 
 
 
