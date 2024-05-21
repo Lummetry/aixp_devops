@@ -334,7 +334,7 @@
 
 - name: Show current sensor readings
   debug:
-    var: sensors_output.stdout
+    var: sensors_output.stdout_lines
   when:
   - (aixp_jetson is not defined) or (not aixp_jetson | bool)
   # - inventory_hostname in groups['gpu_workers'] 
