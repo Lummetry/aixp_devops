@@ -24,7 +24,7 @@
             "CTRL_CHANNEL": {
                 "TOPIC": "lummetry/ctrl"
             },
-            "HOST": "{{ aixp_MQTT_HOST }}",
+            "HOST": "$EE_MQTT_HOST",
             "NOTIF_CHANNEL": {
                 "TOPIC": "lummetry/notif"
             },
@@ -34,7 +34,7 @@
             },
             "PORT": "$EE_MQTT_PORT",
             "QOS": 0,
-            "USER": "{{ aixp_MQTT_USER }}"
+            "USER": "$EE_MQTT_USER"
         },
         "TYPE": "mqtt"
     },
