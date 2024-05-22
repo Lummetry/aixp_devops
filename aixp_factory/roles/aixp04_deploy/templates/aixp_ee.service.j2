@@ -7,7 +7,7 @@ Requires=docker.service
 TimeoutStartSec=0
 Restart=always
 ExecStartPre=-/usr/bin/docker stop -t 20 aixp_ee
-ExecStartPre=-/usr/bin/docker pull {{ aixp_cr_url }}aixpand/exe_eng:{{ aixp_app_version }}
+ExecStartPre=-/usr/bin/docker pull {{ aixp_cr_url }}/exe_eng:{{ aixp_app_version }}
 # The following line contains NO tz volumes and will be enabled after backed is updated
 #ExecStart=/bin/sh -c '/usr/bin/docker run --rm --cap-add SYSLOG --gpus all --network=host --env-file {{ aixp_base_folder }}/.env --ipc=host --name aixp_ee -v /dev/shm:/dev/shm -v {{ aixp_local_cache_folder }}:/exe_eng/_local_cache -e EE_ID={{ inventory_hostname }} -e EE_DEVICE=cuda:0 {{ aixp_cr_url }}aixpand/exe_eng:{{ aixp_app_version }}  ; echo $? > /tmp/ee-node.exit'
 ExecStart=/bin/sh -c '/usr/bin/docker run --rm --cap-add SYSLOG --gpus all --network=host --env-file {{ aixp_base_folder }}/.env --ipc=host --name aixp_ee -v /dev/shm:/dev/shm -v {{ aixp_local_cache_folder }}:/exe_eng/_local_cache -v /etc/timezone:/etc/timezone -e EE_ID={{ inventory_hostname }} -e EE_DEVICE=cuda:0 {{ aixp_cr_url }}aixpand/exe_eng:{{ aixp_app_version }}  ; echo $? > /tmp/ee-node.exit'

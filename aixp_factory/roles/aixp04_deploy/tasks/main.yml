@@ -121,7 +121,7 @@
 - name: "Log in to DockerHub with {{ dockerhub_username }}"
   ansible.builtin.command:
     cmd: >
-      docker login -u {{ dockerhub_username }} -p {{ dockerhub_password }}
+      docker login -u {{ dockerhub_username }} -p {{ dockerhub_password }} {{ aixp_cr_server }}
   # community.docker.docker_login:
   #   username: "{{ dockerhub_username }}"
   #   password: "{{ dockerhub_password }}"
@@ -134,7 +134,7 @@
 
 - name: Set the name of the image
   set_fact:
-    docker_image_name: "{{ aixp_cr_url }}aixpand/exe_eng:{{ aixp_app_version }}"
+    docker_image_name: "{{ aixp_cr_url }}/exe_eng:{{ aixp_app_version }}"
   when: 
     - inventory_hostname in groups['gpu_workers']
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
