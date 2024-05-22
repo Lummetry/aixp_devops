@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.8.27 - 2024-05-22
+## 0.8.28 - 2024-05-22
   - added custom container registry
 
 
