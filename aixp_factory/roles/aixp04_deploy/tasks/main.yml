@@ -134,7 +134,7 @@
 
 - name: Set the name of the image
   set_fact:
-    docker_image_name: "aixpand/exe_eng:{{ aixp_app_version }}"
+    docker_image_name: "{{ aixp_cr_url }}aixpand/exe_eng:{{ aixp_app_version }}"
   when: 
     - inventory_hostname in groups['gpu_workers']
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)

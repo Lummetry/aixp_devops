@@ -375,9 +375,10 @@
 
 
 - name: Ensure /etc/hosts contains the aixp_hosts entry
-  lineinfile:
+  ansible.builtin.blockinfile:
     path: /etc/hosts
-    line: "{{ aixp_hosts }}"
+    block: |
+     "{{ aixp_hosts }}"
     state: present
 
 

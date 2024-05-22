@@ -17,7 +17,11 @@ all:
     # select the target environment "staging" "qa" "preprod" "prod"
     aixp_app_target: "staging"  # "staging" "qa" "preprod" "prod"
 
-    aixp_hosts: "A.B.C.D host.name.domain"
+    aixp_hosts: |
+      A.B.C.D host.name.domain
+      # A.B.C.D host.name.domain
+      
+    aixp_cr_url: 
 
     # STRT values for the target environment .env
 
