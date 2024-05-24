@@ -24,10 +24,11 @@ all:
     # START Container registry      
     # define below the full url to be used for the image
     aixp_cr_server: docker.io                       # registry.apps.proiectai.bt.wan
+    aixp_cr_accept_insecure: false                  # accept insecure connection (true/false)
     aixp_cr_user: aixpand                           # hyfy
     aixp_cr_url: "{{ aixp_cr_server }}/{{ aixp_cr_user }}"
     dockerhub_username: "<dockerhub_username>"      # dockerhub username
-    dockerhub_password: "<dockerhub_password>"      # dockerhub password    
+    dockerhub_password: "<dockerhub_password>"      # dockerhub password  
     # END Container registry
 
     # STRT values for the target environment .env    

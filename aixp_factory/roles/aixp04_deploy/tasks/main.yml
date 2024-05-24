@@ -118,7 +118,18 @@
   - (aixp_jetson is defined) and (aixp_jetson | bool)
 
 
-- name: "Log in to DockerHub with {{ dockerhub_username }}"
+- name: Create /etc/docker/daemon.json if aixp_cr_accept_insecure
+  ansible.builtin.template:
+    src: daemon.json.j2
+    dest: /etc/docker/daemon.json
+    mode: '0644'
+  notify: reload docker
+  when: 
+    # - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
+    - aixp_cr_accept_insecure
+
+
+- name: "Log in to {{ aixp_cr_server }} with {{ dockerhub_username }}"
   ansible.builtin.command:
     cmd: >
       docker login -u {{ dockerhub_username }} -p {{ dockerhub_password }} {{ aixp_cr_server }}

@@ -1,10 +1,13 @@
 # Changelog
 
-## 0.8.28 - 2024-05-22
-  - added custom container registry
+## 0.8.29 - 2024-05-24
+  - insecure cr accepted
 
 
 --------------------------------------------------------------------------
+
+## 0.8.28 - 2024-05-22
+  - added custom container registry
 
 ## 0.8.25 - 2024-05-21
   - added hosts and lm-sensors
