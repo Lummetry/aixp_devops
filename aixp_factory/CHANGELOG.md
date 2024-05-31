@@ -1,10 +1,14 @@
 # Changelog
 
-## 0.8.29 - 2024-05-24
-  - insecure cr accepted
+## 0.8.30 - 2024-05-31
+  - fix custom CRs
 
 
 --------------------------------------------------------------------------
+
+## 0.8.29 - 2024-05-24
+  - insecure cr accepted
+
 
 ## 0.8.28 - 2024-05-22
   - added custom container registry
