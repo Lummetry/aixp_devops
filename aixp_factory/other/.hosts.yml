@@ -73,6 +73,8 @@ all:
 
     ###### ADMIN-ONLY VARIABLES ######
 
+    aixp_EE_MQTT_SUBTOPIC: "address"
+
     aixp_device: "cuda:0"
     aixp_docker_gpus: "--gpus all"
     # ssh options
