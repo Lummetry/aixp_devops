@@ -33,13 +33,18 @@
   register: env_file_check
   when: aixp_app in ["aixp_ee", "edge_node"]
 
+- name: Display .env status
+  debug:
+    msg: ".env exists: {{ env_file_check }} - will be overwritten"
+  when: aixp_app in ["aixp_ee", "edge_node"]
+
 - name: "Copy {{ aixp_base_folder }}/.env file"
   ansible.builtin.template:
     src: env.j2
     dest: "{{ aixp_base_folder }}/.env"
     mode: '0644'
+    force: true
   when: 
-    - not env_file_check.stat.exists
     - aixp_app in ["aixp_ee", "edge_node"]
 
 - name: "Check if config_startup.json exists in {{ aixp_local_cache_folder }}"
@@ -48,13 +53,19 @@
   register: config_startup_check
   when: aixp_app in ["aixp_ee", "edge_node"]
 
+- name: Display config_startup.json status
+  debug:
+    msg: "config_startup.json exists: {{ config_startup_check }}"
+  when: aixp_app in ["aixp_ee", "edge_node"]
+
+
 - name: "Create {{ aixp_local_cache_folder }}/config_startup.json"
   ansible.builtin.template:
     src: config_startup.json.j2
     dest: "{{ aixp_local_cache_folder }}/config_startup.json"
     mode: '0644'
+    force: true
   when: 
-    - not config_startup_check.stat.exists
     - aixp_app in ["aixp_ee", "edge_node"]
 
 - name: "Check if config_app.txt exists in {{ aixp_local_cache_folder }}"
@@ -63,13 +74,19 @@
   register: config_app_check
   when: aixp_app in ["aixp_ee", "edge_node"]
 
+
+- name: Display config_app.txt status
+  debug:
+    msg: "config_app.txt exists: {{ config_app_check }}"
+  when: aixp_app in ["aixp_ee", "edge_node"]
+
 - name: "Creating {{ aixp_local_cache_folder }}/config_app.txt"
   ansible.builtin.template:
     src: config_app.txt.j2
     dest: "{{ aixp_local_cache_folder }}/config_app.txt"
     mode: '0644'
+    force: true
   when: 
-    - not config_app_check.stat.exists
     - aixp_app in ["aixp_ee", "edge_node"]
 
 
@@ -78,10 +95,10 @@
     src: aixp_ee.service.j2
     dest: /etc/systemd/system/{{ aixp_app }}.service
     mode: '0644'
+    force: true
   notify: reload systemd
   when: 
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
-    - not aixp_service.stat.exists
     - (aixp_jetson is not defined) or (not aixp_jetson | bool)
 
 - name: "Create Nvidia Jetson /etc/systemd/system/{{ aixp_app }}.service"
@@ -89,10 +106,10 @@
     src: aixp_ee_tegra.service.j2
     dest: /etc/systemd/system/{{ aixp_app }}.service
     mode: '0644'
+    force: true
   notify: reload systemd
   when: 
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
-    - not aixp_service.stat.exists
     - (aixp_jetson is defined) and (aixp_jetson | bool)    
 
 
@@ -103,6 +120,7 @@
     src: "{{ aixp_app }}.service.j2"
     dest: "{{ aixp_base_folder }}/{{ aixp_app }}.service"
     mode: '0644'
+    force: true
   when:
   - (aixp_debug_deploy is defined) and (aixp_debug_deploy | bool)
   - (aixp_jetson is not defined) or (not aixp_jetson | bool)
@@ -113,6 +131,7 @@
     src: "{{ aixp_app }}_tegra.service.j2"
     dest: "{{ aixp_base_folder }}/{{ aixp_app }}.service"
     mode: '0644'
+    force: true
   when:
   - (aixp_debug_deploy is defined) and (aixp_debug_deploy | bool)
   - (aixp_jetson is defined) and (aixp_jetson | bool)
@@ -196,6 +215,7 @@
     src: show.sh.j2
     dest: "~/show.sh"
     mode: '0755'
+    force: true
   become: false
 
 - name: Create restart.sh script
@@ -205,6 +225,7 @@
       #!/bin/bash
       sudo systemctl restart {{ aixp_app }}
     mode: '0755'
+    force: true
   become: false
 
 
@@ -213,6 +234,7 @@
     dest: "{{ aixp_local_cache_folder }}/authorized_addrs"
     content: "{{ aixp_authorized_addrs }}"
     mode: '0644'
+    force: true
   when: 
     - aixp_app in ["aixp_ee", "edge_node"]
 
@@ -252,6 +274,7 @@
     name: "{{ aixp_app }}.service"
     enabled: yes
     state: started
+  notify: reload systemd
   when: 
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
     # - not aixp_service.stat.exists or not (aixp_service_name in services and services[aixp_service_name].status == 'active')
