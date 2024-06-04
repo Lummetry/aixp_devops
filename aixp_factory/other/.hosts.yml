@@ -53,6 +53,11 @@ all:
     aixp_EE_OPENAI: "<openai_api_key>"              # optional openai api key
     aixp_EE_HF_TOKEN: "<huggingface_api_token>"     # optional huggingface api token
 
+    aixp_NGROK_AUTH_TOKEN: "<ngrok_auth_token>"     # ngrok auth token
+    aixp_NGROK_EDGE_LABEL: "<ngrok_edge_label>"     # ngrok edge label
+    
+    aixp_EE_SUPERVISOR: false
+
     # END .env
 
 
