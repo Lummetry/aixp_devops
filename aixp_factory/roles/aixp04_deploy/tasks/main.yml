@@ -75,7 +75,7 @@
 
 - name: "Create Amd64 /etc/systemd/system/{{ aixp_app }}.service"
   ansible.builtin.template:
-    src: "{{ aixp_app }}.service.j2"
+    src: aixp_ee.service.j2
     dest: /etc/systemd/system/{{ aixp_app }}.service
     mode: '0644'
   notify: reload systemd
@@ -86,7 +86,7 @@
 
 - name: "Create Nvidia Jetson /etc/systemd/system/{{ aixp_app }}.service"
   ansible.builtin.template:
-    src: "{{ aixp_app }}_tegra.service.j2"
+    src: aixp_ee_tegra.service.j2
     dest: /etc/systemd/system/{{ aixp_app }}.service
     mode: '0644'
   notify: reload systemd
