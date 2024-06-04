@@ -23,8 +23,9 @@ all:
 
     # START Container registry      
     # define below the full url to be used for the image
+    aixp_image: exe_eng
     aixp_cr_server: docker.io                       # registry.apps.proiectai.bt.wan
-    aixp_cr_accept_insecure: false                  # accept insecure connection (true/false)
+    aixp_cr_accept_insecure: false                  # accept insecure connection (true/false)    
     aixp_cr_user: aixpand                           # hyfy
     aixp_cr_url: "{{ aixp_cr_server }}/{{ aixp_cr_user }}"
     dockerhub_username: "<dockerhub_username>"      # dockerhub username
@@ -70,7 +71,7 @@ all:
     # ssh options
     ansible_ssh_common_args: "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" 
     # select the app to deploy "aixp_ee", "llm_api" or other apps
-    aixp_app: "aixp_ee"
+    aixp_app: aixp_ee # either aixp_ee or edge_node
     aixp_debug_deploy: false
     # the default formatter
     aixp_formatter: "cavi2"
@@ -107,10 +108,12 @@ all:
         aixp_node_name_1:
           ansible_host: ""  
           aixp_jetson: false
+          aixp_cpu_only: false
 
         # aixp_worker_2:
         #   ansible_host: ""  
         #   aixp_jetson: false
+          # aixp_cpu_only: false
 
         ###########################################################
         ###### END USER SECTION #2 - MODIFY THE VALUES ABOVE ######

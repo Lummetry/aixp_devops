@@ -329,6 +329,7 @@
 - name: Display current sensor readings
   command: sensors
   register: sensors_output
+  failed_when: false
   when:
   - (aixp_jetson is not defined) or (not aixp_jetson | bool)
   # - inventory_hostname in groups['gpu_workers'] 
@@ -338,11 +339,13 @@
 - name: Show current sensor readings
   debug:
     var: sensors_output.stdout_lines
+  failed_when: false
   when:
   - (aixp_jetson is not defined) or (not aixp_jetson | bool)
   # - inventory_hostname in groups['gpu_workers'] 
   - install_extra_packages | default(true) | bool  
   - aixp_app in ["aixp_ee", "edge_node"]  
+  
 
 
 
