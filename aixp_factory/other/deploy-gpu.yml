@@ -24,5 +24,5 @@
     - name: GPU Role 
       include_role:
         name: aidamian.aixp_factory.aixp01_gpu
-      when: not aixp_debug_deploy | bool and aixp_app in ["aixp_ee"]
+      when: not aixp_debug_deploy | bool and aixp_app in ["aixp_ee", "edge_node"]
     

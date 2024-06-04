@@ -14,7 +14,7 @@
   ansible.builtin.stat:
     path: "{{ aixp_local_cache_folder }}"
   register: aixp_local_cache_folder_check
-  when: aixp_app in ["aixp_ee"]
+  when: aixp_app in ["aixp_ee", "edge_node"]
 
 - name: "Create {{ aixp_local_cache_folder }}"
   ansible.builtin.file:
@@ -23,7 +23,7 @@
     mode: '0755'
   when: 
     - not aixp_local_cache_folder_check.stat.exists
-    - aixp_app in ["aixp_ee"]
+    - aixp_app in ["aixp_ee", "edge_node"]
 
 # task for adding in aixp_target_folder the .env file from the localhost files
 # fails if the .env file is not provided in the files folder of the role
@@ -31,7 +31,7 @@
   ansible.builtin.stat:
     path: "{{ aixp_base_folder }}/.env"
   register: env_file_check
-  when: aixp_app in ["aixp_ee"]
+  when: aixp_app in ["aixp_ee", "edge_node"]
 
 - name: "Copy {{ aixp_base_folder }}/.env file"
   ansible.builtin.template:
@@ -40,13 +40,13 @@
     mode: '0644'
   when: 
     - not env_file_check.stat.exists
-    - aixp_app in ["aixp_ee"]
+    - aixp_app in ["aixp_ee", "edge_node"]
 
 - name: "Check if config_startup.json exists in {{ aixp_local_cache_folder }}"
   ansible.builtin.stat:
     path: "{{ aixp_local_cache_folder }}/config_startup.json"
   register: config_startup_check
-  when: aixp_app in ["aixp_ee"]
+  when: aixp_app in ["aixp_ee", "edge_node"]
 
 - name: "Create {{ aixp_local_cache_folder }}/config_startup.json"
   ansible.builtin.template:
@@ -55,13 +55,13 @@
     mode: '0644'
   when: 
     - not config_startup_check.stat.exists
-    - aixp_app in ["aixp_ee"]
+    - aixp_app in ["aixp_ee", "edge_node"]
 
 - name: "Check if config_app.txt exists in {{ aixp_local_cache_folder }}"
   ansible.builtin.stat:
     path: "{{ aixp_local_cache_folder }}/config_app.txt"
   register: config_app_check
-  when: aixp_app in ["aixp_ee"]
+  when: aixp_app in ["aixp_ee", "edge_node"]
 
 - name: "Creating {{ aixp_local_cache_folder }}/config_app.txt"
   ansible.builtin.template:
@@ -70,7 +70,7 @@
     mode: '0644'
   when: 
     - not config_app_check.stat.exists
-    - aixp_app in ["aixp_ee"]
+    - aixp_app in ["aixp_ee", "edge_node"]
 
 
 - name: "Create Amd64 /etc/systemd/system/{{ aixp_app }}.service"
@@ -149,7 +149,7 @@
   when: 
     - inventory_hostname in groups['gpu_workers']
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
-    - aixp_app in ["aixp_ee"]  
+    - aixp_app in ["aixp_ee", "edge_node"]  
     
 - name: Display the name of the image
   debug:
@@ -157,7 +157,7 @@
   when: 
     - inventory_hostname in groups['gpu_workers']
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
-    - aixp_app in ["aixp_ee"]  
+    - aixp_app in ["aixp_ee", "edge_node"]  
     
 
 - name: Pull Docker Image
@@ -170,7 +170,7 @@
   when: 
     - inventory_hostname in groups['gpu_workers']
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
-    - aixp_app in ["aixp_ee"]    
+    - aixp_app in ["aixp_ee", "edge_node"]    
 
 - name: List Docker Images
   ansible.builtin.command:
@@ -180,14 +180,14 @@
   register: docker_images
   when: 
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
-    - aixp_app in ["aixp_ee"]    
+    - aixp_app in ["aixp_ee", "edge_node"]    
 
 - name: Display all Docker Images
   debug:
     var: docker_images.images    
   when: 
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
-    - aixp_app in ["aixp_ee"]    
+    - aixp_app in ["aixp_ee", "edge_node"]    
 
 
 ## Additional file creating tasks: create show and restart scripts
@@ -214,7 +214,7 @@
     content: "{{ aixp_authorized_addrs }}"
     mode: '0644'
   when: 
-    - aixp_app in ["aixp_ee"]
+    - aixp_app in ["aixp_ee", "edge_node"]
 
 
 # Now check the status of the service
@@ -224,12 +224,12 @@
     aixp_service_name: "{{ aixp_app }}.service"
   when: 
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
-    - aixp_app in ["aixp_ee"]
+    - aixp_app in ["aixp_ee", "edge_node"]
 
 - name: Checking services
   ansible.builtin.service_facts:
   when: 
-    - aixp_app in ["aixp_ee"]
+    - aixp_app in ["aixp_ee", "edge_node"]
 
 
 - name: Set aix_service_status based on the service status
@@ -237,14 +237,14 @@
     aix_service_status: "{{ ansible_facts.services[aixp_service_name] }}"
   when: 
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
-    - aixp_app in ["aixp_ee"]
+    - aixp_app in ["aixp_ee", "edge_node"]
 
 - name: Show service status
   debug:
     msg: "{{ aixp_service_name }}: {{ aix_service_status }}"
   when: 
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
-    - aixp_app in ["aixp_ee"]
+    - aixp_app in ["aixp_ee", "edge_node"]
 
 
 - name: Enable and start service
@@ -263,21 +263,21 @@
   become: false
   when: 
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
-    - aixp_app in ["aixp_ee"]
+    - aixp_app in ["aixp_ee", "edge_node"]
 
 - name: "Get journalctl log for {{ aixp_app }} service"
   ansible.builtin.shell: journalctl -u {{ aixp_app }}.service -a -n 100 --no-pager
   register: journalctl_log
   when: 
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
-    - aixp_app in ["aixp_ee"]
+    - aixp_app in ["aixp_ee", "edge_node"]
 
 - name: "Display journalctl log for {{ aixp_app }} service"
   debug:
     msg: "{{ journalctl_log.stdout_lines }}"
   when: 
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
-    - aixp_app in ["aixp_ee"]
+    - aixp_app in ["aixp_ee", "edge_node"]
 
 
 

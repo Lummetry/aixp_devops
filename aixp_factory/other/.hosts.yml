@@ -71,7 +71,7 @@ all:
     # ssh options
     ansible_ssh_common_args: "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" 
     # select the app to deploy "aixp_ee", "llm_api" or other apps
-    aixp_app: "aixp_ee"
+    aixp_app: aixp_ee # either aixp_ee or edge_node
     aixp_debug_deploy: false
     # the default formatter
     aixp_formatter: "cavi2"

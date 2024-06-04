@@ -316,7 +316,7 @@
   - (aixp_jetson is not defined) or (not aixp_jetson | bool)
   # - inventory_hostname in groups['gpu_workers'] 
   - install_extra_packages | default(true) | bool  
-  - aixp_app in ["aixp_ee"]  
+  - aixp_app in ["aixp_ee", "edge_node"]  
 
 - name: Run sensors-detect script
   command: sensors-detect --auto
@@ -324,7 +324,7 @@
   - (aixp_jetson is not defined) or (not aixp_jetson | bool)
   # - inventory_hostname in groups['gpu_workers'] 
   - install_extra_packages | default(true) | bool  
-  - aixp_app in ["aixp_ee"]  
+  - aixp_app in ["aixp_ee", "edge_node"]  
 
 - name: Display current sensor readings
   command: sensors
@@ -333,7 +333,7 @@
   - (aixp_jetson is not defined) or (not aixp_jetson | bool)
   # - inventory_hostname in groups['gpu_workers'] 
   - install_extra_packages | default(true) | bool  
-  - aixp_app in ["aixp_ee"]  
+  - aixp_app in ["aixp_ee", "edge_node"]  
 
 - name: Show current sensor readings
   debug:
@@ -342,7 +342,7 @@
   - (aixp_jetson is not defined) or (not aixp_jetson | bool)
   # - inventory_hostname in groups['gpu_workers'] 
   - install_extra_packages | default(true) | bool  
-  - aixp_app in ["aixp_ee"]  
+  - aixp_app in ["aixp_ee", "edge_node"]  
 
 
 

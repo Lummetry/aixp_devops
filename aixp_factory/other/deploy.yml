@@ -27,7 +27,7 @@
       name: aidamian.aixp_factory.aixp01_gpu
     when: 
     - not aixp_debug_deploy | bool
-    - aixp_app in ["aixp_ee"]
+    - aixp_app in ["aixp_ee", "edge_node"]
     - (aixp_jetson is not defined) or (not aixp_jetson | bool)
     - not aixp_cpu_only | bool | default(false)
   
@@ -36,7 +36,7 @@
       name: aidamian.aixp_factory.aixp02_docker
     when: 
     - not aixp_debug_deploy | bool
-    - aixp_app in ["aixp_ee"]
+    - aixp_app in ["aixp_ee", "edge_node"]
     - (aixp_jetson is not defined) or (not aixp_jetson | bool)
 
   - name: Nvidia Role
@@ -44,7 +44,7 @@
       name: aidamian.aixp_factory.aixp03_nvidia
     when: 
     - not aixp_debug_deploy | bool 
-    - aixp_app in ["aixp_ee"]      
+    - aixp_app in ["aixp_ee", "edge_node"]      
     - (aixp_jetson is not defined) or (not aixp_jetson | bool)
     - not aixp_cpu_only | bool | default(false)
 
