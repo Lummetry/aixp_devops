@@ -17,13 +17,21 @@ all:
     # select the target environment "staging" "qa" "preprod" "prod"
     aixp_app_target: "staging"  # "staging" "qa" "preprod" "prod"
 
-    aixp_hosts: "A.B.C.D host.name.domain"
+    aixp_hosts: |
+      A.B.C.D host.name.domain
+      # A.B.C.D host.name.domain
 
-    # STRT values for the target environment .env
-
+    # START Container registry      
+    # define below the full url to be used for the image
+    aixp_cr_server: docker.io                       # registry.apps.proiectai.bt.wan
+    aixp_cr_accept_insecure: false                  # accept insecure connection (true/false)
+    aixp_cr_user: aixpand                           # hyfy
+    aixp_cr_url: "{{ aixp_cr_server }}/{{ aixp_cr_user }}"
     dockerhub_username: "<dockerhub_username>"      # dockerhub username
-    dockerhub_password: "<dockerhub_password>"      # dockerhub password
-    
+    dockerhub_password: "<dockerhub_password>"      # dockerhub password  
+    # END Container registry
+
+    # STRT values for the target environment .env    
     aixp_EE_MINIO_ENDPOINT: "<minio_endpoint>"      # minio endpoint such as s3.prod.org.com
     aixp_EE_MINIO_ACCESS_KEY: "<minio_access_key>"  # minio access key (username)
     aixp_EE_MINIO_SECRET_KEY: "<minio_secret_key>"  # minio secret key (password)

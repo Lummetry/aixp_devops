@@ -29,6 +29,7 @@
     - not aixp_debug_deploy | bool
     - aixp_app in ["aixp_ee"]
     - (aixp_jetson is not defined) or (not aixp_jetson | bool)
+    - not aixp_cpu_only | bool | default(false)
   
   - name: Docker Role
     include_role:
@@ -45,6 +46,7 @@
     - not aixp_debug_deploy | bool 
     - aixp_app in ["aixp_ee"]      
     - (aixp_jetson is not defined) or (not aixp_jetson | bool)
+    - not aixp_cpu_only | bool | default(false)
 
 - name: Deploy AiXp service
   hosts: gpu_workers

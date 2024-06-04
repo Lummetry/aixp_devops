@@ -64,4 +64,13 @@ mkdir -p logs
 if [ -f "./logs/ansible.log" ]; then
     mv "./logs/ansible.log" "./logs/ansible_$(date +%Y_%m_%d__%H_%M).log"
 fi
-ANSIBLE_FORCE_COLOR=true ansible-playbook deploy.yml | tee "./logs/ansible.log"
+
+# if param "-v" or "-vvv" or "-vv" is passed, run ansible-playbook with verbose mode
+if [ "$1" == "-v" ] || [ "$1" == "-vv" ] || [ "$1" == "-vvv" ]; then
+    ANSIBLE_FORCE_COLOR=true ansible-playbook -vvv deploy.yml | tee "./logs/ansible.log"
+    exit 0
+else
+    ANSIBLE_FORCE_COLOR=true ansible-playbook deploy.yml | tee "./logs/ansible.log"
+    exit 0
+fi
+
