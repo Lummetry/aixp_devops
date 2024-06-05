@@ -81,6 +81,9 @@ all:
     aixp_docker_gpus: "--gpus all"
 
     aixp_commented_restart: 
+
+    aixp_system_temperature_check: true
+
     # ssh options
     ansible_ssh_common_args: "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" 
     # select the app to deploy "aixp_ee", "llm_api" or other apps
