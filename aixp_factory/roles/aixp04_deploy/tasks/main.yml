@@ -89,6 +89,16 @@
   when: 
     - aixp_app in ["aixp_ee", "edge_node"]
 
+- name: "Stop the service {{ aixp_app }}.service if it is running"
+  ansible.builtin.systemd:
+    name: "{{ aixp_app }}.service"
+    enabled: yes
+    state: stopped
+  failed_when: false
+  when: 
+    - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
+
+
 
 - name: "Create Amd64 /etc/systemd/system/{{ aixp_app }}.service"
   ansible.builtin.template:
