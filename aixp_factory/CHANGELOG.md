@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.8.41 - 2024-06-04
+## 0.8.42 - 2024-06-05
   - custom images
   - gpus
   - force template overwrite

@@ -15,7 +15,7 @@ all:
     ansible_sudo_pass: ""                       # the password to become root on the remote host if required
 
     # select the target environment "staging" "qa" "preprod" "prod"
-    aixp_app_target: "staging"  # "staging" "qa" "preprod" "prod"
+    aixp_app_target: "staging"  # "staging" "qa" "preprod" "prod" or even "develop"
 
     aixp_hosts: |
       A.B.C.D host.name.domain
@@ -73,7 +73,7 @@ all:
 
     ###### ADMIN-ONLY VARIABLES ######
 
-    aixp_EE_MQTT_SUBTOPIC: "address"
+    aixp_EE_MQTT_SUBTOPIC: address
 
     aixp_device: "cuda:0"
     aixp_docker_gpus: "--gpus all"
