@@ -243,6 +243,16 @@
     force: true
   become: false
 
+- name: Create stop.sh script
+  ansible.builtin.copy:
+    dest: "~/stop.sh"
+    content: |
+      #!/bin/bash
+      sudo systemctl stop {{ aixp_app }}
+    mode: '0755'
+    force: true
+  become: false
+
 
 - name: "Create  {{ aixp_local_cache_folder }}/authorized_addrs file and add the authorized addresses"
   ansible.builtin.copy:

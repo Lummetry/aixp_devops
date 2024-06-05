@@ -28,33 +28,33 @@ all:
     aixp_cr_accept_insecure: false                  # accept insecure connection (true/false)    
     aixp_cr_user: aixpand                           # hyfy
     aixp_cr_url: "{{ aixp_cr_server }}/{{ aixp_cr_user }}"
-    dockerhub_username: "<dockerhub_username>"      # dockerhub username
-    dockerhub_password: "<dockerhub_password>"      # dockerhub password  
+    dockerhub_username: "dockerhub_username"      # dockerhub username
+    dockerhub_password: "dockerhub_password"      # dockerhub password  
     # END Container registry
 
     # STRT values for the target environment .env    
-    aixp_EE_MINIO_ENDPOINT: "<minio_endpoint>"      # minio endpoint such as s3.prod.org.com
-    aixp_EE_MINIO_ACCESS_KEY: "<minio_access_key>"  # minio access key (username)
-    aixp_EE_MINIO_SECRET_KEY: "<minio_secret_key>"  # minio secret key (password)
+    aixp_EE_MINIO_ENDPOINT: "minio_endpoint"      # minio endpoint such as s3.prod.org.com
+    aixp_EE_MINIO_ACCESS_KEY: "minio_access_key"  # minio access key (username)
+    aixp_EE_MINIO_SECRET_KEY: "minio_secret_key"  # minio secret key (password)
     aixp_EE_MINIO_SECURE: "true"                    # minio secure connection (true/false)
     aixp_EE_MINIO_MODEL_BUCKET: "model-zoo"         # minio model bucket
-    aixp_EE_MINIO_UPLOAD_BUCKET: "<TBD>"            # minio default (not mandatory) upload bucket
+    aixp_EE_MINIO_UPLOAD_BUCKET: "TBD"            # minio default (not mandatory) upload bucket
 
 
     # enter below the values for the MQTT broker
-    aixp_MQTT_HOST: "<mqtt_broker_address>"         # mqtt broker address such as mqtt.prod.org.com
+    aixp_MQTT_HOST: "mqtt_broker_address"         # mqtt broker address such as mqtt.prod.org.com
     aixp_MQTT_USER: "coreaixp"                      # mqtt broker username (default coreaixp)
-    aixp_EE_MQTT: "<mqtt_broker_password>"          # mqtt broker password (required)
+    aixp_EE_MQTT: "mqtt_broker_password"          # mqtt broker password (required)
     aixp_MQTT_PORT: 1883                            # mqtt broker port (default 1883 for non-secure)
     aixp_MQTT_SECURED: false                        # mqtt broker secure connection (true/false)
   
 
-    aixp_EE_GITVER: "<git_version_access_token>"    # git version access token (required)
-    aixp_EE_OPENAI: "<openai_api_key>"              # optional openai api key
-    aixp_EE_HF_TOKEN: "<huggingface_api_token>"     # optional huggingface api token
+    aixp_EE_GITVER: "git_version_access_token"    # git version access token (required)
+    aixp_EE_OPENAI: "openai_api_key"              # optional openai api key
+    aixp_EE_HF_TOKEN: "huggingface_api_token"     # optional huggingface api token
 
-    aixp_NGROK_AUTH_TOKEN: "<ngrok_auth_token>"     # ngrok auth token
-    aixp_NGROK_EDGE_LABEL: "<ngrok_edge_label>"     # ngrok edge label
+    aixp_NGROK_AUTH_TOKEN: "ngrok_auth_token"     # ngrok auth token
+    aixp_NGROK_EDGE_LABEL: "ngrok_edge_label"     # ngrok edge label
     
     aixp_EE_SUPERVISOR: false
 
