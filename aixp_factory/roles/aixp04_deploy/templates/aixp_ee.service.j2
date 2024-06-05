@@ -9,8 +9,8 @@ Restart=always
 ExecStartPre=-/usr/bin/docker stop -t 20 {{ aixp_app }}
 ExecStartPre=-/usr/bin/docker pull {{ aixp_cr_url }}/{{ aixp_image }}:{{ aixp_app_version }}
 # The following line contains NO tz volumes and will be enabled after backed is updated
-#ExecStart=/bin/sh -c '/usr/bin/docker run {{ aixp_docker_gpus }} --rm --cap-add SYSLOG --network=host --env-file {{ aixp_base_folder }}/.env --ipc=host --name {{ aixp_app }} -v /dev/shm:/dev/shm -v {{ aixp_local_cache_folder }}:/{{ aixp_image }}/_local_cache  {{ aixp_cr_url }}/{{ aixp_image }}:{{ aixp_app_version }}  ; echo $? > /tmp/ee-node.exit'
-ExecStart=/bin/sh -c '/usr/bin/docker run {{ aixp_docker_gpus }} --rm --cap-add SYSLOG --network=host --env-file {{ aixp_base_folder }}/.env --ipc=host --name {{ aixp_app }} -v /dev/shm:/dev/shm -v {{ aixp_local_cache_folder }}:/{{ aixp_image }}/_local_cache -v /etc/timezone:/etc/timezone {{ aixp_cr_url }}/{{ aixp_image }}:{{ aixp_app_version }}  ; echo $? > /tmp/ee-node.exit'
+#ExecStart=/bin/sh -c '/usr/bin/docker run {{ aixp_docker_gpus }} --rm --cap-add SYSLOG --network=host --env-file {{ aixp_base_folder }}/.env --ipc=host --name {{ aixp_app }} -v /dev/shm:/dev/shm -v {{ aixp_local_cache_folder }}:/{{ aixp_container_folder | default('exe_eng') }}/_local_cache  {{ aixp_cr_url }}/{{ aixp_image }}:{{ aixp_app_version }}  ; echo $? > /tmp/ee-node.exit'
+ExecStart=/bin/sh -c '/usr/bin/docker run {{ aixp_docker_gpus }} --rm --cap-add SYSLOG --network=host --env-file {{ aixp_base_folder }}/.env --ipc=host --name {{ aixp_app }} -v /dev/shm:/dev/shm -v {{ aixp_local_cache_folder }}:/{{ aixp_container_folder | default('exe_eng') }}/_local_cache -v /etc/timezone:/etc/timezone {{ aixp_cr_url }}/{{ aixp_image }}:{{ aixp_app_version }}  ; echo $? > /tmp/ee-node.exit'
 ExecStartPost=/bin/sh -c 'sleep 30; /usr/bin/docker image prune -a -f'
 ExecStop=/usr/bin/docker stop -t 20 {{ aixp_app }}
 ExecStopPost=/bin/sh -c 'EXIT_STATUS=$(cat /tmp/ee-node.exit); if [ "$EXIT_STATUS" -eq 10 ]; then shutdown -r now; fi'

@@ -101,6 +101,7 @@
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
     - (aixp_jetson is not defined) or (not aixp_jetson | bool)
 
+
 - name: "Create Nvidia Jetson /etc/systemd/system/{{ aixp_app }}.service"
   ansible.builtin.template:
     src: aixp_ee_tegra.service.j2
@@ -112,6 +113,20 @@
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
     - (aixp_jetson is defined) and (aixp_jetson | bool)    
 
+
+- name: Get service file after creation
+  ansible.builtin.shell: cat /etc/systemd/system/{{ aixp_app }}.service
+  register: service_file
+  when:   
+    - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
+    - aixp_app in ["aixp_ee", "edge_node"]
+
+- name: Display service file
+  debug:
+    msg: "{{ service_file.stdout_lines }}"
+  when: 
+    - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
+    - aixp_app in ["aixp_ee", "edge_node"]    
 
 
 # this is a debug-only task
