@@ -94,6 +94,8 @@ all:
 
     aixp_EE_MQTT_SUBTOPIC: address
 
+    aixp_commented_restart: "#"
+
     aixp_device: "cpu"
     aixp_docker_gpus: " "
     # ssh options
