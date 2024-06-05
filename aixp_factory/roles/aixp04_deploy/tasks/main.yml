@@ -239,6 +239,7 @@
     content: |
       #!/bin/bash
       sudo systemctl restart {{ aixp_app }}
+      sudo journalctl -u {{ aixp_app }} -a -n 100 -f
     mode: '0755'
     force: true
   become: false
