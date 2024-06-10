@@ -19,18 +19,18 @@
         },
         "PARAMS": {
             "CONFIG_CHANNEL": {
-                "TOPIC": "$EE_MQTT_TOPIC_ROOT/{}/config"
+                "TOPIC": "{{ aixp_MQTT_TOPIC_ROOT }}/{}/config"
             },
             "CTRL_CHANNEL": {
-                "TOPIC": "$EE_MQTT_TOPIC_ROOT/ctrl"
+                "TOPIC": "{{ aixp_MQTT_TOPIC_ROOT }}/ctrl"
             },
             "HOST": "$EE_MQTT_HOST",
             "NOTIF_CHANNEL": {
-                "TOPIC": "$EE_MQTT_TOPIC_ROOT/notif"
+                "TOPIC": "{{ aixp_MQTT_TOPIC_ROOT }}/notif"
             },
             "PASS": "$EE_MQTT",
             "PAYLOADS_CHANNEL": {
-                "TOPIC": "$EE_MQTT_TOPIC_ROOT/payloads"
+                "TOPIC": "{{ aixp_MQTT_TOPIC_ROOT }}/payloads"
             },
             "PORT": "$EE_MQTT_PORT",
             "QOS": 0,
