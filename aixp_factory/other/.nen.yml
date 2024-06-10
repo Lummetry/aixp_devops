@@ -47,6 +47,8 @@ all:
     aixp_EE_MQTT: "mqtt_broker_password"          # mqtt broker password (required)
     aixp_MQTT_PORT: 8883                            # mqtt broker port (default 1883 for non-secure)
     aixp_MQTT_SECURED: true                        # mqtt broker secure connection (true/false)
+    aixp_MQTT_TOPIC_ROOT: naeural
+    aixp_MQTT_CERT: 
   
 
     aixp_EE_GITVER: "git_version_access_token"    # git version access token (required)
@@ -62,24 +64,26 @@ all:
 
 
     aixp_authorized_addrs: |
-      aixp_AgqIdUEoUmblnsKNsoBTR5c_wxiV8jUWGpnIUQDEOdDq
-      aixp_AtFQeDDHCFcOOlbU9TNW8OUoDyVric6X2Qh2qVpE2pLw
-      aixp_AmI7qRUFwbfy1Oa45lUFwolsiiJ4elxOxiBqB0tD2ljp
-      aixp_AgNxIxNN6RsDqBa0d5l2ZQpy7y-5bnbP55xej4OvcitO
-      aixp_A9RfNVpr0ui9LCbVfQn0KlY-SBHtKu_DtnkS7t8KyJke
-      aixp_AhvvjmokpMUc0wQ8DOpeIDr_3bmoL8A8-vLZIa5-pDb4
-      aixp_A6IrUO8pNoZrezX7UhYSjD7mAhpqt-p8wTVNHfuTzg-G
-      aixp_Am-eDtRVWRf6PiPtErPQHOduaPouRROSuGlBVpiAp491
-      aixp_A78sgsMS5B6b2UggHUuFX_eXvGa5dOY0Fc0Tm_uj68Oi
-      aixp_AljrNvZgT10ccZ4rnVVuFjbH-ZC3QNNMYVFUvE0cBEk2
-      aixp_AwTD0PEqh_dmW3vH_h8N6CyNwLOh4ql2khy7-yP4Ltp-
-      aixp_A0BnayW4VLLOiHYXTnGGcC2B4vRKoBhymnO_MFmMTR61
-      aixp_AnP7sCPXFZAEn9YtibMPI6h2GeCzuNq-AwcCFA0sNpjT
-      aixp_A8i8FsebQpZiXkFZmsf9bqyZBETufOhLoGdmCEJiOvQX
-      aixp_A3vtcVIv_yL7k945IuhNjLUXKj2DPvbapoH4D6ZairfT
-      aixp_A3_Jl29ZWhPAcCSY-J9dshQ7VHQEoha1T8A9ceddsZUx
-      aixp_A-w16TEVWzS4n3GJESakqMaPi5KMAYiXQnQjZVtNoFRn
-      aixp_AnsBOLCyQDfpmr4GtGVKQ1nfH07Ic3FcmH2i47UH5pFi
+      0xai_A5crKSUwjFytmqJcYflaUz_s3IACHFDMe7DmE5zf5qbS tutorial-address
+      0xai_AgqIdUEoUmblnsKNsoBTR5c_wxiV8jUWGpnIUQDEOdDq stefan-ws
+      0xai_AtFQeDDHCFcOOlbU9TNW8OUoDyVric6X2Qh2qVpE2pLw stefan-ws-sdk
+      0xai_AmI7qRUFwbfy1Oa45lUFwolsiiJ4elxOxiBqB0tD2ljp stefan-ws-solisclient
+      0xai_AgNxIxNN6RsDqBa0d5l2ZQpy7y-5bnbP55xej4OvcitO stefan-box
+      0xai_A9RfNVpr0ui9LCbVfQn0KlY-SBHtKu_DtnkS7t8KyJke stefan-laptop-solisclient
+      0xai_AhvvjmokpMUc0wQ8DOpeIDr_3bmoL8A8-vLZIa5-pDb4 stefan-laptop-sdk
+      0xai_A6IrUO8pNoZrezX7UhYSjD7mAhpqt-p8wTVNHfuTzg-G AID-hpc-solisclient
+      0xai_Am-eDtRVWRf6PiPtErPQHOduaPouRROSuGlBVpiAp491 AID-mobile-solisclient
+      0xai_A78sgsMS5B6b2UggHUuFX_eXvGa5dOY0Fc0Tm_uj68Oi silviu-solisclient
+      0xai_AljrNvZgT10ccZ4rnVVuFjbH-ZC3QNNMYVFUvE0cBEk2 bleo-box
+      0xai_AwTD0PEqh_dmW3vH_h8N6CyNwLOh4ql2khy7-yP4Ltp- bleo-solisclient
+      0xai_A0BnayW4VLLOiHYXTnGGcC2B4vRKoBhymnO_MFmMTR61 paul-solisclient
+      0xai_A3vtcVIv_yL7k945IuhNjLUXKj2DPvbapoH4D6ZairfT optizone-staging
+      0xai_Aw4gEC_6k8PQEYpX2e_wv1-C0DgpqUzcTWRa4IECAHGw bleo-sdk
+      0xai_AwW0cgvBYuNLLUxYo2HO7kLNVZiD7e8pmmQCQYSw1CGh silviu-sdk
+      0xai_A8SY7lEqBtf5XaGyB6ipdk5C30vSf3HK4xELp3iplwLe naeural-1
+      0xai_Amfnbt3N-qg2-qGtywZIPQBTVlAnoADVRmSAsdDhlQ-6 naeural-2
+      0xai_ApltAljEgWk3g8x2QcSa0sS3hT1P4dyCchd04zFSMy5e naeural-3
+
 
 
     ########################################################
