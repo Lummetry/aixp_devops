@@ -112,8 +112,9 @@
       "VERSION_TOKEN"   : "$EE_GITVER",
       "RESTART_ON_BEHIND": true,
 
-      "VERSION_URL": "https://raw.githubusercontent.com/Lummetry/HyFy-releases/main/e2/release.yaml",
-      "USE_YAML" : true,
+      "VERSION_URL": {{ aixp_VERSION_URL }},
+      "USE_YAML" : {{ aixp_VERSION_USE_YAML | lower }},
+
       "RELEASE_TAG" : "{{ aixp_app_target }}"      
     }
   },

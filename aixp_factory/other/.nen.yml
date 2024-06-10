@@ -105,6 +105,9 @@ all:
 
     aixp_system_temperature_check: false
 
+    aixp_VERSION_URL: "https://raw.githubusercontent.com/NaeuralEdgeProtocol/edge_node/{}/ver.py"
+    aixp_VERSION_USE_YAML: false
+
     # ssh options
     ansible_ssh_common_args: "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" 
     # select the app to deploy "aixp_ee", "llm_api" or other apps
