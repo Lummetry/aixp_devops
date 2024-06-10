@@ -46,9 +46,9 @@ all:
     aixp_MQTT_USER: "corenaeural"                      # mqtt broker username (default coreaixp)
     aixp_EE_MQTT: "mqtt_broker_password"          # mqtt broker password (required)
     aixp_MQTT_PORT: 8883                            # mqtt broker port (default 1883 for non-secure)
-    aixp_MQTT_SECURED: true                        # mqtt broker secure connection (true/false)
+    aixp_MQTT_SECURED: 1                        # mqtt broker secure connection (true/false)
     aixp_MQTT_TOPIC_ROOT: naeural
-    aixp_MQTT_CERT: 
+    aixp_MQTT_CERT: null
   
 
     aixp_EE_GITVER: "git_version_access_token"    # git version access token (required)
