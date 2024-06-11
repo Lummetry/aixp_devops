@@ -33,11 +33,11 @@ all:
     # END Container registry
 
     # STRT values for the target environment .env    
-    aixp_EE_MINIO_ENDPOINT: "minio_endpoint"      # minio endpoint such as s3.prod.org.com
+    aixp_EE_MINIO_ENDPOINT: "s3.amazonaws.com"      # minio endpoint such as s3.prod.org.com
     aixp_EE_MINIO_ACCESS_KEY: "minio_access_key"  # minio access key (username)
     aixp_EE_MINIO_SECRET_KEY: "minio_secret_key"  # minio secret key (password)
     aixp_EE_MINIO_SECURE: "true"                    # minio secure connection (true/false)
-    aixp_EE_MINIO_MODEL_BUCKET: "model-zoo"         # minio model bucket
+    aixp_EE_MINIO_MODEL_BUCKET: "naeural-models"         # minio model bucket
     aixp_EE_MINIO_UPLOAD_BUCKET: "TBD"            # minio default (not mandatory) upload bucket
 
 
