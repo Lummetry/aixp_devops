@@ -11,6 +11,11 @@ all:
     # use either ansible_ssh_private_key_file or ansible_ssh_pass
     ansible_user: ""                            # the user to connect to the remote host    
     ansible_ssh_private_key_file: "~/.ssh/id_rsa"   # the path to the private key file
+    aixp_EE_MINIO_ACCESS_KEY: "minio_access_key"  # minio access key (username)
+    aixp_EE_MINIO_SECRET_KEY: "minio_secret_key"  # minio secret key (password)
+    aixp_EE_MQTT: "mqtt_broker_password"          # mqtt broker password (required)
+    aixp_NGROK_AUTH_TOKEN: "ngrok_auth_token"     # ngrok auth token
+    aixp_NGROK_EDGE_LABEL: "ngrok_edge_label"     # ngrok edge label
     # ansible_ssh_pass: ""                        # the password to connect to the remote host if no private key is used
     # ansible_sudo_pass: ""                       # the password to become root on the remote host if required
 
@@ -34,8 +39,6 @@ all:
 
     # STRT values for the target environment .env    
     aixp_EE_MINIO_ENDPOINT: "s3.amazonaws.com"      # minio endpoint such as s3.prod.org.com
-    aixp_EE_MINIO_ACCESS_KEY: "minio_access_key"  # minio access key (username)
-    aixp_EE_MINIO_SECRET_KEY: "minio_secret_key"  # minio secret key (password)
     aixp_EE_MINIO_SECURE: "true"                    # minio secure connection (true/false)
     aixp_EE_MINIO_MODEL_BUCKET: "naeural-models"         # minio model bucket
     aixp_EE_MINIO_UPLOAD_BUCKET: "TBD"            # minio default (not mandatory) upload bucket
@@ -44,7 +47,6 @@ all:
     # enter below the values for the MQTT broker
     aixp_MQTT_HOST: "r9092118.ala.eu-central-1.emqxsl.com"         # mqtt broker address such as mqtt.prod.org.com
     aixp_MQTT_USER: "corenaeural"                      # mqtt broker username (default coreaixp)
-    aixp_EE_MQTT: "mqtt_broker_password"          # mqtt broker password (required)
     aixp_MQTT_PORT: 8883                            # mqtt broker port (default 1883 for non-secure)
     aixp_MQTT_SECURED: 1                        # mqtt broker secure connection (true/false)
     aixp_MQTT_TOPIC_ROOT: naeural
@@ -55,8 +57,6 @@ all:
     aixp_EE_OPENAI: "openai_api_key"              # optional openai api key
     aixp_EE_HF_TOKEN: "huggingface_api_token"     # optional huggingface api token
 
-    aixp_NGROK_AUTH_TOKEN: "ngrok_auth_token"     # ngrok auth token
-    aixp_NGROK_EDGE_LABEL: "ngrok_edge_label"     # ngrok edge label
     
     aixp_EE_SUPERVISOR: true
 
