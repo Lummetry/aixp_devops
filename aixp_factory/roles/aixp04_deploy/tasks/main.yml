@@ -216,6 +216,7 @@
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
     - aixp_app in ["aixp_ee", "edge_node"]    
 
+
 - name: List Docker Images
   ansible.builtin.command:
     cmd: >
@@ -314,6 +315,74 @@
   when: 
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
     # - not aixp_service.stat.exists or not (aixp_service_name in services and services[aixp_service_name].status == 'active')
+
+
+  ### LMS part ONLY for aixp_ee
+
+- name: Set the name of the LMS image
+  set_fact:
+    docker_lms_image_name: "{{ aixp_cr_url }}/{{ aixp_lms_image | default('hyfy_lms') }}:{{ aixp_app_version }}"
+  when: 
+    - inventory_hostname in groups['gpu_workers']
+    - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
+    - aixp_app in ["aixp_ee"]  
+    
+- name: Display the name of the LMS image
+  debug:
+    msg: "Pulling  {{ docker_lms_image_name }}"
+  when: 
+    - inventory_hostname in groups['gpu_workers']
+    - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
+    - aixp_app in ["aixp_ee"]  
+
+
+- name: Pull LMS Docker Image
+  ansible.builtin.command:
+    cmd: >
+      docker pull {{ docker_lms_image_name }}
+  # community.docker.docker_image:
+  #   name: "{{ docker_image_name }}"
+  #   source: pull  
+  when: 
+    - inventory_hostname in groups['gpu_workers']
+    - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
+    - aixp_app in ["aixp_ee"]    
+
+- name: Set a varible as service name for LMS
+  set_fact:
+    aixp_lms_service_name: "{{ aixp_lms_image }}.service"
+  when: 
+    - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
+    - aixp_app in ["aixp_ee"]
+
+- name: Checking services
+  ansible.builtin.service_facts:
+  when: 
+    - aixp_app in ["aixp_ee"]
+
+- name: "Create /etc/systemd/system/{{ aixp_lms_service_name }}"
+  ansible.builtin.template:
+    src: hyfy_lms.service.j2
+    dest: "/etc/systemd/system/{{ aixp_lms_service_name }}"
+    mode: '0644'
+    force: true
+  notify: reload systemd
+  when: 
+    - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
+    - aixp_app in ["aixp_ee"]
+
+- name: Enable and start service
+  ansible.builtin.systemd:
+    name: "{{ aixp_lms_service_name }}"
+    enabled: yes
+    state: started
+  notify: reload systemd
+  when: 
+    - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
+    - aixp_app in ["aixp_ee"]
+
+
+  ### END LMS
 
 - name: Sleep for 5 seconds and continue with play
   ansible.builtin.wait_for:

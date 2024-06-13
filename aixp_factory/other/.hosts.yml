@@ -30,6 +30,7 @@ all:
     aixp_cr_url: "{{ aixp_cr_server }}/{{ aixp_cr_user }}"
     dockerhub_username: "dockerhub_username"      # dockerhub username
     dockerhub_password: "dockerhub_password"      # dockerhub password  
+    aixp_lms_image: hyfy_lms
     # END Container registry
 
     # STRT values for the target environment .env    
