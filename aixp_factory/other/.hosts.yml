@@ -16,6 +16,7 @@ all:
 
     # select the target environment "staging" "qa" "preprod" "prod"
     aixp_app_target: "staging"  # "staging" "qa" "preprod" "prod" or even "develop"
+    aixp_dev_mode: false
 
     aixp_hosts: |
       A.B.C.D host.name.domain
@@ -111,6 +112,7 @@ all:
     aixp_supernode: "{{ 'stg_k8s_super' if aixp_app_target=='staging' else 'pre_super' if aixp_app_target=='preprod' else 'qa_super' if aixp_app_target=='qa' else 'prod_super' }}"
     # test the AiXp connection even from the localhost-to-AiXp beside the host-to-AiXp
     aixp_test_localhost: true
+    aixp_port_forward: "{{ '-p 1883:1883' if aixp_dev_mode else '' }}"
     aixp_test_packages:
       - pye2
       - pika

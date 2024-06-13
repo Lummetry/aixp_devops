@@ -22,6 +22,8 @@ all:
     # select the target environment "staging" "qa" "preprod" "prod"
     aixp_app_target: "develop"  # "staging" "qa" "preprod" "prod" or even "develop"
 
+    aixp_dev_mode: false
+
     aixp_hosts: |
       # A.B.C.D host.name.domain
       # A.B.C.D host.name.domain
