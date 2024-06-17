@@ -1,7 +1,8 @@
 # Changelog
 
-## 0.9.18 - 2024-06-17
+## 0.9.19 - 2024-06-17
   - fix ee auto update 
+  - fixed StartLimitBurst=0 and other issues
 
 --------------------------------------------------------------------------
 

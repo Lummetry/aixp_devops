@@ -249,6 +249,7 @@
     dest: "~/restart.sh"
     content: |
       #!/bin/bash
+      sudo systemctl enable {{ aixp_app }}
       sudo systemctl restart {{ aixp_app }}
       sudo journalctl -u {{ aixp_app }} -a -n 100 -f
     mode: '0755'
