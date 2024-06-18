@@ -52,6 +52,7 @@ all:
     aixp_MQTT_TOPIC_ROOT: lummetry
     # write below instead of null the certificate for the 
     # MQTT broker such as /home/gts/emqx.crt or similar
+    # aixp_MQTT_CERT: /home/gts/emqx.crt
     aixp_MQTT_CERT: null
   
 
