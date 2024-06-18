@@ -91,6 +91,7 @@ all:
     aixp_VERSION_URL: "https://raw.githubusercontent.com/Lummetry/HyFy-releases/main/e2/release.yaml"
     aixp_VERSION_USE_YAML: true
 
+
     # ssh options
     ansible_ssh_common_args: "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" 
     # select the app to deploy "aixp_ee", "llm_api" or other apps

@@ -267,6 +267,16 @@
   become: false
 
 
+- name: "Copy the MQTT server certificate file if defined. aixp_MQTT_CERT: {{ aixp_MQTT_CERT }}"
+  ansible.builtin.copy:
+    src: "{{ aixp_MQTT_CERT }}"
+    dest: "{{ aixp_local_cache_folder }}/mqtt_server.crt"
+    mode: '0644'
+  when: 
+    - aixp_MQTT_CERT is defined
+    - aixp_app in ["aixp_ee", "edge_node"]
+
+
 - name: "Create  {{ aixp_local_cache_folder }}/authorized_addrs file and add the authorized addresses"
   ansible.builtin.copy:
     dest: "{{ aixp_local_cache_folder }}/authorized_addrs"
