@@ -273,14 +273,15 @@
     dest: "{{ aixp_local_cache_folder }}/mqtt.crt"
     mode: '0644'
   when: 
-    - aixp_MQTT_CERT is defined
+    - aixp_MQTT_CERT is not none
     - aixp_app in ["aixp_ee", "edge_node"]
+
 
 - name: Debug show MQTT certificate file value if defined
   debug:
     msg: "MQTT certificate file: {{ './_local_cache/mqtt.cert' if aixp_MQTT_CERT is not none else '' }}"
   when: 
-    - aixp_MQTT_CERT is defined
+    - aixp_MQTT_CERT is not none
     - aixp_app in ["aixp_ee", "edge_node"]
 
 
