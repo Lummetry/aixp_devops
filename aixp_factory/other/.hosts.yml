@@ -50,6 +50,8 @@ all:
     aixp_MQTT_PORT: 1883                            # mqtt broker port (default 1883 for non-secure)
     aixp_MQTT_SECURED: 1                        # mqtt broker secure connection (true/false)
     aixp_MQTT_TOPIC_ROOT: lummetry
+    # write below instead of null the certificate for the 
+    # MQTT broker such as /home/gts/emqx.crt or similar
     aixp_MQTT_CERT: null
   
 
