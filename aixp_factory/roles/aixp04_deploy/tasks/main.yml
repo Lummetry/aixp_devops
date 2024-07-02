@@ -366,6 +366,7 @@
     - inventory_hostname in groups['gpu_workers']
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
     - aixp_app in ["aixp_ee"]    
+    - aixp_lsm_enabled | bool | default(false)
 
 - name: Set a varible as service name for LMS
   set_fact:
@@ -373,6 +374,7 @@
   when: 
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
     - aixp_app in ["aixp_ee"]
+    - aixp_lsm_enabled | bool | default(false)
 
 - name: Checking services
   ansible.builtin.service_facts:
@@ -389,6 +391,7 @@
   when: 
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
     - aixp_app in ["aixp_ee"]
+    - aixp_lsm_enabled | bool | default(false)
 
 - name: Enable and start service
   ansible.builtin.systemd:
@@ -399,6 +402,7 @@
   when: 
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
     - aixp_app in ["aixp_ee"]
+    - aixp_lsm_enabled | bool | default(false)
 
 
   ### END LMS
