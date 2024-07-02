@@ -32,7 +32,7 @@ all:
     dockerhub_username: "dockerhub_username"      # dockerhub username
     dockerhub_password: "dockerhub_password"      # dockerhub password  
     aixp_lms_image: hyfy_lms
-    aixp_lsm_enabled: false
+    aixp_lms_enabled: false
     # END Container registry
 
     # STRT values for the target environment .env    

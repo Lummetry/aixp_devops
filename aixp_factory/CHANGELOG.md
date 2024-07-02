@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.9.26 - 2024-07-02
+## 0.9.27 - 2024-07-02
   - ansible galaxy fix
 
 
