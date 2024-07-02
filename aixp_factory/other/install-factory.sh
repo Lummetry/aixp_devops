@@ -1,6 +1,6 @@
 #!/bin/bash
 
-INSTALLER_VERSION="0.2.2"
+INSTALLER_VERSION="0.2.3"
 
 log_with_color() {
     local text="$1"
@@ -158,7 +158,8 @@ fi
 
 # Install Ansible Collection
 log_with_color "Installing Ansible Collection: aidamian.aixp_factory" light
-ansible-galaxy collection install aidamian.aixp_factory --force --no-cache --clear-response-cache
+ansible-galaxy collection install aidamian.aixp_factory --force
+# ansible-galaxy collection install aidamian.aixp_factory --force --no-cache --clear-response-cache
 
 # Check if the collection is successfully installed 
 if [ $? -eq 0 ]; then
