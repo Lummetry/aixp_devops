@@ -1,6 +1,6 @@
 #!/bin/bash
 
-INSTALLER_VERSION="0.2.5"
+INSTALLER_VERSION="0.2.6"
 
 log_with_color() {
   local text="$1"
@@ -55,10 +55,10 @@ get_os_info() {
 }
 
 check_if_os_accepted() {
-  ACCEPTED_OS=("Ubuntu" "Debian" "CentOS" "Red Hat Enterprise Linux" "Fedora")
+  ACCEPTED_OS=("Ubuntu" "Debian" "CentOS" "Red Hat Enterprise Linux" "Fedora" "Oracle Linux Server")
   get_os_info
-  log_with_color "Operating System: $OS_NAME" blue
-  log_with_color "Version: $OS_VERSION" blue
+  log_with_color "Operating System: $OS_NAME" 
+  log_with_color "Version: $OS_VERSION"
 
   if [[ ! " ${ACCEPTED_OS[*]} " =~ " $OS_NAME " ]]; then
     log_with_color "This script runs only on ${ACCEPTED_OS[*]}. Exiting." red

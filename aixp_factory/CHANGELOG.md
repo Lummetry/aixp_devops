@@ -1,7 +1,7 @@
 # Changelog
 
 
-## 1.0.1 - 2024-07-009
+## 1.0.2 - 2024-07-009
   - added `run-config.sh` for config only deployment
   - installer now works also on Red Hat
 
