@@ -1,6 +1,6 @@
 #!/bin/bash
 
-INSTALLER_VERSION="0.2.3"
+INSTALLER_VERSION="0.2.5"
 
 log_with_color() {
     local text="$1"
@@ -260,6 +260,17 @@ else
     cp "${collection_path}/other/run-gpu-only.sh" ./run-gpu-only.sh
 fi
 
+# Copy run-config.sh from collection to current directory - overwrite if it exists
+if [ ! -f "./run-config.sh" ]; then
+    log_with_color "Copying run-config.sh from the collection to current directory $curr_dir2."
+    cp "${collection_path}/other/run-config.sh" ./run-config.sh
+else
+    log_with_color "run-config.sh already exists in $curr_dir2. Overwriting..." yellow
+    cp "${collection_path}/other/run-config.sh" ./run-config.sh
+fi
+
+
+
 # Copy showlog.sh from collection to current directory - overwrite if it exists
 if [ ! -f "./showlog.sh" ]; then
     log_with_color "Copying showlog.sh from the collection to current directory $curr_dir2."
@@ -271,6 +282,7 @@ fi
 
 chmod +x run.sh
 chmod +x run-gpu-only.sh
+chmod +x run-config.sh
 chmod +x showlog.sh
 log_with_color "Done setting up the factory." green
 log_with_color "Edit 'nano ./factory/hosts.yml' and enter your hosts and setup ./factory/key.pem or assign a already existing ~/.ssh .pem file" yellow
