@@ -73,6 +73,8 @@ all:
       aixp_back_end_address_00000000000000
 
 
+    aixp_container_memory_limit: 30GB
+
     ########################################################
     ###### END USER SECTION # MODIFY THE VALUES ABOVE ######
     ########################################################

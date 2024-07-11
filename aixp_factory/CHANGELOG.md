@@ -1,12 +1,16 @@
 # Changelog
 
 
-## 1.0.2 - 2024-07-009
-  - added `run-config.sh` for config only deployment
-  - installer now works also on Red Hat
+## 1.0.3 - 2024-07-11
+  - added `-m {{ aixp_container_memory_limit | default('30GB') }}`
 
 
 --------------------------------------------------------------------------
+
+## 1.0.2 - 2024-07-09
+  - added `run-config.sh` for config only deployment
+  - installer now works also on Red Hat
+
 
 ## 0.9.27 - 2024-07-02
   - ansible galaxy fix
