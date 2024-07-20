@@ -255,6 +255,16 @@ else
   cp "${collection_path}/other/deploy-gpu.yml" ./deploy-gpu.yml
 fi
 
+# Copy deploy-config.yml from the collection to the current directory
+if [ ! -f "./deploy-config.yml" ]; then
+  log_with_color "Copying deploy-config.yml to $curr_dir1" blue
+  cp "${collection_path}/other/deploy-config.yml" ./deploy-config.yml
+else
+  log_with_color "deploy-config.yml already exists in to $curr_dir1. Overwriting..." yellow
+  cp "${collection_path}/other/deploy-config.yml" ./deploy-config.yml
+fi
+
+
 # Move from factory to parent folder
 cd ..
 
