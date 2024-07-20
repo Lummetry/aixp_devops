@@ -1,4 +1,8 @@
 ---
+- name: Debug display to check if in config mode or not
+  debug:
+    msg: "App: {{ aixp_app }}, Debug: {{ aixp_debug_deploy | default(false) }}, Config only: {{ aixp_config_only | default(false) }}"
+
 - name: Check if service exists
   ansible.builtin.stat:
     path: "/etc/systemd/system/{{ aixp_app }}.service"
@@ -215,6 +219,7 @@
     - inventory_hostname in groups['gpu_workers']
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
     - aixp_app in ["aixp_ee", "edge_node"]    
+    - not (aixp_config_only | default(false))
 
 
 - name: List Docker Images
@@ -367,6 +372,7 @@
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
     - aixp_app in ["aixp_ee"]    
     - (aixp_lms_enabled is defined) and (aixp_lms_enabled | bool | default(false))
+    - not (aixp_config_only | default(false))
 
 - name: Set a varible as service name for LMS
   set_fact:

@@ -7,6 +7,9 @@
   - name: Setup variables
     debug:
       msg: "App: {{ aixp_app }}, Debug: {{ aixp_debug_deploy }}"
+  - name: Set unique identifier for this playbook
+    set_fact:
+      aixp_config_only: true
 
 
 - name: Deploy AiXp service
