@@ -1,11 +1,16 @@
 # Changelog
 
-## 1.0.5 - 2024-07-20
-  - fix for config only deployment
+
+## 1.0.6 - 2024-07-26
+  - fix #2 for config only deployment
 
 
 
 --------------------------------------------------------------------------
+
+## 1.0.5 - 2024-07-20
+  - fix for config only deployment
+
 
 ## 1.0.3 - 2024-07-11
   - added `-m {{ aixp_container_memory_limit | default('30GB') }}

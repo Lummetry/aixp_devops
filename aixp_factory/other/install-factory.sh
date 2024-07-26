@@ -1,6 +1,6 @@
 #!/bin/bash
 
-INSTALLER_VERSION="0.2.6"
+INSTALLER_VERSION="0.2.7"
 
 log_with_color() {
   local text="$1"
