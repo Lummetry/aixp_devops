@@ -1,7 +1,7 @@
 # Changelog
 
 
-## 1.0.6 - 2024-07-26
+## 1.0.7 - 2024-07-29
   - fix #2 for config only deployment
 
 

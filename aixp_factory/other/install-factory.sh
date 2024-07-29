@@ -1,6 +1,6 @@
 #!/bin/bash
 
-INSTALLER_VERSION="0.2.7"
+INSTALLER_VERSION="0.2.8"
 
 log_with_color() {
   local text="$1"
@@ -242,7 +242,7 @@ if [ ! -f "./deploy.yml" ]; then
   log_with_color "Copying deploy.yml to $curr_dir1" blue
   cp "${collection_path}/other/deploy.yml" ./deploy.yml
 else
-  log_with_color "deploy.yml already exists in to $curr_dir1. Overwriting..." yellow
+  log_with_color "deploy.yml already exists in $curr_dir1. Overwriting..." yellow
   cp "${collection_path}/other/deploy.yml" ./deploy.yml
 fi
 
@@ -251,7 +251,7 @@ if [ ! -f "./deploy-gpu.yml" ]; then
   log_with_color "Copying deploy-gpu.yml to $curr_dir1" blue
   cp "${collection_path}/other/deploy-gpu.yml" ./deploy-gpu.yml
 else
-  log_with_color "deploy-gpu.yml already exists in to $curr_dir1. Overwriting..." yellow
+  log_with_color "deploy-gpu.yml already exists in $curr_dir1. Overwriting..." yellow
   cp "${collection_path}/other/deploy-gpu.yml" ./deploy-gpu.yml
 fi
 
@@ -260,7 +260,7 @@ if [ ! -f "./deploy-config.yml" ]; then
   log_with_color "Copying deploy-config.yml to $curr_dir1" blue
   cp "${collection_path}/other/deploy-config.yml" ./deploy-config.yml
 else
-  log_with_color "deploy-config.yml already exists in to $curr_dir1. Overwriting..." yellow
+  log_with_color "deploy-config.yml already exists in $curr_dir1. Overwriting..." yellow
   cp "${collection_path}/other/deploy-config.yml" ./deploy-config.yml
 fi
 
