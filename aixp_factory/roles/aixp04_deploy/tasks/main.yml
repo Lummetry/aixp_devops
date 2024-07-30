@@ -184,6 +184,20 @@
     # - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
     - aixp_cr_accept_insecure
 
+- name: Reload systemd for docker
+  ansible.builtin.command:
+    cmd: systemctl daemon-reload
+  become: yes
+  when:
+    - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)    
+
+- name: Restart docker
+  ansible.builtin.command:
+    cmd: systemctl restart docker
+  become: yes
+  when:
+    - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)    
+
 
 - name: "Log in to {{ aixp_cr_server }} with {{ dockerhub_username }}"
   ansible.builtin.command:
