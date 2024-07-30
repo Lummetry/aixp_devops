@@ -1,7 +1,7 @@
 # Changelog
 
 
-## 1.0.8 - 2024-07-30
+## 1.0.9 - 2024-07-30
   - fix #2 for config only deployment
   - removed image prune for the moment from service template
 

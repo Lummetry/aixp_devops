@@ -3,20 +3,22 @@
 - name: Start AiXp deploy
   hosts: gpu_workers
   become: true
+  gather_facts: true
   tasks:
   - name: Set unique identifier for this playbook
     set_fact:
       aixp_config_only: true
   - name: Setup variables debug pre role launch
     debug:
-      msg: "App: {{ aixp_app }}, Debug: {{ aixp_debug_deploy }}, Config: {{ aixp_config_only }}"
+      msg: "App: {{ aixp_app }}, Debug: {{ aixp_debug_deploy }}, Config-only: {{ aixp_config_only }}"
 
 
 
-- name: Deploy AiXp service
+- name: Configure-only AiXp service
   hosts: gpu_workers
   become: true
   gather_facts: true
   roles:
     - role: aidamian.aixp_factory.aixp04_deploy
-      aixp_config_only: "{{ aixp_config_only }}"
+      vars: 
+        aixp_config_only: "{{ aixp_config_only }}"
