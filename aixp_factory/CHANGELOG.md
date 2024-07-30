@@ -1,12 +1,13 @@
 # Changelog
 
 
-## 1.0.7 - 2024-07-29
+## 1.0.8 - 2024-07-30
   - fix #2 for config only deployment
-
+  - removed image prune for the moment from service template
 
 
 --------------------------------------------------------------------------
+
 
 ## 1.0.5 - 2024-07-20
   - fix for config only deployment
@@ -41,6 +42,7 @@
 
 ## 0.9.15 - 2024-06-12
   - TLS
+
 
 ## 0.9.13 - 2024-06-10
   - new env vars  
