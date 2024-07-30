@@ -127,6 +127,14 @@
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
     - (aixp_jetson is defined) and (aixp_jetson | bool)    
 
+# Explicit task to reload systemd
+- name: Reload systemd to apply changes
+  ansible.builtin.command:
+    cmd: systemctl daemon-reload
+  become: yes
+  when:
+    - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)    
+
 
 - name: Get service file after creation
   ansible.builtin.shell: cat /etc/systemd/system/{{ aixp_app }}.service
