@@ -352,12 +352,13 @@
     - aixp_app in ["aixp_ee", "edge_node"]
 
 
-- name: Enable and start service
+- name: Enable and start EE service
   ansible.builtin.systemd:
     name: "{{ aixp_app }}.service"
     enabled: yes
     state: started
-  notify: reload systemd
+  async: 100  # Maximum time in seconds to allow the task to run
+  poll: 5     # Check the status every 5 seconds    
   when: 
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
     # - not aixp_service.stat.exists or not (aixp_service_name in services and services[aixp_service_name].status == 'active')
@@ -421,7 +422,7 @@
     - aixp_app in ["aixp_ee"]
     - (aixp_lms_enabled is defined) and (aixp_lms_enabled | bool | default(false))
 
-- name: Enable and start service
+- name: Enable and start LMS service
   ansible.builtin.systemd:
     name: "{{ aixp_lms_service_name }}"
     enabled: yes
