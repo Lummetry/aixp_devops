@@ -1,12 +1,15 @@
 # Changelog
 
 
-## 1.0.12 - 2024-07-30
-  - fix #2 for config only deployment
-  - removed image prune for the moment from service template
+## 1.1.0 - 2024-07-31
+  - config only deployment using `--skip` option
 
 
 --------------------------------------------------------------------------
+
+## 1.0.12 - 2024-07-30
+  - fix #2 for config only deployment
+  - removed image prune for the moment from service template
 
 
 ## 1.0.5 - 2024-07-20

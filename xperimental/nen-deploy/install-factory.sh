@@ -1,6 +1,6 @@
 #!/bin/bash
 
-INSTALLER_VERSION="0.3.0"
+INSTALLER_VERSION="0.2.8"
 
 log_with_color() {
   local text="$1"
@@ -124,25 +124,10 @@ install_ansible() {
   fi
 }
 
-# Parse command-line arguments
-SKIP_INSTALLATIONS=false
-for arg in "$@"; do
-  case $arg in
-    --skip)
-      SKIP_INSTALLATIONS=true
-      shift
-      ;;
-    *)
-      ;;
-  esac
-done
-
-# Check for sudo privileges if installations are not skipped
-if [ "$SKIP_INSTALLATIONS" = false ]; then
-  if ! sudo -v; then
-    log_with_color "This script requires sudo privileges. Please run as a user with sudo access." red
-    exit 1
-  fi
+# Check for sudo privileges
+if ! sudo -v; then
+  log_with_color "This script requires sudo privileges. Please run as a user with sudo access." red
+  exit 1
 fi
 
 ## SCRIPT STARTS HERE
@@ -151,53 +136,51 @@ log_with_color "########    Starting AiXp Factory setup v.$INSTALLER_VERSION ...
 check_if_os_accepted
 determine_package_manager
 
-if [ "$SKIP_INSTALLATIONS" = false ]; then
-  # Create a directory for the factory
-  mkdir -p factory
-  cd factory
+# Create a directory for the factory
+mkdir -p factory
+cd factory
 
-  path_to_add="$HOME/.local/bin"
-  export PATH="$PATH:$path_to_add"
+path_to_add="$HOME/.local/bin"
+export PATH="$PATH:$path_to_add"
 
-  curr_dir1=$(pwd)
+curr_dir1=$(pwd)
 
-  # Check if sshpass is installed
-  if ! command -v sshpass &> /dev/null; then
-    log_with_color "sshpass is not installed." yellow
-    install_sshpass
+# Check if sshpass is installed
+if ! command -v sshpass &> /dev/null; then
+  log_with_color "sshpass is not installed." yellow
+  install_sshpass
+else
+  log_with_color "sshpass is already installed." green
+fi
+
+# Check if Python is installed
+if ! command -v python3 &> /dev/null; then
+  install_python
+else
+  log_with_color "Python is already installed." green
+fi
+
+# Check if Pip is installed
+if ! command -v pip3 &> /dev/null; then
+  install_pip
+else
+  log_with_color "Pip is already installed." green
+fi
+
+# Check if Ansible is installed
+if ! ansible --version &> /dev/null; then
+  log_with_color "Ansible is not installed. Installing..." yellow
+  install_ansible
+
+  if ! grep -q "$path_to_add" ~/.bashrc; then
+    log_with_color "Adding $path_to_add to .bashrc" yellow
+    echo "export PATH=\"\$PATH:$path_to_add\"" >> ~/.bashrc
+    log_with_color "$path_to_add added to .bashrc and reloaded" green
   else
-    log_with_color "sshpass is already installed." green
+    log_with_color "Path $path_to_add already in .bashrc" green
   fi
-
-  # Check if Python is installed
-  if ! command -v python3 &> /dev/null; then
-    install_python
-  else
-    log_with_color "Python is already installed." green
-  fi
-
-  # Check if Pip is installed
-  if ! command -v pip3 &> /dev/null; then
-    install_pip
-  else
-    log_with_color "Pip is already installed." green
-  fi
-
-  # Check if Ansible is installed
-  if ! ansible --version &> /dev/null; then
-    log_with_color "Ansible is not installed. Installing..." yellow
-    install_ansible
-
-    if ! grep -q "$path_to_add" ~/.bashrc; then
-      log_with_color "Adding $path_to_add to .bashrc" yellow
-      echo "export PATH=\"\$PATH:$path_to_add\"" >> ~/.bashrc
-      log_with_color "$path_to_add added to .bashrc and reloaded" green
-    else
-      log_with_color "Path $path_to_add already in .bashrc" green
-    fi
-  else
-    log_with_color "Ansible is already installed." green
-  fi
+else
+  log_with_color "Ansible is already installed." green
 fi
 
 # Install Ansible Collection
@@ -280,6 +263,7 @@ else
   log_with_color "deploy-config.yml already exists in $curr_dir1. Overwriting..." yellow
   cp "${collection_path}/other/deploy-config.yml" ./deploy-config.yml
 fi
+
 
 # Move from factory to parent folder
 cd ..
