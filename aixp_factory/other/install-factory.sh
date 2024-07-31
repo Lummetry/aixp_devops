@@ -1,6 +1,6 @@
 #!/bin/bash
 
-INSTALLER_VERSION="0.3.0"
+INSTALLER_VERSION="0.3.1"
 
 log_with_color() {
   local text="$1"
@@ -151,15 +151,18 @@ log_with_color "########    Starting AiXp Factory setup v.$INSTALLER_VERSION ...
 check_if_os_accepted
 determine_package_manager
 
+# Create a directory for the factory
+mkdir -p factory
+cd factory
+
+path_to_add="$HOME/.local/bin"
+export PATH="$PATH:$path_to_add"
+
+curr_dir1=$(pwd)
+
+
 if [ "$SKIP_INSTALLATIONS" = false ]; then
-  # Create a directory for the factory
-  mkdir -p factory
-  cd factory
 
-  path_to_add="$HOME/.local/bin"
-  export PATH="$PATH:$path_to_add"
-
-  curr_dir1=$(pwd)
 
   # Check if sshpass is installed
   if ! command -v sshpass &> /dev/null; then

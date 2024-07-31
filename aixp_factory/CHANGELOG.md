@@ -1,7 +1,7 @@
 # Changelog
 
 
-## 1.1.0 - 2024-07-31
+## 1.1.1 - 2024-07-31
   - config only deployment using `--skip` option
 
 
