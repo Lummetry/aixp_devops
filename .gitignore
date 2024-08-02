@@ -18,3 +18,11 @@ xperimental/e2-install-test1/install-factory.sh
 xperimental/e2-install-test1/run.sh
 
 _local_cache/
+
+xperimental/nen-deploy/install-factory.sh
+xperimental/nen-deploy/run-config.sh
+xperimental/nen-deploy/run-gpu-only.sh
+xperimental/nen-deploy/run.sh
+xperimental/nen-deploy/showlog.sh
+xperimental/nen-deploy/factory/.hosts.yml
+xperimental/nen-deploy/factory/deploy-config.yml

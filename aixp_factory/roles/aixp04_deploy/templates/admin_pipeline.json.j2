@@ -1,0 +1,104 @@
+{
+    "NAME": "admin_pipeline",
+    "TYPE": "VOID"
+    "PLUGINS": [
+        {
+            "INSTANCES": [
+                {
+                    "INSTANCE_ID": "MINIO_MONIT_01_INST",
+                    "MINIO_ACCESS_KEY": null,
+                    "MINIO_HOST": null,
+                    "MINIO_SECRET_KEY": null,
+                    "MINIO_SECURE": null
+                }
+            ],
+            "SIGNATURE": "MINIO_MONIT_01"
+        },
+        {
+            "INSTANCES": [
+                {
+                    "ALLOW_EMPTY_INPUTS": true,
+                    "INSTANCE_ID": "REST_CUSTOM_EXEC_01_INST",
+                    "RUN_WITHOUT_IMAGE": true,
+                    "SEND_MANIFEST_EACH": 301
+                }
+            ],
+            "SIGNATURE": "REST_CUSTOM_EXEC_01"
+        },
+        {
+            "INSTANCES": [
+                {
+                    "DISK_LOW_PRC": 0.15,
+                    "INSTANCE_ID": "SELF_CHECK_01_INST",
+                    "MEM_LOW_PRC": 0.15,
+                    "PROCESS_DELAY": 5
+                }
+            ],
+            "SIGNATURE": "SELF_CHECK_01"
+        },
+        {
+            "INSTANCES": [
+                {
+                    "INSTANCE_ID": "NET_MON_01_INST",
+                    "PROCESS_DELAY": 10,
+                    "SUPERVISOR": {{ (aixp_EE_SUPERVISOR | default('false') | lower) | tojson }}
+                }
+            ],
+            "SIGNATURE": "NET_MON_01"
+        },
+        {
+            "INSTANCES": [
+                {
+                  "PROCESS_DELAY"   : 60,
+                  "WORKING_HOURS"   : [
+                      [
+                        {{ aixp_UPDATE_MONITOR_START | default("12:00") }}, 
+                        {{ aixp_UPDATE_MONITOR_STOP | default("12:30") }}
+                      ]
+                  ],    
+                  "VERSION_TOKEN"   : "$EE_GITVER",
+                  "RESTART_ON_BEHIND": true,
+
+                  "FORCE_RESTART_AFTER" : {{ aixp_UPDATE_MONITOR_RESTART | default(600000) }},
+                  "REBOOT_ON_RESTART"   : false,
+
+
+                  "VERSION_URL": "{{ aixp_VERSION_URL }}",
+                  "USE_YAML" : {{ aixp_VERSION_USE_YAML | lower }},
+
+                  "RELEASE_TAG" : "{{ aixp_app_target }}"      
+                }
+            ],
+            "SIGNATURE": "UPDATE_MONITOR_01"
+        },
+        {
+            "INSTANCES": [
+                {
+                    "INSTANCE_ID": "KERNEL_LOG_MONITOR_01_INST",
+                    "KERNEL_LOG_LEVEL": "emerg,alert,crit,err",
+                    "PROCESS_DELAY": 180
+                }
+            ],
+            "SIGNATURE": "KERNEL_LOG_MONITOR_01"
+        },
+        {
+            "INSTANCES": [
+                {
+                    "INSTANCE_ID": "K8S_MONITOR_01_INST",
+                    "PROCESS_DELAY": 10
+                }
+            ],
+            "SIGNATURE": "K8S_MONITOR_01"
+        },
+        {
+            "INSTANCES": [
+                {
+                    "INSTANCE_ID": "SYSTEM_HEALTH_MONITOR_01_INST",
+                    "KERNEL_LOG_LEVEL": "emerg,alert,crit,err",
+                    "PROCESS_DELAY": 180
+                }
+            ],
+            "SIGNATURE": "SYSTEM_HEALTH_MONITOR_01"
+        }
+    ]
+}

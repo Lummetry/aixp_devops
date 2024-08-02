@@ -364,6 +364,20 @@
     # - not aixp_service.stat.exists or not (aixp_service_name in services and services[aixp_service_name].status == 'active')
 
 
+  ## not pipeline section
+- name: Configure admin_pipeline using admin_pipeline.json.j2
+  ansible.builtin.template:
+    src: admin_pipeline.json.j2
+    dest: "{{ aixp_local_cache_folder }}/_data/box_configuration/streams/admin_pipeline.json"
+    mode: '0644'
+    force: true
+  when: 
+    - aixp_app in ["aixp_ee", "edge_node"]
+
+
+  ## end pipeline section
+
+
   ### LMS part ONLY for aixp_ee
 
 - name: Set the name of the LMS image

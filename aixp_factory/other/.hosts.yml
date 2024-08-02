@@ -20,7 +20,7 @@ all:
 
     aixp_hosts: |
       A.B.C.D host.name.domain
-      # A.B.C.D host.name.domain
+      # A.B.C.D host.name.domain      
 
     # START Container registry      
     # define below the full url to be used for the image
@@ -67,6 +67,13 @@ all:
     aixp_EE_SUPERVISOR: false
 
     # END .env
+
+    ### Pipeline configuration secton
+    aixp_UPDATE_MONITOR_START: "12:00"    # when to start update monitor for version check and updates - set this to 00:00 for Preventics
+    aixp_UPDATE_MONITOR_END: "12:30"      # when to stop update monitor for version check and updates - set this to 00:30 for Preventics
+    aixp_UPDATE_MONITOR_RESTART: 600000    # after how many seconds to perform maintenance force-restart (default 7 days)
+    # set above to 72000 in order to perform force-restart every cycle (for Preventics)
+    ### End Pipeline configuration secton
 
 
     aixp_authorized_addrs: |

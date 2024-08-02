@@ -1,11 +1,15 @@
 # Changelog
 
 
-## 1.1.1 - 2024-07-31
-  - config only deployment using `--skip` option
+## 1.2.0 - 2024-08-02
+  - pipeline config (admin_pipeline)
 
 
 --------------------------------------------------------------------------
+
+## 1.1.1 - 2024-07-31
+  - config only deployment using `--skip` option
+
 
 ## 1.0.12 - 2024-07-30
   - fix #2 for config only deployment
