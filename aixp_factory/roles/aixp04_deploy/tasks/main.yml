@@ -352,19 +352,7 @@
     - aixp_app in ["aixp_ee", "edge_node"]
 
 
-- name: Enable and start EE service
-  ansible.builtin.systemd:
-    name: "{{ aixp_app }}.service"
-    enabled: yes
-    state: started
-  async: 100  # Maximum time in seconds to allow the task to run
-  poll: 5     # Check the status every 5 seconds    
-  when: 
-    - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
-    # - not aixp_service.stat.exists or not (aixp_service_name in services and services[aixp_service_name].status == 'active')
-
-
-  ## not pipeline section
+  ## start pipeline section
 - name: Configure admin_pipeline using admin_pipeline.json.j2
   ansible.builtin.template:
     src: admin_pipeline.json.j2
@@ -376,6 +364,20 @@
 
 
   ## end pipeline section
+
+
+
+- name: Enable and start EE service
+  ansible.builtin.systemd:
+    name: "{{ aixp_app }}.service"
+    enabled: yes
+    state: started
+  async: 100  # Maximum time in seconds to allow the task to run
+  poll: 5     # Check the status every 5 seconds    
+  when: 
+    - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
+    # - not aixp_service.stat.exists or not (aixp_service_name in services and services[aixp_service_name].status == 'active')
+
 
 
   ### LMS part ONLY for aixp_ee

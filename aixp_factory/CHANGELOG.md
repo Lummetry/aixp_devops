@@ -1,7 +1,7 @@
 # Changelog
 
 
-## 1.2.0 - 2024-08-02
+## 1.2.1 - 2024-08-02
   - pipeline config (admin_pipeline)
 
 
