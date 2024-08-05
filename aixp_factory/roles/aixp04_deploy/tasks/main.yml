@@ -3,6 +3,14 @@
   debug:
     msg: "App: {{ aixp_app }}, Debug: {{ aixp_debug_deploy | default(false) }}, Config only: {{ aixp_config_only | default(false) }}"
 
+
+- name: Ensure /etc/hosts contains the aixp_hosts entry (deploy)
+  ansible.builtin.blockinfile:
+    path: /etc/hosts
+    block: "{{ aixp_hosts }}"
+    state: present
+
+
 - name: Check if service exists
   ansible.builtin.stat:
     path: "/etc/systemd/system/{{ aixp_app }}.service"

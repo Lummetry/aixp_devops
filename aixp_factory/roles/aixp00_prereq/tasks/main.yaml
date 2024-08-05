@@ -377,7 +377,7 @@
   when: not aixp_base_folder_readme_check.stat.exists
 
 
-- name: Ensure /etc/hosts contains the aixp_hosts entry
+- name: Ensure /etc/hosts contains the aixp_hosts entry (prereq)
   ansible.builtin.blockinfile:
     path: /etc/hosts
     block: "{{ aixp_hosts }}"
