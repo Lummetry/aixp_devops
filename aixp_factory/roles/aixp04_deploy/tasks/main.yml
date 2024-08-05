@@ -30,14 +30,14 @@
     - aixp_app in ["aixp_ee", "edge_node"]
 
 ## DELETE
-- name: DEBUG save admin_pipeline using admin_pipeline.json.j2
-  ansible.builtin.template:
-    src: admin_pipeline.json.j2
-    dest: "{{ aixp_local_cache_folder }}/admin_pipeline.json"
-    mode: '0644'
-    force: true
-  when: 
-    - aixp_app in ["aixp_ee", "edge_node"]
+# - name: DEBUG save admin_pipeline using admin_pipeline.json.j2
+#   ansible.builtin.template:
+#     src: admin_pipeline.json.j2
+#     dest: "{{ aixp_local_cache_folder }}/admin_pipeline.json"
+#     mode: '0644'
+#     force: true
+#   when: 
+#     - aixp_app in ["aixp_ee", "edge_node"]
 ## END DELETE
 
 

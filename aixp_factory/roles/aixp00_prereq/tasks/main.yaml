@@ -380,8 +380,7 @@
 - name: Ensure /etc/hosts contains the aixp_hosts entry
   ansible.builtin.blockinfile:
     path: /etc/hosts
-    block: |
-     "{{ aixp_hosts }}"
+    block: "{{ aixp_hosts }}"
     state: present
 
 
