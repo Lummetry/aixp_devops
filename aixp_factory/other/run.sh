@@ -35,7 +35,7 @@ cover=$(ansible-galaxy collection list | grep "$collection_name" | awk '{print $
 
 log_with_color "      ###############################################################" green
 log_with_color "      ########                                               ########" green
-log_with_color "      ########            AiXp Factory v$cover               ########" green
+log_with_color "      ########              EE Factory v$cover               ########" green
 log_with_color "      ########                                               ########" green
 log_with_color "      ###############################################################" green
 
