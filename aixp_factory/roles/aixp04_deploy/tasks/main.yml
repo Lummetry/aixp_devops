@@ -195,15 +195,13 @@
   - (aixp_jetson is defined) and (aixp_jetson | bool)
 
 
-- name: Create /etc/docker/daemon.json if aixp_cr_accept_insecure
+- name: Create /etc/docker/daemon.json
   ansible.builtin.template:
     src: daemon.json.j2
     dest: /etc/docker/daemon.json
     mode: '0644'
   notify: reload docker
-  when: 
-    # - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
-    - aixp_cr_accept_insecure
+
 
 - name: Reload systemd for docker
   ansible.builtin.command:

@@ -27,13 +27,14 @@ all:
     aixp_image: exe_eng
     aixp_cr_server: docker.io                       # registry.apps.proiectai.bt.wan
     aixp_cr_accept_insecure: false                  # accept insecure connection (true/false)    
+    aixp_docker_pull_limit: 5                       #  limit the docker pull to a certain number of threads
     aixp_cr_user: aixpand                           # hyfy
     aixp_cr_url: "{{ aixp_cr_server }}/{{ aixp_cr_user }}"
-    dockerhub_username: "dockerhub_username"      # dockerhub username
-    dockerhub_password: "dockerhub_password"      # dockerhub password  
+    dockerhub_username: "dockerhub_username"        # dockerhub username
+    dockerhub_password: "dockerhub_password"        # dockerhub password  
     aixp_lms_image: hyfy_lms
     aixp_lms_enabled: false
-    aixp_lms_pull: false
+    aixp_lms_pull: false    
     # END Container registry
 
     # STRT values for the target environment .env    
