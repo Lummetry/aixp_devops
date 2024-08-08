@@ -1,10 +1,13 @@
 # Changelog
 
-## 1.2.7 - 2024-08-057
-  - aixp_UPDATE_MONITOR_REBOOT_ON_RESTART
+## 1.2.8 - 2024-08-08
+  - LMS fixes
 
 
 --------------------------------------------------------------------------
+
+## 1.2.7 - 2024-08-07
+  - aixp_UPDATE_MONITOR_REBOOT_ON_RESTART
 
 ## 1.2.6 - 2024-08-05
   - /etc/hosts fix

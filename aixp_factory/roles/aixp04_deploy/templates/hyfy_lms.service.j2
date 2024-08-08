@@ -1,7 +1,9 @@
 [Unit]
 Description=Decoder service with docker with json communication
-After=network.target
+After=docker.service
+Requires=docker.service
 StartLimitIntervalSec=0
+
 [Service]
 Type=simple
 Restart=always
