@@ -430,8 +430,8 @@
     - inventory_hostname in groups['gpu_workers']
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
     - aixp_app in ["aixp_ee"]    
-    - (aixp_lms_enabled is defined) and (aixp_lms_enabled | bool | default(false))
-    - (aixp_lms_pull is defined) and (aixp_lms_pull | bool | default(false))
+    - (aixp_lms_enabled | bool | default(false))
+    - (aixp_lms_pull | bool | default(false)) or (not (aixp_config_only | default(false) | bool))
 
 - name: Set a varible as service name for LMS
   set_fact:

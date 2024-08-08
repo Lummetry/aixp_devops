@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.2.9 - 2024-08-08
+## 1.2.10 - 2024-08-08
   - LMS fixes
   - docker pull limit
 
