@@ -130,7 +130,7 @@
     
     "DEBUG_COMM_ERRORS" : false,
 
-    "DEBUG_LOG_PAYLOADS" : false,
+    "DEBUG_LOG_PAYLOADS" : {{ (aixp_DEBUG_LOG_PAYLOADS | default('true') | lower) | tojson }},
     "DEBUG_LOG_PAYLOADS_PIPELINES" : [],
     "DEBUG_LOG_PAYLOADS_SIGNATURES" : [],
     "DEBUG_LOG_PAYLOADS_SAVE_FILTER" : null,

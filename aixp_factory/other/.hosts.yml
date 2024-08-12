@@ -78,6 +78,8 @@ all:
     # set above to 72000 in order to perform force-restart every cycle (for Preventics)
     ### End Pipeline configuration secton
 
+    aixp_DEBUG_LOG_PAYLOADS: true # set this to false to stop logging payloads delivery in EE logs
+
 
     aixp_authorized_addrs: |
       aixp_back_end_address_00000000000000
