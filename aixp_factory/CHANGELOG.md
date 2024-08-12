@@ -1,8 +1,9 @@
 # Changelog
 
-## 1.2.13 - 2024-08-12
+## 1.2.14 - 2024-08-12
   - added ntp and htop to prerequisites
   - added aixp_DEBUG_LOG_PAYLOADS
+  - added "MAX_BATCH_FIRST_STAGE" : {{ aixp_MAX_BATCH_FIRST_STAGE | default(8) }}
 
 
 --------------------------------------------------------------------------

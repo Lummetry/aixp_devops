@@ -56,6 +56,7 @@
     "USE_AMP"        : false,
     "USE_FP16"       : true,    
     "MAX_WAIT_TIME_MULTIPLIER" : 50,
+    "MAX_BATCH_FIRST_STAGE" : {{ aixp_MAX_BATCH_FIRST_STAGE | default(8) }},
     "SERVER_COLLECTOR_TIMEDELTA" : 3600,
     "AUTO_WARMUPS" : {},
     "SERVING_IN_PROCESS" : false,
