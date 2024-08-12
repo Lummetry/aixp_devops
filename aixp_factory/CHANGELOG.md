@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.2.11 - 2024-08-12
+## 1.2.12 - 2024-08-12
   - added ntp and htop to prerequisites
 
 
