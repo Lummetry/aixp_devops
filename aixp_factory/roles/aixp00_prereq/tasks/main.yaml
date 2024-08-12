@@ -303,6 +303,7 @@
   - (aixp_jetson is not defined) or (not aixp_jetson | bool)
   # - inventory_hostname in groups['gpu_workers'] 
   - install_extra_packages | default(true) | bool  
+  
 
 # End install go
 
@@ -382,6 +383,25 @@
     path: /etc/hosts
     block: "{{ aixp_hosts }}"
     state: present
+
+
+- name: Install NTP
+  ansible.builtin.apt:
+    name: ntp
+    state: present
+    update_cache: yes
+  become: true
+  # Installs Network Time Protocol (NTP) to keep the system time synchronized.
+  # This is important for many networked services and logging.
+
+
+- name: Install htop
+  ansible.builtin.apt:
+    name: htop
+    state: present
+    update_cache: yes
+  become: true
+  # Installs htop, a tool for monitoring system resources, which can be useful for diagnostics and performance monitoring.
 
 
   

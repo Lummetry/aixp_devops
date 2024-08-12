@@ -66,12 +66,6 @@
     update_cache: yes
     upgrade: yes
 
-- name: Install NTP
-  apt:
-    name: ntp
-    state: present
-  # Installs Network Time Protocol (NTP) to keep the system time synchronized.
-  # This is important for many networked services and logging.
 
 - name: List GPGPU drivers
   when: nvidia_smi_check1.rc != 0
