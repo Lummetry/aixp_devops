@@ -1,12 +1,16 @@
 # Changelog
 
+## 1.2.15 - 2024-08-14
+  - added jtop
+
+
+--------------------------------------------------------------------------
+
 ## 1.2.14 - 2024-08-12
   - added ntp and htop to prerequisites
   - added aixp_DEBUG_LOG_PAYLOADS
   - added "MAX_BATCH_FIRST_STAGE" : {{ aixp_MAX_BATCH_FIRST_STAGE | default(8) }}
 
-
---------------------------------------------------------------------------
 
 ## 1.2.10 - 2024-08-08
   - LMS fixes
