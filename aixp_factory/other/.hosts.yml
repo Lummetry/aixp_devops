@@ -89,6 +89,8 @@ all:
 
     aixp_container_memory_limit: 30GB
 
+    aixp_ADD_ORIGINAL_IMAGE: false  # add original image to payloads - must be false and should be modified by individual plugins
+
     ########################################################
     ###### END USER SECTION # MODIFY THE VALUES ABOVE ######
     ########################################################

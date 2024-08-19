@@ -78,7 +78,7 @@
     "DEMO_MODE" : false,
     "DEBUG_OBJECTS" : false,
     "SEND_MANIFEST_EACH" : 290,
-    "ADD_ORIGINAL_IMAGE" : true,
+    "ADD_ORIGINAL_IMAGE" : {{ (aixp_ADD_ORIGINAL_IMAGE | default('false') | lower) | tojson }},
     "DEBUG_CONFIG_CHANGES" : false
   },
   
