@@ -71,8 +71,26 @@ all:
     # END .env
 
     ### Pipeline configuration secton
-    aixp_UPDATE_MONITOR_START: "12:00"    # when to start update monitor for version check and updates - set this to 00:00 for Preventics
-    aixp_UPDATE_MONITOR_END: "12:30"      # when to stop update monitor for version check and updates - set this to 00:30 for Preventics
+
+    # setting for perimeter security for daily maintenance
+    aixp_UPDATE_MONITOR_SCHEDULE: |
+        {    
+          "MON": [["12:00", "12:30"]],
+          "TUE": [["12:00", "12:30"]],
+          "WED": [["12:00", "12:30"]],
+          "THU": [["12:00", "12:30"]],
+          "FRI": [["12:00", "12:30"]]  
+        }
+
+    # setting for banking daily maintenance
+    # aixp_UPDATE_MONITOR_SCHEDULE: |
+    #   [
+    #     [
+    #       "00:00",
+    #       "01:00"
+    #     ]
+    #   ]      
+
     aixp_UPDATE_MONITOR_RESTART: 600000    # after how many seconds to perform maintenance force-restart (default 7 days)
     aixp_UPDATE_MONITOR_REBOOT_ON_RESTART: false # set this to true to reboot the machine
     # set above to 72000 in order to perform force-restart every cycle (for Preventics)

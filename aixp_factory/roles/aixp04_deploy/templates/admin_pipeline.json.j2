@@ -50,12 +50,9 @@
             "INSTANCES": [
                 {
                   "PROCESS_DELAY"   : 60,
-                  "WORKING_HOURS"   : [
-                      [
-                        {{ (aixp_UPDATE_MONITOR_START | default("12:00")) | tojson }}, 
-                        {{ (aixp_UPDATE_MONITOR_END | default("12:30")) | tojson }}
-                      ]
-                  ],    
+                  "WORKING_HOURS"   : 
+                    {{ aixp_UPDATE_MONITOR_SCHEDULE }},    
+                    
                   "VERSION_TOKEN"   : "$EE_GITVER",
                   "RESTART_ON_BEHIND": true,
 

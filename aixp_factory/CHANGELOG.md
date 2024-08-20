@@ -1,11 +1,16 @@
 # Changelog
 
+## 1.2.18 - 2024-08-20
+  - removed aixp_UPDATE_MONITOR_START/END
+  - added aixp_UPDATE_MONITOR_SCHEDULE
+
+
+--------------------------------------------------------------------------
+
 ## 1.2.17 - 2024-08-19
   - aixp_ADD_ORIGINAL_IMAGE
   - ADD_ORIGINAL_IMAGE blocked
 
-
---------------------------------------------------------------------------
 
 ## 1.2.15 - 2024-08-14
   - added jtop
