@@ -38,6 +38,8 @@ all:
     # END Container registry
 
     # STRT values for the target environment .env    
+    aixp_MINIO_MAX_SERVER_QUOTA: 99 # 99 GB for Optizone, change to 1500 to Preventics
+
     aixp_EE_MINIO_ENDPOINT: "minio_endpoint"      # minio endpoint such as s3.prod.org.com
     aixp_EE_MINIO_ACCESS_KEY: "minio_access_key"  # minio access key (username)
     aixp_EE_MINIO_SECRET_KEY: "minio_secret_key"  # minio secret key (password)

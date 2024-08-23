@@ -87,7 +87,8 @@
       "MINIO_HOST"          : null,
       "MINIO_ACCESS_KEY"    : null,
       "MINIO_SECRET_KEY"    : null,
-      "MINIO_SECURE"        : null
+      "MINIO_SECURE"        : null,
+      "MAX_SERVER_QUOTA"  : {{ aixp_MINIO_MAX_SERVER_QUOTA | default(99) }}      
     },
     
     "REST_CUSTOM_EXEC_01" : {
