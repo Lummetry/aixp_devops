@@ -1,10 +1,14 @@
 # Changelog
 
-## 1.2.19 - 2024-08-23
-  - added aixp_MINIO_MAX_SERVER_QUOTA 
+## 1.2.20 - 2024-08-26
+  - fixed admin pipeline destination folder
 
 
 --------------------------------------------------------------------------
+
+## 1.2.19 - 2024-08-23
+  - added aixp_MINIO_MAX_SERVER_QUOTA 
+
 
 ## 1.2.18 - 2024-08-20
   - removed aixp_UPDATE_MONITOR_START/END

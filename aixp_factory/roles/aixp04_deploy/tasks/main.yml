@@ -373,6 +373,14 @@
 
   ## start pipeline section
 
+- name: Ensure the destination pipelines folder exists
+  ansible.builtin.file:
+    path: "{{ aixp_local_cache_folder }}/_data/box_configuration/streams"
+    state: directory
+    mode: '0755'  
+  when: 
+    - aixp_app in ["aixp_ee", "edge_node"]
+
 - name: Configure admin_pipeline using admin_pipeline.json.j2
   ansible.builtin.template:
     src: admin_pipeline.json.j2
