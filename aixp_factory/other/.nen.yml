@@ -94,11 +94,13 @@ all:
 
     ###### ADMIN-ONLY VARIABLES ######
 
+    aixp_commented_prune: 
+
     aixp_container_folder: edge_node # should be same as image name
 
     aixp_EE_MQTT_SUBTOPIC: address
 
-    aixp_commented_restart: "#"
+    aixp_commented_restart: 
 
     aixp_device: "cpu"
     aixp_docker_gpus: " "

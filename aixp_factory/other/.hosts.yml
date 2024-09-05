@@ -119,6 +119,8 @@ all:
 
     ###### ADMIN-ONLY VARIABLES ######
 
+    aixp_commented_prune: "#"
+
     aixp_container_folder: exe_eng # should be same as the image name
 
     aixp_EE_MQTT_SUBTOPIC: address
