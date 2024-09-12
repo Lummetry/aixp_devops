@@ -1,4 +1,4 @@
-# Python Scripts updating pipeline and plugin configuration
+# Python Scripts for updating pipeline and plugin configuration
 
 To use these scripts, you have to do 2 things:
 
