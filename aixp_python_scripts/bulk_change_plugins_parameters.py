@@ -31,6 +31,8 @@ if __name__ == "__main__":
 
   session.P(f"Found {len(active_nodes)} active nodes.\n" + '\n'.join(active_nodes), color='g')
 
+  all_transactions = []
+
   for node in active_nodes:
     if not session.wait_for_node(node):
       session.P(f"Node {node} is not online. Skipping.", color='r')
@@ -75,8 +77,12 @@ if __name__ == "__main__":
 
       # endfor instances
 
-      pipeline.deploy(timeout=10)
+      transactions = pipeline.deploy(timeout=10, wait_confirmation=False)
+      if transactions is not None:
+        all_transactions.append(transactions)
     # endfor pipelines.items()
   # endfor NODES
+
+  session.wait_for_all_sets_of_transactions(all_transactions)
 
   session.run(wait=5)
