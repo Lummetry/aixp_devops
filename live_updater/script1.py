@@ -7,7 +7,7 @@ class MyUpdater(LiveUpdater):
     return
   
   def node_update(self, node):
-    """ This method updates the given node and should be defined in inherited class"""
+    """ This method processes all the required updates for the given node (inherited/overwritten method)"""
     self.P("Updating node: " + node['name'], color='yellow')
     return
   
