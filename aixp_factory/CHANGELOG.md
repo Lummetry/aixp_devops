@@ -1,11 +1,14 @@
 # Changelog
 
 
-## 1.2.21 - 2024-09-25
-  - variable to configure image prune
+## 1.2.22 - 2024-09-16
+  - fix LMS services
 
 
 --------------------------------------------------------------------------
+
+## 1.2.21 - 2024-09-05
+  - variable to configure image prune
 
 
 ## 1.2.20 - 2024-08-26

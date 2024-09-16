@@ -8,10 +8,10 @@ StartLimitIntervalSec=0
 Type=simple
 Restart=always
 RestartSec=1
-ExecStartPre=docker rm  -f hyfy_lms_container || echo "Container didn\'t exist before running"
-ExecStartPre=-/usr/bin/docker pull docker.io/aixpand/hyfy_lms:preprod
-ExecStart=docker run --name="hyfy_lms_container" -t --ipc=host -m 2g -e DECODER_FORCED_PLUGIN_FEATURES='openh264dec' {{ aixp_cr_url }}/{{ aixp_lms_image }}:{{ aixp_app_version }}
-ExecStop=docker rm -f hyfy_lms_container
+ExecStartPre=echo "***************** Container pre-start check *****************"
+ExecStartPre=-/usr/bin/docker pull {{ aixp_cr_url }}/{{ aixp_lms_image }}:{{ aixp_app_version }}
+ExecStart=docker run --rm -e GST_DEBUG='hyp*:4,2' --name="hyfy_lms_container" -t --ipc=host -m 2g -e DECODER_FORCED_PLUGIN_FEATURES='openh264dec' {{ aixp_cr_url }}/{{ aixp_lms_image }}:{{ aixp_app_version }}
+ExecStop=echo "***************** Container stop check *****************"
 
 [Install]
 WantedBy=multi-user.target
