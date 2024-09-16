@@ -24,7 +24,7 @@ TARGET_PARAMETERS = {
 if __name__ == "__main__":
   session = Session(root_topic="lummetry")
 
-  session.run(wait=15, close_session=False)
+  session.run(wait=15, close_session=False) # session.sleep as session.run may appear to execute a graph of transactions
 
   active_nodes = list(map(session.get_node_name, session.get_active_nodes()))
   active_nodes.sort()

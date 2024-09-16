@@ -8,7 +8,7 @@ class MyUpdater(LiveUpdater):
   
   def node_update(self, node):
     """ This method updates the given node and should be defined in inherited class"""
-    self.P("Updating node: " + node['name'], color='green')
+    self.P("Updating node: " + node['name'], color='yellow')
     return
   
   
@@ -16,5 +16,5 @@ class MyUpdater(LiveUpdater):
 if __name__ == "__main__":   
   updater = MyUpdater()
   updater.P("Starting the update process", color='blue')
-  updater.run_update()
+  updater.run_update(nodes=None) # all nodes will be updated
   

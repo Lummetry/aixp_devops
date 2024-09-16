@@ -17,6 +17,7 @@ class LiveUpdater:
     self.session.P(msg, color)
     return
     
+    
   def __init_and_get_nodes(self):
     """ This method gets all active nodes in 15-20 sec"""
     session = Session(root_topic="lummetry")
