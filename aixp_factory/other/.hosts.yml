@@ -93,7 +93,7 @@ all:
     #     ]
     #   ]      
 
-    aixp_UPDATE_MONITOR_RESTART: 600000    # after how many seconds to perform maintenance force-restart (default 7 days)
+    aixp_UPDATE_MONITOR_RESTART: 300000    # after how many seconds to perform maintenance force-restart (default 7 days)
     aixp_UPDATE_MONITOR_REBOOT_ON_RESTART: false # set this to true to reboot the machine
     # set above to 72000 in order to perform force-restart every cycle (for Preventics)
     ### End Pipeline configuration secton

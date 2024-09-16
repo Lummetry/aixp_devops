@@ -57,7 +57,7 @@
                   "VERSION_TOKEN"   : "$EE_GITVER",
                   "RESTART_ON_BEHIND": true,
 
-                  "FORCE_RESTART_AFTER" : {{ aixp_UPDATE_MONITOR_RESTART | default(600000) }},
+                  "FORCE_RESTART_AFTER" : {{ aixp_UPDATE_MONITOR_RESTART | default(300000) }},
                   "REBOOT_ON_RESTART"   : {{ (aixp_UPDATE_MONITOR_REBOOT_ON_RESTART | default('false') | lower) | tojson }},
 
 
