@@ -1,11 +1,15 @@
 # Changelog
 
 
-## 1.2.24 - 2024-09-18
-  - extra lms container rm
+## 1.2.25 - 2024-09-18
+  - lms container stop and rm before start
 
 
 --------------------------------------------------------------------------
+
+## 1.2.24 - 2024-09-18
+  - extra lms container rm
+
 
 ## 1.2.23 - 2024-09-16
   - fix LMS services
