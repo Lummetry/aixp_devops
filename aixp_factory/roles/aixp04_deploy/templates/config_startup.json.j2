@@ -58,7 +58,12 @@
     "MAX_WAIT_TIME_MULTIPLIER" : 50,
     "MAX_BATCH_FIRST_STAGE" : {{ aixp_MAX_BATCH_FIRST_STAGE | default(8) }},
     "SERVER_COLLECTOR_TIMEDELTA" : 3600,
-    "AUTO_WARMUPS" : {},
+
+    "AUTO_WARMUPS" : {
+      "lowres_general_detector" : {},
+      "image_quality_assessment_fast" : {}
+    },
+    
     "SERVING_IN_PROCESS" : false,
     "SERVING_TIMERS_IDLE_DUMP"        : 1801,  
     "SERVING_TIMERS_PREDICT_DUMP"     : 601,
