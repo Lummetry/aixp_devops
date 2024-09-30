@@ -504,7 +504,12 @@
     - aixp_app in ["aixp_ee", "edge_node"]
 
 
-
+- name: Create symbolic link for streams folder
+  ansible.builtin.file:
+    src: "{{ aixp_local_cache_folder }}/_data/box_configuration/streams"
+    dest: "~/streams"
+    state: link
+  when: aixp_app in ["aixp_ee", "edge_node"]
 
 
 

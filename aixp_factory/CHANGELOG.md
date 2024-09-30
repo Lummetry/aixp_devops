@@ -1,13 +1,16 @@
 # Changelog
 
 
+## 1.2.28 - 2024-09-30
+  - add ~/streams symlink to pipeline folder
+
+--------------------------------------------------------------------------
+
 ## 1.2.27 - 2024-09-24
   - default warmup
   - other 1.2.25 changes
   - maintenance restart at 40+ hours
 
-
---------------------------------------------------------------------------
 
 ## 1.2.24 - 2024-09-18
   - extra lms container rm
