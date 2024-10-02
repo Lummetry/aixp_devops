@@ -1,8 +1,9 @@
 # Changelog
 
 
-## 1.2.28 - 2024-09-30
+## 1.2.29 - 2024-09-31
   - add ~/streams symlink to pipeline folder
+  - update restart time
 
 --------------------------------------------------------------------------
 
