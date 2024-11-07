@@ -234,7 +234,7 @@
 
 ## 0.5.4 - 2024-01-28
  - prepared module and action scripts
- - added PyE2 tests
+ - added naeural_client tests
  - fix Nvidia container test
 
 ## 0.4.16 - 2024-01-27

@@ -2,7 +2,7 @@ from ansible.plugins.action import ActionBase
 from datetime import datetime
 
 
-from ansible_collections.aidamian.aixp_factory.plugins.module_utils.aixp_utils import run_test, pye2_version
+from ansible_collections.aidamian.aixp_factory.plugins.module_utils.aixp_utils import run_test, naeural_client_version
 
 
 
@@ -44,12 +44,12 @@ class ActionModule(ActionBase):
     aixp_pwd = module_args[AIXP_PWD]
     aixp_node = module_args[AIXP_NODE]
     
-    str_pye2_ver = pye2_version()    
-    pye2_installed = str_pye2_ver is not None and 'not installed' not in str_pye2_ver.lower()
-    failed = not pye2_installed    
+    str_naeural_client_ver = naeural_client_version()    
+    naeural_client_installed = str_naeural_client_ver is not None and 'not installed' not in str_naeural_client_ver.lower()
+    failed = not naeural_client_installed    
     
     hb_result = {}
-    if pye2_installed:
+    if naeural_client_installed:
       hb_result = run_test(
         target_node=aixp_node,
         hostname=aixp_host,
@@ -63,8 +63,8 @@ class ActionModule(ActionBase):
     result = {
       'aixp_test_time'    : datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
       'aixp_test_vars'    : important_vars,
-      'pye2'              : pye2_installed,
-      'pye2_version'      : str_pye2_ver,
+      'naeural_client'              : naeural_client_installed,
+      'naeural_client_version'      : str_naeural_client_ver,
       'aixp_test_akeys'   : ansible_keys,
       'test_result'       : hb_result,
     }

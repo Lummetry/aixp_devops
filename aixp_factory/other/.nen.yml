@@ -125,14 +125,14 @@ all:
     aixp_app_version: "{{ aixp_app_target }}"
     # default app port for web-api 
     aixp_app_port: "5050"
-    # install extra apps such as Go, Python and packages such PyE2
+    # install extra apps such as Go, Python and packages such naeural_client
     install_extra_packages: true
     # the name of the supervisor node
     aixp_supernode: "naeural-1"
     # test the AiXp connection even from the localhost-to-AiXp beside the host-to-AiXp
     aixp_test_localhost: true
     aixp_test_packages:
-      - pye2
+      - naeural_client
       - pika
       - paho
       - numpy

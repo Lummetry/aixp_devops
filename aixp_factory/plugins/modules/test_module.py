@@ -1,6 +1,6 @@
 from ansible.module_utils.basic import AnsibleModule
 
-from ansible_collections.aidamian.aixp_factory.plugins.module_utils.aixp_utils import run_test, pye2_version
+from ansible_collections.aidamian.aixp_factory.plugins.module_utils.aixp_utils import run_test, naeural_client_version
 
 
 def run_module():  
@@ -10,10 +10,10 @@ def run_module():
   AIXP_PWD  = 'test_pwd'
   AIXP_NODE = 'test_node'
   
-  str_pye2_ver = pye2_version()
+  str_naeural_client_ver = naeural_client_version()
   
-  pye2_installed = str_pye2_ver is not None and 'not installed' not in str_pye2_ver.lower()
-  failed = not pye2_installed
+  naeural_client_installed = str_naeural_client_ver is not None and 'not installed' not in str_naeural_client_ver.lower()
+  failed = not naeural_client_installed
   
   # define available arguments/parameters a user can pass to the module
   module_args = {
@@ -46,8 +46,8 @@ def run_module():
   # for consumption, for example, in a subsequent task
   result = dict(
     changed=False,
-    py2e=pye2_installed,
-    pye2_version=str_pye2_ver,
+    py2e=naeural_client_installed,
+    naeural_client_version=str_naeural_client_ver,
     test_result={},
   )
 
@@ -67,7 +67,7 @@ def run_module():
     module.exit_json(**result)
     
   
-  if pye2_installed:    
+  if naeural_client_installed:    
     aixp_host = module.params.get(AIXP_HOST)
     aixp_port = module.params.get(AIXP_PORT)
     aixp_user = module.params.get(AIXP_USER)
@@ -83,7 +83,7 @@ def run_module():
     )
     result['test_result'] = hb_result
     failed = hb_result['success'] != True
-  #end if pye2_installed
+  #end if naeural_client_installed
   
   # use whatever logic you need to determine whether or not this module
   # made any modifications to your target

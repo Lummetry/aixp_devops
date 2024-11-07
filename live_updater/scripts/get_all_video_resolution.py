@@ -1,7 +1,7 @@
-from PyE2 import Instance, Pipeline, Session, Payload
+from naeural_client import Instance, Pipeline, Session, Payload
 from typing import Dict, List
 import json
-from PyE2.default.instance import ViewScene01
+from naeural_client.default.instance import ViewScene01
 
 NODES = [
   "gts-ws",

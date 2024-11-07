@@ -1,7 +1,7 @@
 from copy import deepcopy
 from typing import Dict, List
 
-from PyE2 import Instance, Pipeline, Session
+from naeural_client import Instance, Pipeline, Session
 
 ASSUMED_DEFAULT_RESOLUTION = (1080, 1920)
 

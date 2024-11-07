@@ -2,9 +2,9 @@
 #######################
 #   Localhost prep    #
 #######################                         
-- name: CONTROL NODE - Install PyE2 package on localhost
+- name: CONTROL NODE - Install naeural_client package on localhost
   pip:
-    name: pye2
+    name: naeural_client
     state: latest
   delegate_to: localhost
   become: false # No need to become root
@@ -12,25 +12,25 @@
     - inventory_hostname in groups['gpu_workers'][0]
     - aixp_test_localhost | default(true) | bool
 
-- name: CONTROL NODE - Get localhost version of pye2 Python package
+- name: CONTROL NODE - Get localhost version of naeural_client Python package
   ansible.builtin.shell:
-    cmd: pip show pye2 | grep 'Version:' | awk '{print $2}'
+    cmd: pip show naeural_client | grep 'Version:' | awk '{print $2}'
   ignore_errors: true
-  register: pye2_version_localhost
+  register: naeural_client_version_localhost
   delegate_to: localhost
   become: false
   when: 
     - inventory_hostname in groups['gpu_workers'][0]
     - aixp_test_localhost | default(true) | bool
 
-- name: CONTROL NODE - Show localhost PyE2 version
+- name: CONTROL NODE - Show localhost naeural_client version
   debug:
-    msg: "PyE2 version: {{ pye2_version_localhost.stdout }}"
+    msg: "naeural_client version: {{ naeural_client_version_localhost.stdout }}"
   delegate_to: localhost
   become: false
   when: 
     - inventory_hostname in groups['gpu_workers'][0]
-    - pye2_version_localhost is defined
+    - naeural_client_version_localhost is defined
     - aixp_test_localhost | default(true) | bool
 
 
@@ -43,9 +43,9 @@
 ##################
 
 
-- name: Install PyE2 Python package on hosts
+- name: Install naeural_client Python package on hosts
   ansible.builtin.pip:
-    name: PyE2
+    name: naeural_client
     state: latest  
   become: false # No need to become root
   when: inventory_hostname in groups['gpu_workers']
@@ -54,7 +54,7 @@
 - name: Prepare list of Python packages to install on hosts 2
   ansible.builtin.set_fact:    
     aixp_test_packages:
-      - PyE2
+      - naeural_client
       - pika
       - paho
       - numpy

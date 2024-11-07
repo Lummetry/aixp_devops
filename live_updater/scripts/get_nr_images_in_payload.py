@@ -1,4 +1,4 @@
-from PyE2 import Session, Pipeline, Instance, Payload
+from naeural_client import Session, Pipeline, Instance, Payload
 
 TARGET_NODE = "nen-2"
 TARGET_PIPELINE = "pp"

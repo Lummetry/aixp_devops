@@ -113,7 +113,7 @@ all:
     aixp_app_version: "{{ aixp_app_target }}"
     # default app port for web-api 
     aixp_app_port: "5050"
-    # install extra apps such as Go, Python and packages such PyE2
+    # install extra apps such as Go, Python and packages such naeural_client
     install_extra_packages: true
     # the name of the supervisor node
     aixp_supernode: "{{ 'stg_k8s_super' if aixp_app_target=='staging' else 'pre_super' if aixp_app_target=='preprod' else 'qa_super' if aixp_app_target=='qa' else 'prod_super' }}"
@@ -121,7 +121,7 @@ all:
     aixp_test_localhost: true
     aixp_port_forward: "{{ '-p 1883:1883' if aixp_dev_mode else '' }}"
     aixp_test_packages:
-      - pye2
+      - naeural_client
       - pika
       - paho
       - numpy

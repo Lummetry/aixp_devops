@@ -1,6 +1,6 @@
 from typing import List
 
-from PyE2 import Instance, Pipeline, Session
+from naeural_client import Instance, Pipeline, Session
 
 TARGET_PARAMETERS = {
   "CAMERA_TAMPERING_BASIC_01": {

@@ -1,21 +1,21 @@
 from time import time 
 
 try:
-  import PyE2 as pye2 
+  import naeural_client as naeural_client 
   PY_EE_INSTALLED = True
   IMPORT_ERROR = ""
 except Exception as exc:
   IMPORT_ERROR = str(exc)
   PY_EE_INSTALLED = False
   
-def pye2_version():
+def naeural_client_version():
   version = 'not installed: ' + IMPORT_ERROR
   if PY_EE_INSTALLED:
     try:
-      version = pye2.version
+      version = naeural_client.version
     except:
       try:
-        version = pye2.__version__
+        version = naeural_client.__version__
       except:
         version = 'installed/unknown'
       #end try
@@ -31,7 +31,7 @@ def run_test(target_node : str, hostname=None, port=None, username=None, passwor
   }  
   start_test_time = time()
   hosts = [target_node,] # add other nodes if needed
-  def on_hb(session : pye2.Session, e2id : str, data : dict):    
+  def on_hb(session : naeural_client.Session, e2id : str, data : dict):    
     if e2id in hosts:
       str_cpu = data['CPU']      
       str_ram = data['MACHINE_MEMORY']
@@ -58,7 +58,7 @@ def run_test(target_node : str, hostname=None, port=None, username=None, passwor
       ), 
       flush=True,
     )
-    sess = pye2.Session(      
+    sess = naeural_client.Session(      
       on_heartbeat=on_hb,   
       verbosity=0, 
       **kwargs

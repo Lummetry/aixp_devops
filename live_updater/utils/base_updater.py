@@ -1,9 +1,9 @@
-from PyE2 import Instance, Pipeline, Session
+from naeural_client import Instance, Pipeline, Session
 from threading import Thread
 
 class LiveUpdater:
   def __init__(self):
-    """ Connect to the network and get all active nodes using pye2"""
+    """ Connect to the network and get all active nodes using naeural_client"""
     self.nodes = [      
     ]      
                   

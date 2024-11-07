@@ -2,7 +2,7 @@ from copy import deepcopy
 from typing import Dict, List
 import json
 
-from PyE2 import Instance, Pipeline, Session
+from naeural_client import Instance, Pipeline, Session
 
 # TARGET_RESOLUTION = (480, 640)
 TARGET_RESOLUTION = (720, 1280)
