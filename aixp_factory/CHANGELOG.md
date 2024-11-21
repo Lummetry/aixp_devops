@@ -1,10 +1,14 @@
 # Changelog
 
-## 1.2.30 - 2024-10-04
-  - added self-check-ee-01 to admin pipeline
+## 1.2.31 - 2024-11-21
+  - added pip support for newer Debian distr with py 3.12+
 
 
 --------------------------------------------------------------------------
+
+## 1.2.30 - 2024-10-04
+  - added self-check-ee-01 to admin pipeline
+
 
 ## 1.2.29 - 2024-09-31
   - add ~/streams symlink to pipeline folder
