@@ -259,7 +259,7 @@
   become: true
   when: 
   - inventory_hostname in groups['gpu_workers']
-  - (docker_pip_install.rc != 0) or (docker_pip_install_user.rc != 0)
+  - docker_pip_install.rc != 0
 
 ################### Install extra apps and packages ###################
 
