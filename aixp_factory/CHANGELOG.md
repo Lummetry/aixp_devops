@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.2.32 - 2024-11-21
+## 1.2.33 - 2024-11-21
   - added pip support for newer Debian distr with py 3.12+
 
 

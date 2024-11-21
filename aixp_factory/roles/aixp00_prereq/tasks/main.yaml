@@ -238,7 +238,7 @@
     name: docker  # This will install the latest version compatible with Python 3.6+
     executable: /usr/bin/pip3  # Ensure this points to the correct pip executable
   register: docker_pip_install
-  failed_when: false
+  ignore_errors: yes # no failed_when: false here
   when: 
   - inventory_hostname in groups['gpu_workers']
 
@@ -248,18 +248,31 @@
     name: docker  # This will install the latest version compatible with Python 3.6+
     # executable: /usr/bin/pip3  # Ensure this points to the correct pip executable
   register: docker_pip_install_user
-  failed_when: false
+  ignore_errors: yes # no failed_when: false here
   when: 
   - inventory_hostname in groups['gpu_workers']
+
+- name: Show docker_pip_install
+  debug:
+    var: docker_pip_install
+  when: 
+  - inventory_hostname in groups['gpu_workers']
+
+- name: Show docker_pip_install_user
+  debug:
+    var: docker_pip_install_user
+  when: 
+  - inventory_hostname in groups['gpu_workers']
+
 
 - name: Install via apt if any pip install failed
   ansible.builtin.apt:
     name: python3-docker
     state: present
   become: true
-  when: 
-  - inventory_hostname in groups['gpu_workers']
-  - docker_pip_install.rc != 0
+  when: >
+    inventory_hostname in groups['gpu_workers'] and
+    (docker_pip_install is failed or docker_pip_install_user is failed)
 
 ################### Install extra apps and packages ###################
 
