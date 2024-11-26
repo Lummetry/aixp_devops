@@ -1,8 +1,9 @@
 # Changelog
 
-## 1.2.34 - 2024-11-26
+## 1.2.35 - 2024-11-26
   - added pip support for newer Debian distr with py 3.12+
   - added snap support for nvtop
+  - some logging stuff
 
 
 --------------------------------------------------------------------------

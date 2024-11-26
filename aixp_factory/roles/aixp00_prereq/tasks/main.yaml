@@ -285,10 +285,9 @@
   failed_when: false
   changed_when: false
 
-
 - name: Display if snap is installed or not
   debug:
-    msg: "Snap is installed: {{ snap_installed.rc == 0 }}"
+    msg: "Snap is installed: {{ snap_installed.rc == 0 }}. Path: {{ snap_installed.stdout }}"
 
 - name: Install Snap package
   package:
@@ -311,7 +310,7 @@
 
 - name: Display if snap is installed or not
   debug:
-    msg: "Snap is installed: {{ snap_installed_recheck.rc == 0 }}"
+    msg: "Snap is installed: {{ snap_installed_recheck.rc == 0 }}. Path: {{ snap_installed_recheck.stdout }}"
   when: 
   - snap_installed.rc != 0
   - (aixp_jetson is not defined) or (not aixp_jetson | bool)
