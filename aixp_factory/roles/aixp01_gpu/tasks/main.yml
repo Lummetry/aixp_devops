@@ -162,17 +162,18 @@
   # Outputs the result of the check for the held NVIDIA driver package.
 
 
-- name: Add nvtop repository
-  ansible.builtin.apt_repository:
-    repo: ppa:flexiondotorg/nvtop
-    state: present
-  become: true
-
-
-- name: Install nvtop
-  ansible.builtin.apt:
-    name: nvtop
-    state: present
-    update_cache: yes
+- name: Install nvtop via Snap
+  ansible.builtin.command:
+    cmd: snap install nvtop
   become: true
   # Installs nvtop, a tool for monitoring NVIDIA GPUs, which can be useful for diagnostics and performance monitoring.
+
+- name: Show nvtop version
+  ansible.builtin.command:
+    cmd: snap info nvtop
+  register: nvtop_info
+  become: true
+
+- name: Debug nvtop version
+  ansible.builtin.debug:
+    msg: "{{ nvtop_info.stdout }}"

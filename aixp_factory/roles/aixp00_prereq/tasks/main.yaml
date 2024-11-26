@@ -299,6 +299,23 @@
   - snap_installed.rc != 0
   - (aixp_jetson is not defined) or (not aixp_jetson | bool)
 
+- name: Re-check if Snap is installed
+  command: which snap
+  register: snap_installed_recheck
+  failed_when: false
+  changed_when: false
+  when: 
+  - snap_installed.rc != 0
+  - (aixp_jetson is not defined) or (not aixp_jetson | bool)
+
+
+- name: Display if snap is installed or not
+  debug:
+    msg: "Snap is installed: {{ snap_installed_recheck.rc == 0 }}"
+  when: 
+  - snap_installed.rc != 0
+  - (aixp_jetson is not defined) or (not aixp_jetson | bool)
+
 
 - name: Install Go with Snap
   ansible.builtin.snap:
