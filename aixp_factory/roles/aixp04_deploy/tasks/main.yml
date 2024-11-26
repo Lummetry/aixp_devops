@@ -504,11 +504,45 @@
     - aixp_app in ["aixp_ee", "edge_node"]
 
 
-- name: Create symbolic link for streams folder
+- name: "Create symbolic link for streams folder in {{ aixp_local_cache_folder }}"
   ansible.builtin.file:
     src: "{{ aixp_local_cache_folder }}/_data/box_configuration/streams"
     dest: "~/streams"
     state: link
+    force: true
+  when: aixp_app in ["aixp_ee", "edge_node"]
+
+- name: "Create symbolic link for local cache {{ aixp_local_cache_folder }}"
+  ansible.builtin.file:
+    src: "{{ aixp_local_cache_folder }}"
+    dest: "~/local_cache"
+    state: link
+    force: true
+  when: aixp_app in ["aixp_ee", "edge_node"]
+
+
+- name: "Debug display the symbolic link for streams"
+  ansible.builtin.shell:
+    cmd: ls -l ~/streams
+  register: streams_symlink_debug
+  ignore_errors: true
+  when: aixp_app in ["aixp_ee", "edge_node"]
+
+- name: "Display the symbolic link debug for streams"
+  ansible.builtin.debug:
+    msg: "{{ streams_symlink_debug.stdout | default('Symbolic link not created or target does not exist') }}"
+  when: aixp_app in ["aixp_ee", "edge_node"]
+
+- name: "Debug display the symbolic link for local cache"
+  ansible.builtin.shell:
+    cmd: ls -l ~/local_cache
+  register: local_cache_symlink_debug
+  ignore_errors: true
+  when: aixp_app in ["aixp_ee", "edge_node"]
+
+- name: "Display the symbolic link debug for local cache"
+  ansible.builtin.debug:
+    msg: "{{ local_cache_symlink_debug.stdout | default('Symbolic link not created or target does not exist') }}"
   when: aixp_app in ["aixp_ee", "edge_node"]
 
 
