@@ -226,10 +226,18 @@
   #   username: "{{ dockerhub_username }}"
   #   password: "{{ dockerhub_password }}"
   ignore_errors: true
+  register: docker_login
   when:
     - inventory_hostname in groups['gpu_workers']
     - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
 
+
+- name: Debug docker login
+  debug:
+    var: docker_login
+  when:
+    - inventory_hostname in groups['gpu_workers']
+    - (aixp_debug_deploy is not defined) or (not aixp_debug_deploy | bool)
 
 
 - name: Set the name of the image

@@ -1,13 +1,16 @@
 # Changelog
 
+## 1.2.38 - 2024-11-28
+  - work on docker login & internal cr
+
+--------------------------------------------------------------------------
+
 ## 1.2.37 - 2024-11-26
   - added pip support for newer Debian distr with py 3.12+
   - added snap support for nvtop
   - some logging stuff
   - fixed symbolic link for streams
 
-
---------------------------------------------------------------------------
 
 ## 1.2.30 - 2024-10-04
   - added self-check-ee-01 to admin pipeline
