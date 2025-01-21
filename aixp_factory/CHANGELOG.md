@@ -1,9 +1,12 @@
 # Changelog
 
-## 1.2.38 - 2024-11-28
-  - work on docker login & internal cr
+## 1.2.40 - 2025-01-21
+  - EE_MQTT_SUBTOPIC fix
 
 --------------------------------------------------------------------------
+
+## 1.2.38 - 2024-11-28
+  - work on docker login & internal cr
 
 ## 1.2.37 - 2024-11-26
   - added pip support for newer Debian distr with py 3.12+
