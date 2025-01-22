@@ -455,9 +455,14 @@
   # Installs network utilities and time synchronization tools.
 
 - name: Add the custom NTP server
-  ansible.builtin.command:
-    cmd: "timedatectl set-ntp false && timedatectl set-ntp true && timedatectl set-timezone UTC"
+  ansible.builtin.shell: "timedatectl set-ntp false && timedatectl set-ntp true && timedatectl set-timezone UTC"
+  register: aixp_ntp_server_setup_results
   become: true
+
+- name: Show NTP server setup results
+  debug:
+    var: aixp_ntp_server_setup_results
+
   # Ensures NTP is disabled, re-enabled, and system time is synced.
 
 - name: Configure custom NTP server
