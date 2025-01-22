@@ -1,9 +1,16 @@
 # Changelog
 
+## 1.2.41 - 2025-01-22
+  - auto-warmup config
+  - added multiple packages
+  - custom NTP server configuration
+
+
+--------------------------------------------------------------------------
+
 ## 1.2.40 - 2025-01-21
   - EE_MQTT_SUBTOPIC fix
 
---------------------------------------------------------------------------
 
 ## 1.2.38 - 2024-11-28
   - work on docker login & internal cr

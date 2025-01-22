@@ -436,15 +436,46 @@
   # Installs Network Time Protocol (NTP) to keep the system time synchronized.
   # This is important for many networked services and logging.
 
-
 - name: Install htop
   ansible.builtin.apt:
     name: htop
     state: present
     update_cache: yes
   become: true
-  # Installs htop, a tool for monitoring system resources, which can be useful for diagnostics and performance monitoring.
 
+- name: Install traceroute, ifconfig, and systemd-timesyncd
+  ansible.builtin.apt:
+    name:
+      - traceroute
+      - net-tools  # Includes ifconfig
+      - systemd-timesyncd
+    state: present
+    update_cache: yes
+  become: true
+  # Installs network utilities and time synchronization tools.
+
+- name: Add the custom NTP server
+  ansible.builtin.command:
+    cmd: "timedatectl set-ntp false && timedatectl set-ntp true && timedatectl set-timezone UTC"
+  become: true
+  # Ensures NTP is disabled, re-enabled, and system time is synced.
+
+- name: Configure custom NTP server
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/timesyncd.conf
+    regexp: '^NTP='
+    line: "NTP={{ aixp_ntp_server }}"
+  become: true
+  # notify:
+  #   - Restart systemd-timesyncd
+  # Configures the NTP server from the variable aixp_ntp_server.
+
+- name: Restart systemd-timesyncd
+  ansible.builtin.systemd:
+    name: systemd-timesyncd
+    state: restarted
+  become: true
+  # Restarts the time synchronization service to apply changes.
 
   
 ### Jetson 

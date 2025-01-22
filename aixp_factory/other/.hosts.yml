@@ -14,6 +14,8 @@ all:
     # ansible_ssh_pass: ""                        # the password to connect to the remote host if no private key is used
     ansible_sudo_pass: ""                       # the password to become root on the remote host if required
 
+    aixp_product: "optizone" # "optizone" or "preventic"
+
     # select the target environment "staging" "qa" "preprod" "prod"
     aixp_app_target: "staging"  # "staging" "qa" "preprod" "prod" or even "develop"
     aixp_dev_mode: false
@@ -21,6 +23,8 @@ all:
     aixp_hosts: |
       A.B.C.D host.name.domain
       # A.B.C.D host.name.domain      
+
+    aixp_ntp_server: 172.31.203.126
 
     # START Container registry      
     # define below the full url to be used for the image
@@ -70,6 +74,8 @@ all:
     
     aixp_EE_SUPERVISOR: false
 
+    
+
     # END .env
 
     ### Pipeline configuration secton
@@ -83,6 +89,12 @@ all:
           "THU": [["12:00", "12:30"]],
           "FRI": [["12:00", "12:30"]]  
         }
+
+    aixp_auto_warmup_models:
+      - "lowres_general_detector"
+      # - "image_quality_assessment_fast"
+
+
 
     # setting for banking daily maintenance
     # aixp_UPDATE_MONITOR_SCHEDULE: |
