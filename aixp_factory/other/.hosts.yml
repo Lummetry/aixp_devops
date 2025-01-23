@@ -90,7 +90,7 @@ all:
           "FRI": [["12:00", "12:30"]]  
         }
 
-    aixp_auto_warmup_models:
+    aixp_auto_warmup_models: |
       - "lowres_general_detector"
       # - "image_quality_assessment_fast"
 

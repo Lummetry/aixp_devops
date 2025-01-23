@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.2.43 - 2025-01-23
+## 1.2.44 - 2025-01-23
   - auto-warmup config
   - added multiple packages
   - custom NTP server configuration
