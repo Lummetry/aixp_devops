@@ -60,7 +60,7 @@
     "SERVER_COLLECTOR_TIMEDELTA" : 3600,
 
     "AUTO_WARMUPS" :  {
-      {% for model in aixp_auto_warmup_models %}
+      {% for model in (aixp_auto_warmup_models | default([])) %}
         "{{ model }}" : {}{% if not loop.last %},{% endif %}
       {% endfor %}
       },
