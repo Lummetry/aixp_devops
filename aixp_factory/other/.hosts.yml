@@ -123,6 +123,8 @@ all:
 
     aixp_ADD_ORIGINAL_IMAGE: false  # add original image to payloads - must be false and should be modified by individual plugins
 
+    aixp_install_extra_packages: true
+
     ########################################################
     ###### END USER SECTION # MODIFY THE VALUES ABOVE ######
     ########################################################

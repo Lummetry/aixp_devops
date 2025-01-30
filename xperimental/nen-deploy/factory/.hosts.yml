@@ -14,28 +14,36 @@ all:
     # ansible_ssh_pass: ""                        # the password to connect to the remote host if no private key is used
     ansible_sudo_pass: ""                       # the password to become root on the remote host if required
 
+    aixp_product: "optizone" # "optizone" or "preventic"
+
     # select the target environment "staging" "qa" "preprod" "prod"
     aixp_app_target: "staging"  # "staging" "qa" "preprod" "prod" or even "develop"
     aixp_dev_mode: false
 
     aixp_hosts: |
       A.B.C.D host.name.domain
-      # A.B.C.D host.name.domain
+      # A.B.C.D host.name.domain      
+
+    aixp_ntp_server: 172.31.203.126
 
     # START Container registry      
     # define below the full url to be used for the image
     aixp_image: exe_eng
     aixp_cr_server: docker.io                       # registry.apps.proiectai.bt.wan
     aixp_cr_accept_insecure: false                  # accept insecure connection (true/false)    
+    aixp_docker_pull_limit: 5                       #  limit the docker pull to a certain number of threads
     aixp_cr_user: aixpand                           # hyfy
     aixp_cr_url: "{{ aixp_cr_server }}/{{ aixp_cr_user }}"
-    dockerhub_username: "dockerhub_username"      # dockerhub username
-    dockerhub_password: "dockerhub_password"      # dockerhub password  
-    aixp_lms_image: hyfy_lms
-    aixp_lms_enabled: false
+    dockerhub_username: "dockerhub_username"        # dockerhub username
+    dockerhub_password: "dockerhub_password"        # dockerhub password  
+    aixp_lms_image: hyfy_lms                        # name of the LMS image 
+    aixp_lms_enabled: false                         # enable LMS installation
+    aixp_lms_pull: false                            # pull LMS image even in config-only
     # END Container registry
 
     # STRT values for the target environment .env    
+    aixp_MINIO_MAX_SERVER_QUOTA: 99 # 99 GB for Optizone, change to 1500 to Preventics
+
     aixp_EE_MINIO_ENDPOINT: "minio_endpoint"      # minio endpoint such as s3.prod.org.com
     aixp_EE_MINIO_ACCESS_KEY: "minio_access_key"  # minio access key (username)
     aixp_EE_MINIO_SECRET_KEY: "minio_secret_key"  # minio secret key (password)
@@ -66,7 +74,45 @@ all:
     
     aixp_EE_SUPERVISOR: false
 
+    
+
     # END .env
+
+    ### Pipeline configuration secton
+
+    # setting for perimeter security for daily maintenance
+    aixp_UPDATE_MONITOR_SCHEDULE: |
+        {    
+          "MON": [["12:00", "12:30"]],
+          "TUE": [["12:00", "12:30"]],
+          "WED": [["12:00", "12:30"]],
+          "THU": [["12:00", "12:30"]],
+          "FRI": [["12:00", "12:30"]]  
+        }
+
+    aixp_auto_warmup_models: |
+      - "lowres_general_detector"
+      # - "image_quality_assessment_fast"
+
+
+
+    # setting for banking daily maintenance
+    # aixp_UPDATE_MONITOR_SCHEDULE: |
+    #   [
+    #     [
+    #       "00:00",
+    #       "01:00"
+    #     ]
+    #   ]      
+
+    aixp_UPDATE_MONITOR_RESTART: 130000    # after how many seconds to perform maintenance force-restart (default 7 days)
+    aixp_UPDATE_MONITOR_REBOOT_ON_RESTART: false # set this to true to reboot the machine
+    # set to ~72000 in order to perform force-restart every cycle (for Preventics)
+    ### End Pipeline configuration secton
+
+    aixp_DEBUG_LOG_PAYLOADS: true # set this to false to stop logging payloads delivery in EE logs
+
+    aixp_MAX_BATCH_FIRST_STAGE: 8 # set this to 16-32-64 for powerfull GPUs
 
 
     aixp_authorized_addrs: |
@@ -74,6 +120,8 @@ all:
 
 
     aixp_container_memory_limit: 30GB
+
+    aixp_ADD_ORIGINAL_IMAGE: false  # add original image to payloads - must be false and should be modified by individual plugins
 
     ########################################################
     ###### END USER SECTION # MODIFY THE VALUES ABOVE ######
@@ -83,9 +131,11 @@ all:
 
     ###### ADMIN-ONLY VARIABLES ######
 
+    aixp_commented_prune: "#"
+
     aixp_container_folder: exe_eng # should be same as the image name
 
-    aixp_EE_MQTT_SUBTOPIC: address
+    aixp_EE_MQTT_SUBTOPIC: alias
 
     aixp_device: "cuda:0"
     aixp_docker_gpus: "--gpus all"

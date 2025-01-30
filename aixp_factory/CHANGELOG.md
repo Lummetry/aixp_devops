@@ -1,12 +1,16 @@
 # Changelog
 
+
+## 1.2.45 - 2025-01-30
+  - extra packages
+
+--------------------------------------------------------------------------
+
 ## 1.2.44 - 2025-01-23
   - auto-warmup config
   - added multiple packages
   - custom NTP server configuration
 
-
---------------------------------------------------------------------------
 
 ## 1.2.40 - 2025-01-21
   - EE_MQTT_SUBTOPIC fix
