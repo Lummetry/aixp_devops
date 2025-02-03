@@ -17,7 +17,7 @@
                 {
                   "PROCESS_DELAY"   : 60,
                   "WORKING_HOURS"   : 
-                    {{ aixp_UPDATE_MONITOR_SCHEDULE | default('[]') | tojson }},    
+                    {{ aixp_UPDATE_MONITOR_SCHEDULE | default([]) | tojson }},    
                     
                   "VERSION_TOKEN"   : "$EE_GITVER",
                   "RESTART_ON_BEHIND": true,
