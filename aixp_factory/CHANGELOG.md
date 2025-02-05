@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.2.49 - 2025-02-05
+## 1.2.50 - 2025-02-05
   - extra admin plugins deleted
   - fix json issue
 
