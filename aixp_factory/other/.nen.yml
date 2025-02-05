@@ -63,6 +63,8 @@ all:
     
     aixp_EE_SUPERVISOR: true
 
+    aixp_install_utils: false
+
     # END .env
 
 

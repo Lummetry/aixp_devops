@@ -433,7 +433,7 @@
     state: present
     update_cache: yes
   become: true
-  when: (aixp_install_extra_packages | default(true) | bool)
+  when: (aixp_install_utils | default(true) | bool)
   # Installs Network Time Protocol (NTP) to keep the system time synchronized.
   # This is important for many networked services and logging.
 
@@ -453,19 +453,19 @@
     state: present
     update_cache: yes
   become: true
-  when: (aixp_install_extra_packages | default(true) | bool)
+  when: (aixp_install_utils | default(true) | bool)
   # Installs network utilities and time synchronization tools.
 
 - name: Add the custom NTP server
   ansible.builtin.shell: "timedatectl set-ntp false && timedatectl set-ntp true && timedatectl set-timezone UTC"
   register: aixp_ntp_server_setup_results
   become: true
-  when: (aixp_install_extra_packages | default(true) | bool)
+  when: (aixp_install_utils | default(true) | bool)
 
 - name: Show NTP server setup results
   debug:
     var: aixp_ntp_server_setup_results
-  when: (aixp_install_extra_packages | default(true) | bool)
+  when: (aixp_install_utils | default(true) | bool)
 
   # Ensures NTP is disabled, re-enabled, and system time is synced.
 
@@ -475,7 +475,7 @@
     regexp: '^NTP='
     line: "NTP={{ aixp_ntp_server }}"
   become: true
-  when: (aixp_install_extra_packages | default(true) | bool)
+  when: (aixp_install_utils | default(true) | bool)
   # notify:
   #   - Restart systemd-timesyncd
   # Configures the NTP server from the variable aixp_ntp_server.
@@ -485,7 +485,7 @@
     name: systemd-timesyncd
     state: restarted
   become: true
-  when: (aixp_install_extra_packages | default(true) | bool)
+  when: (aixp_install_utils | default(true) | bool)
   # Restarts the time synchronization service to apply changes.
 
   
