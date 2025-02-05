@@ -26,3 +26,5 @@ xperimental/nen-deploy/run.sh
 xperimental/nen-deploy/showlog.sh
 xperimental/nen-deploy/factory/.hosts.yml
 xperimental/nen-deploy/factory/deploy-config.yml
+xperimental/r1deploy
+

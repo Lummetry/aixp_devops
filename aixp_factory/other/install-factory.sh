@@ -220,9 +220,18 @@ fi
 # Define the path to the collection
 collection_path="$HOME/.ansible/collections/ansible_collections/aidamian/aixp_factory"
 
-# Copy .hosts.yml from the collection to the current directory
-log_with_color "Copying .hosts.yml from the collection to factory .hosts.yml" blue
-cp "${collection_path}/other/.hosts.yml" ./.hosts.yml
+# check if a parameter is passed to the script and if it is "r1"
+if [ "$1" == "r1" ]; then
+  # Copy .hosts.yml from the collection to the current directory
+  log_with_color "Copying .nen.yml from the collection to factory .hosts.yml" blue
+  cp "${collection_path}/other/.nen.yml" ./.hosts.yml
+else
+  # Copy .hosts.yml from the collection to the current directory
+  log_with_color "Copying .hosts.yml from the collection to factory .hosts.yml" blue
+  cp "${collection_path}/other/.hosts.yml" ./.hosts.yml
+fi
+
+
 
 if [ ! -f "./hosts.yml" ]; then
   log_with_color "Copying .hosts.yml from the collection to hosts.yml for edit" blue

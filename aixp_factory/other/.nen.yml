@@ -67,22 +67,19 @@ all:
 
 
     aixp_authorized_addrs: |
-      0xai_A5crKSUwjFytmqJcYflaUz_s3IACHFDMe7DmE5zf5qbS tutorial-address
-      0xai_AgqIdUEoUmblnsKNsoBTR5c_wxiV8jUWGpnIUQDEOdDq stefan-ws
-      0xai_AtFQeDDHCFcOOlbU9TNW8OUoDyVric6X2Qh2qVpE2pLw stefan-ws-sdk
-      0xai_AmI7qRUFwbfy1Oa45lUFwolsiiJ4elxOxiBqB0tD2ljp stefan-ws-solisclient
-      0xai_AgNxIxNN6RsDqBa0d5l2ZQpy7y-5bnbP55xej4OvcitO stefan-box
-      0xai_A9RfNVpr0ui9LCbVfQn0KlY-SBHtKu_DtnkS7t8KyJke stefan-laptop-solisclient
-      0xai_AhvvjmokpMUc0wQ8DOpeIDr_3bmoL8A8-vLZIa5-pDb4 stefan-laptop-sdk
-      0xai_A6IrUO8pNoZrezX7UhYSjD7mAhpqt-p8wTVNHfuTzg-G AID-hpc-solisclient
-      0xai_Am-eDtRVWRf6PiPtErPQHOduaPouRROSuGlBVpiAp491 AID-mobile-solisclient
-      0xai_AljrNvZgT10ccZ4rnVVuFjbH-ZC3QNNMYVFUvE0cBEk2 bleo-box
-      0xai_AwTD0PEqh_dmW3vH_h8N6CyNwLOh4ql2khy7-yP4Ltp- bleo-solisclient
-      0xai_A3vtcVIv_yL7k945IuhNjLUXKj2DPvbapoH4D6ZairfT optizone-staging
-      0xai_Aw4gEC_6k8PQEYpX2e_wv1-C0DgpqUzcTWRa4IECAHGw bleo-sdk
-      0xai_A8SY7lEqBtf5XaGyB6ipdk5C30vSf3HK4xELp3iplwLe naeural-1
-      0xai_Amfnbt3N-qg2-qGtywZIPQBTVlAnoADVRmSAsdDhlQ-6 naeural-2
-      0xai_ApltAljEgWk3g8x2QcSa0sS3hT1P4dyCchd04zFSMy5e naeural-3
+      0xai_AleLPKqUHV-iPc-76-rUvDkRWW4dFMIGKW1xFVcy65nH  super-nen-aid01
+      0xai_A-Bn9grkqH1GUMTZUqHNzpX5DA6PqducH9_JKAlBx6YL  super-nen-aid02
+      0xai_Amfnbt3N-qg2-qGtywZIPQBTVlAnoADVRmSAsdDhlQ-6  super-nen-2
+      0xai_AszI8IKn985-IdDULXPrgYS5lnwg9PDmB95VGMYyltf4  bleo_core
+      aixp_AljrNvZgT10ccZ4rnVVuFjbH-ZC3QNNMYVFUvE0cBEk2  bleo-box
+      0xai_At8N0Qgz78sBLgPtMgifmCabJGkgEzgkEP-1laDggXVM  bleo_edge_node
+      0xai_AthDPWc_k3BKJLLYTQMw--Rjhe3B6_7w76jlRpT6nDeX  nen-aid-hpc
+      aixp_AwTD0PEqh_dmW3vH_h8N6CyNwLOh4ql2khy7-yP4Ltp-  bleo_client
+      0xai_Aw4gEC_6k8PQEYpX2e_wv1-C0DgpqUzcTWRa4IECAHGw  bleo-sdk
+      0xai_AjcIThkOqrPlp35-S8czHUOV-y4mnhksnLs8NGjTbmty  aid-hpc-sdk
+      0xai_A2Fx1c-WI5e1eRRm-6cGxTYRD8UEZSH-iTfSeHKmlzR6  aid-hpc-DEMOS
+      0xai_AjhINpfmWLsCFdqn3qy8OT2Mlf1n1YbxP6f7JODqm9th  aid-mob-sdk
+
 
 
 
