@@ -235,7 +235,7 @@ fi
 
 if [ ! -f "./hosts.yml" ]; then
   log_with_color "Copying .hosts.yml from the collection to hosts.yml for edit" blue
-  cp "/.hosts.yml" ./hosts.yml
+  cp "./.hosts.yml" ./hosts.yml
 else
   log_with_color "hosts.yml already exists. Not copying." blue
 fi
