@@ -62,7 +62,7 @@
 
 - name: Check if aixp_app_version is either "staging", "qa", "preprod" or "prod"
   assert:
-    that: "aixp_app_version in ['staging', 'qa', 'preprod', 'prod', 'develop']"
+    that: "aixp_app_version in ['staging', 'qa', 'preprod', 'prod', 'develop', 'testnet', 'mainnet']"
     msg: "aixp_app_version is '{{ aixp_app_version }}'. Please make sure you selected the right target for your application. Check if the hosts.yaml is properly configure for aixp_app_version variable."
 
 
