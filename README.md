@@ -23,21 +23,5 @@ The above `./install.sh` script can be called anytime to update the AiXpand Fact
 
 ## License
 
-## Citation
 
-```bibtex
-@article{milik2023aixpand,
-  title={AiXpand AI OS - Decentralized ubiquitous computing MLOps execution engine},
-  author={
-    Milik, Beatrice and 
-    Saraev, Stefan and 
-    Bleotiu, Cristian and 
-    Lupaescu, Radu and 
-    Hobeanu, Bogdan and 
-    Damian, Andrei Ionut
-  },
-  journal={arXiv preprint arXiv:2306.08708},
-  year={2023}
-}
-```
 
