@@ -64,6 +64,9 @@ all:
     # aixp_MQTT_CERT: /home/gts/emqx.crt
     aixp_MQTT_CERT: null
   
+    # TODO: must move default nvidia-driver-535 to a newer version such as nvidia-driver-545 or higher
+    aixp_nvidia_driver: "nvidia-driver-535"      # nvidia driver version (default nvidia-driver-535)
+
 
     aixp_EE_GITVER: "git_version_access_token"    # git version access token (required)
     aixp_EE_OPENAI: "openai_api_key"              # optional openai api key
