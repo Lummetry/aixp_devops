@@ -95,7 +95,7 @@
   apt:
     update_cache: yes
     name:
-      - {{ aixp_nvidia_driver | default('nvidia-driver-535')}}
+      - "{{ aixp_nvidia_driver | default('nvidia-driver-535')}}"
     state: present
   register: nvidia_driver_installation
   # Runs only if initial nvidia-smi check failed.
@@ -115,7 +115,7 @@
   become: true
   when: nvidia_smi_check1.rc != 0
   ansible.builtin.dpkg_selections:
-    name:  {{ aixp_nvidia_driver | default('nvidia-driver-535')}}
+    name:  "{{ aixp_nvidia_driver | default('nvidia-driver-535')}}"
     selection: hold
   # Runs only if initial nvidia-smi check failed.
   # This task holds the NVIDIA driver package to prevent it from being automatically updated.
@@ -152,7 +152,7 @@
 
 
 - name: "Check if  {{ aixp_nvidia_driver | default('nvidia-driver-535')}} is held"
-  command: dpkg --get-selections | grep  {{ aixp_nvidia_driver | default('nvidia-driver-535')}}
+  command: "dpkg --get-selections | grep  {{ aixp_nvidia_driver | default('nvidia-driver-535')}}"
   register: nvidia_driver_held
 
 
