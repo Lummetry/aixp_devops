@@ -1,10 +1,13 @@
 # Changelog
 
 
-## 1.3.1 - 2025-02-13
-  - configurable nvidia drivers
+## 1.3.2 - 2025-02-15
+  - eliminated REST_CUSTOM_EXEC
 
 --------------------------------------------------------------------------
+
+## 1.3.1 - 2025-02-13
+  - configurable nvidia drivers
 
 ## 1.2.53 - 2025-02-05
   - extra admin plugins deleted

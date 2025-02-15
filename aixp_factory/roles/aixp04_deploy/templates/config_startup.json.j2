@@ -89,20 +89,7 @@
   },
   
   "ADMIN_PIPELINE" : {
-    "MINIO_MONIT_01": {
-      "MINIO_HOST"          : null,
-      "MINIO_ACCESS_KEY"    : null,
-      "MINIO_SECRET_KEY"    : null,
-      "MINIO_SECURE"        : null,
-      "MAX_SERVER_QUOTA"  : {{ aixp_MINIO_MAX_SERVER_QUOTA | default(99) }}      
-    },
-    
-    "REST_CUSTOM_EXEC_01" : {
-      "ALLOW_EMPTY_INPUTS"      : true,
-      "RUN_WITHOUT_IMAGE"       : true,
-      "SEND_MANIFEST_EACH"      : 301
-    },
-
+        
     "SELF_CHECK_01" : {
       "DISK_LOW_PRC"  : 0.15,
       "MEM_LOW_PRC"   : 0.15,
