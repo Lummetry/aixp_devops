@@ -1,10 +1,13 @@
 # Changelog
 
 
-## 1.3.3 - 2025-02-17
-  - fixed json render issue
+## 1.3.4 - 2025-02-17
+  - typo in .hosts
 
 --------------------------------------------------------------------------
+
+## 1.3.3 - 2025-02-17
+  - fixed json render issue
 
 ## 1.3.2 - 2025-02-15
   - eliminated REST_CUSTOM_EXEC
