@@ -120,6 +120,23 @@
   # Runs only if initial nvidia-smi check failed.
   # This task holds the NVIDIA driver package to prevent it from being automatically updated.
 
+# - name: Hold the NVIDIA driver package
+#   become: true
+#   ansible.builtin.dpkg_selections:
+#     name: nvidia-driver-535
+#     selection: hold     # same effect as apt-mark hold
+
+- name: Verify that the driver is on hold
+  become: true
+  ansible.builtin.shell:
+    cmd: "apt-mark showhold | grep -E '^{{ aixp_nvidia_driver | default('nvidia-driver-535')}}\\b'"
+  register: nvidia_driver_held
+  changed_when: false
+
+- name: Show held NVIDIA driver information
+  ansible.builtin.debug:
+    var: nvidia_driver_held.stdout
+
 
 - name: Reboot the system
   when: nvidia_smi_check1.rc != 0
