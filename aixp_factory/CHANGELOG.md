@@ -1,7 +1,7 @@
 # Changelog
 
 
-## 1.3.7 - 2025-07-18
+## 1.3.8 - 2025-07-18
   - update monitor schedule
 
 
