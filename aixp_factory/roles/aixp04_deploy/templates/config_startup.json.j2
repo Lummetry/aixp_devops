@@ -108,7 +108,7 @@
       "RESTART_ON_BEHIND": true,
 
       "FORCE_RESTART_AFTER" : {{ aixp_UPDATE_MONITOR_RESTART | default(160000) }},
-      "REBOOT_ON_RESTART"   : {{ (aixp_UPDATE_MONITOR_REBOOT_ON_RESTART | default('false') | lower) | tojson }},,
+      "REBOOT_ON_RESTART"   : {{ (aixp_UPDATE_MONITOR_REBOOT_ON_RESTART | default('false') | lower ) | tojson }},
 
 
       "VERSION_URL": "{{ aixp_VERSION_URL }}",
